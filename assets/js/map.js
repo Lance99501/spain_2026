@@ -1,7 +1,13 @@
 const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 
 export function initTripMap({places,mapConfig}){
-  if(!window.L) throw new Error('Leaflet is not available.');
+  if(!window.L){
+    const mapRoot=document.getElementById('tripMap');
+    if(mapRoot){
+      mapRoot.innerHTML='<div class="map-fallback">地圖目前無法載入；每日行程、住宿與已快取內容仍可使用。</div>';
+    }
+    return {map:null,fitPlaces:()=>{}};
+  }
 
   const map=L.map('tripMap',{zoomControl:true,scrollWheelZoom:true}).setView([39.8,-1.3],6);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{

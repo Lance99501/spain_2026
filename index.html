@@ -4,6 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f6f4ed">
+  <meta name="application-name" content="Spain 2026">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/app-icon.svg" type="image/svg+xml">
   <title>Spain 2026｜西班牙 17 天行程</title>
   <link rel="preconnect" href="https://tile.openstreetmap.org">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
@@ -13,6 +19,7 @@
   <link rel="stylesheet" href="assets/css/map.css">
   <link rel="stylesheet" href="assets/css/itinerary.css">
   <link rel="stylesheet" href="assets/css/ticket.css">
+  <link rel="stylesheet" href="assets/css/pwa.css">
   
 </head>
 <body>
@@ -103,6 +110,8 @@
     </footer>
     <button type="button" class="city-return" id="cityReturnBtn" aria-label="回到城市快速切換" title="回到城市快速切換"><span aria-hidden="true">↑</span></button>
   </main>
+
+  <div class="pwa-status" id="pwaStatus" role="status" aria-live="polite" hidden></div>
 
   <div class="ticket-modal" id="ticketModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="ticketModalTitle" aria-describedby="ticketModalSub">
     <div class="ticket-sheet">

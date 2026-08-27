@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Spain 2026">
+  <rect width="512" height="512" rx="112" fill="#f6f4ed"/>
+  <rect x="52" y="52" width="408" height="408" rx="108" fill="#789281"/>
+  <circle cx="256" cy="256" r="142" fill="#f6f4ed"/>
+  <text x="256" y="285" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="112" font-weight="700" fill="#35433b">S26</text>
+</svg>

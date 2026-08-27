@@ -1,0 +1,19 @@
+{
+  "name": "Spain 2026｜西班牙 17 天行程",
+  "short_name": "Spain 2026",
+  "description": "西班牙 17 天自由行的行程、地圖、住宿與票券入口。",
+  "lang": "zh-Hant",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f4ed",
+  "theme_color": "#f6f4ed",
+  "icons": [
+    {
+      "src": "assets/icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import {initTripMap} from './map.js';
 import {createTicketController} from './ticket.js';
 import {initItinerary} from './itinerary.js';
 import {initTodayMode} from './today.js';
+import {initPwa} from './pwa.js';
 
 const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 
@@ -127,4 +128,5 @@ async function bootstrap(){
   }
 }
 
+initPwa();
 bootstrap();
