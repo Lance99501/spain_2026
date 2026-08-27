@@ -109,7 +109,7 @@
     .arrow{color:var(--muted);transition:.2s;text-align:center}.day.open .arrow{transform:rotate(180deg)}
     .day-body{display:none;padding:0 14px 14px 86px}.day.open .day-body{display:block}
     .timeline{list-style:none;padding:0;margin:0;display:grid;gap:9px}.timeline li{display:grid;grid-template-columns:68px minmax(0,1fr);gap:9px}.timeline time{font:500 .83rem Georgia,serif;color:var(--sage)}.timeline p{margin:0;font-size:.86rem}.timeline em{display:block;font-style:normal;color:var(--muted);font-size:.74rem}
-    .unesco-crown{display:inline-grid;place-items:center;margin-left:5px;vertical-align:.08em;color:#a88745;font-size:.8em;line-height:1;cursor:help;filter:saturate(.85)}
+    .unesco-crown,.ticket-icon{display:inline;white-space:nowrap;vertical-align:.06em;line-height:1;cursor:help}.unesco-crown{color:#a88745;font-size:.8em;filter:saturate(.85)}.ticket-icon{font-size:.82em}
     .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}.tag{font-size:.68rem;border-radius:999px;padding:3px 8px}.confirmed{background:var(--sage-soft)}.pending{background:var(--sand)}.flex{background:var(--blue-soft)}.rest{background:var(--rose-soft)}
     .day-note{margin-top:10px;border-left:3px solid var(--sage);background:var(--paper-2);border-radius:0 10px 10px 0;padding:8px 10px;color:var(--muted);font-size:.74rem}
     .empty{padding:28px;text-align:center;color:var(--muted)}
@@ -391,7 +391,7 @@
     }
 
     places.forEach(p => {
-      const marker = L.marker([p.lat,p.lng], {icon:makeIcon(p.status)}).bindPopup(popupHtml(p));
+      const marker = L.marker([p.lat,p.lng], {icon:makeIcon(p.status),zIndexOffset:p.status==='hotel'?1000:(p.status==='confirmed'?500:0),riseOnHover:true}).bindPopup(popupHtml(p));
       markerByPlace.set(p.name, marker);
       markerLayer.addLayer(marker);
     });
@@ -463,20 +463,57 @@
       /Parque del Retiro/i,
       /Acueducto\s*→\s*Catedral\s*→\s*午餐\s*→\s*Alc[aá]zar/i
     ];
-    function markUnesco(root=document){
+
+    // Confirmed tickets from Notion Reservations & Tickets.
+    // Hotels are intentionally excluded; inbound Barcelona is an arrival event, so no "open ticket" reminder is shown there.
+    const TICKET_PATTERNS = [
+      /聖家堂＋誕生立面塔樓/i,
+      /^Park Güell$/i,
+      /Casa Batll[oó]/i,
+      /Barcelona-Sants\s*→\s*Sevilla-Santa Justa/i,
+      /Real Alc[aá]zar de Sevilla/i,
+      /Catedral de Sevilla\s*\+\s*Giralda/i,
+      /Sevilla-Santa Justa\s*→\s*C[oó]rdoba/i,
+      /Sevilla Plaza de Armas\s*→\s*Granada Bus Station/i,
+      /Alhambra 行程開始/i,
+      /Palacios Nazar[ií]es 指定入場/i,
+      /Granada\s*→\s*Madrid-Puerta de Atocha/i,
+      /EK144 Madrid 起飛/i
+    ];
+
+    function directText(el){
+      return [...el.childNodes]
+        .filter(n=>n.nodeType===Node.TEXT_NODE)
+        .map(n=>n.textContent||'').join(' ').trim();
+    }
+
+    function addInlineIcon(el, className, glyph, title, beforeNode=null){
+      if(el.querySelector(':scope > .'+className)) return;
+      const icon=document.createElement('span');
+      icon.className=className;
+      // NBSP keeps the icon attached to the final word instead of wrapping onto a line by itself.
+      icon.textContent='\u00A0'+glyph;
+      icon.title=title;
+      icon.setAttribute('aria-label',title);
+      if(beforeNode) el.insertBefore(icon,beforeNode);
+      else el.appendChild(icon);
+    }
+
+    function markItineraryIcons(root=document){
+      // UNESCO: mark the exact text line where the listed property/component appears.
       root.querySelectorAll('.timeline p, .timeline em').forEach(el=>{
-        if(el.querySelector(':scope > .unesco-crown')) return;
-        const directText=[...el.childNodes]
-          .filter(n=>n.nodeType===Node.TEXT_NODE)
-          .map(n=>n.textContent||'').join(' ').trim();
-        if(UNESCO_PATTERNS.some(rx=>rx.test(directText))){
-          const crown=document.createElement('span');
-          crown.className='unesco-crown';
-          crown.textContent='♛';
-          crown.title='UNESCO 世界文化遺產';
-          crown.setAttribute('aria-label','UNESCO 世界文化遺產');
-          el.appendChild(crown);
-        }
+        const label=directText(el);
+        if(!label || !UNESCO_PATTERNS.some(rx=>rx.test(label))) return;
+        const before=el.matches('p') ? el.querySelector(':scope > em') : null;
+        addInlineIcon(el,'unesco-crown','♛','UNESCO 世界文化遺產',before);
+      });
+
+      // Ticket: only actual confirmed attraction/transport tickets from the private reservation backend.
+      root.querySelectorAll('.timeline p').forEach(p=>{
+        const label=directText(p);
+        if(!label || !TICKET_PATTERNS.some(rx=>rx.test(label))) return;
+        const before=p.querySelector(':scope > em');
+        addInlineIcon(p,'ticket-icon','🎫','已購票｜出發或入場前開啟票券',before);
       });
     }
 
@@ -508,7 +545,7 @@
         </article>`;
       }).join('');
       empty.hidden = rows.length>0;
-      markUnesco(daysRoot);
+      markItineraryIcons(daysRoot);
       daysRoot.querySelectorAll('.day').forEach(day=>{
         const btn=day.querySelector('.day-main');
         btn.addEventListener('click',()=>{
