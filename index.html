@@ -24,33 +24,38 @@
       --radius:22px;
     }
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    html{scroll-behavior:smooth;max-width:100%;overflow-x:hidden}
     body{
       margin:0;
+      max-width:100%;
+      overflow-x:hidden;
       background:var(--paper);
       color:var(--ink);
       font-family:"Hiragino Sans","Yu Gothic","Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
       line-height:1.6;
     }
+    img,svg,canvas{max-width:100%}
     button,input,a{font:inherit}
     a{color:inherit}
     button{cursor:pointer}
-    .shell{width:min(1180px,100%);margin:auto;padding:clamp(16px,3vw,34px)}
+    .shell{width:100%;max-width:1180px;min-width:0;margin:auto;padding:clamp(16px,3vw,34px)}
     .hero{
       display:grid;
-      grid-template-columns:minmax(0,1.45fr) minmax(250px,.55fr);
+      grid-template-columns:minmax(0,1.45fr) minmax(220px,.55fr);
       gap:24px;
       align-items:end;
+      min-width:0;
       padding:18px 0 24px;
       border-bottom:1px solid var(--line);
     }
+    .hero>*{min-width:0}
     .eyebrow{font-size:.76rem;letter-spacing:.18em;color:var(--sage);font-weight:700}
     h1{font:600 clamp(2rem,5vw,4.2rem)/1.08 Georgia,"Times New Roman",serif;margin:.5rem 0 .7rem;letter-spacing:-.02em}
     .hero p{max-width:720px;margin:0;color:var(--muted)}
-    .hero-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .hero-card{width:100%;max-width:100%;min-width:0;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
     .hero-card b{display:block;font:500 clamp(1.8rem,4vw,2.5rem)/1 Georgia,serif;margin-bottom:5px}
-    .hero-card span{font-size:.82rem;color:var(--muted)}
-    .route-strip{display:flex;gap:8px;overflow:auto;padding:16px 0 0;white-space:nowrap;font-size:.8rem;color:var(--muted);scrollbar-width:none}
+    .hero-card span{display:block;max-width:100%;font-size:.82rem;color:var(--muted);overflow-wrap:anywhere}
+    .route-strip{display:flex;gap:8px;width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;padding:16px 0 2px;white-space:nowrap;font-size:.8rem;color:var(--muted);scrollbar-width:none}
     .route-strip::-webkit-scrollbar{display:none}.route-strip strong{color:var(--ink)}.route-strip i{font-style:normal;color:var(--sage)}
 
     .section{margin-top:28px}
@@ -116,10 +121,61 @@
       .day-main:hover{background:rgba(230,238,231,.35)}
     }
     @media (max-width:760px){
-      .hero{grid-template-columns:1fr}.city-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hotel-grid{grid-template-columns:1fr}.map-meta{width:100%;margin-left:0}.day-main{grid-template-columns:56px minmax(0,1fr) 22px}.day-map{width:40px;height:40px;padding:6px;justify-content:center;margin-right:10px}.day-map .map-label{display:none}.day-body{padding:0 12px 12px}.section-head{align-items:start;flex-direction:column}.section-head p{text-align:left}
+      .shell{padding:18px 16px 28px}
+      .hero{display:block;padding:10px 0 22px}
+      .hero-card{margin-top:18px;padding:16px 18px;border-radius:18px}
+      .hero-card b{font-size:clamp(1.9rem,9vw,2.4rem);white-space:nowrap}
+      .route-strip{padding-top:14px}
+      .city-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .hotel-grid{grid-template-columns:1fr}
+      .map-meta{width:100%;margin-left:0}
+      #tripMap{height:420px}
+      .day-main{grid-template-columns:56px minmax(0,1fr) 22px}
+      .day-map{width:40px;height:40px;padding:6px;justify-content:center;margin-right:10px}
+      .day-map .map-label{display:none}
+      .day-body{padding:0 12px 12px}
+      .section-head{align-items:start;flex-direction:column}
+      .section-head p{text-align:left}
     }
-    @media (max-width:390px){
-      .shell{padding:12px}.city-grid{grid-template-columns:1fr 1fr}.city-card{padding:0}.city-card .city-copy{padding:11px 12px 13px}.tools{grid-template-columns:1fr}.expand-all{width:100%}.timeline li{grid-template-columns:57px minmax(0,1fr)}#tripMap{height:390px}
+    @media (max-width:480px){
+      .shell{padding:12px 12px 24px}
+      .eyebrow{font-size:.7rem;letter-spacing:.16em}
+      h1{font-size:clamp(2.25rem,12vw,3rem);margin:.45rem 0 .55rem}
+      .hero{padding-top:8px}
+      .hero-card{margin-top:16px;padding:15px 16px;border-radius:18px}
+      .hero-card b{font-size:clamp(1.9rem,10vw,2.2rem)}
+      .hero-card span{font-size:.78rem}
+      .route-strip{gap:7px;font-size:.78rem;padding-top:12px}
+      .section{margin-top:22px}
+      .section-head{gap:3px;margin-bottom:10px}
+      .section-head h2{font-size:.98rem}
+      .section-head p{font-size:.73rem}
+      .map-panel{border-radius:18px}
+      .map-toolbar{padding:10px;gap:7px}
+      .map-chip{min-height:40px;padding:7px 11px}
+      .legend{gap:6px 10px}
+      #tripMap{height:380px}
+      .map-note{padding:9px 11px;font-size:.68rem}
+      .city-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+      .city-card{padding:0;border-radius:18px}
+      .city-card .city-copy{padding:10px 11px 12px}
+      .city-card b{font-size:.96rem}
+      .city-card small{font-size:.7rem}
+      .tools{grid-template-columns:1fr;padding:8px 0}
+      .search,.expand-all{min-height:46px}
+      .expand-all{width:100%}
+      .day-main{grid-template-columns:50px minmax(0,1fr) 18px;gap:7px;padding:11px 8px 11px 10px}
+      .day-map{width:38px;height:38px;margin-right:8px}
+      .timeline li{grid-template-columns:55px minmax(0,1fr);gap:7px}
+      .hotel{grid-template-columns:1fr;gap:8px;padding:12px}
+      .hotel a{justify-self:start}
+    }
+    @media (max-width:340px){
+      .shell{padding-left:10px;padding-right:10px}
+      .city-grid{gap:7px}
+      .city-card .city-copy{padding:9px 9px 11px}
+      .map-chip{padding-left:10px;padding-right:10px}
+      .day-main{grid-template-columns:47px minmax(0,1fr) 16px;padding-left:8px}
     }
     @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
   </style>
