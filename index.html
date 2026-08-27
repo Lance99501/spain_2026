@@ -259,7 +259,7 @@
     </section>
 
     <footer>
-      資料基準：Notion 最新旅伴行程＋已確認 Reservation，更新基準 2026/08/24。10/20 Granada → Madrid 已採最新 ALVIA 2087 Confort 11:04–14:38 已購票狀態；訂單號、付款與票券私人資訊未放入本頁。
+      資料基準：Notion 最新旅伴行程＋已確認 Reservation，更新基準 2026/08/27。10/16 Sevilla → Córdoba 去程 iryo 06097、10/18 Sevilla → Granada ALSA，以及 10/20 Granada → Madrid ALVIA 2087 均採最新已確認狀態；訂單號、付款與票券私人資訊未放入本頁。
     </footer>
   </main>
 
@@ -299,10 +299,12 @@
       {city:'Sevilla',name:'Torre del Oro',type:'attraction',status:'flex',lat:37.38250,lng:-5.99630,address:'Paseo de Cristóbal Colón, Sevilla',dates:'10/17'},
       {city:'Sevilla',name:'Mercado de Triana',type:'attraction',status:'flex',lat:37.38560,lng:-6.00340,address:'Plaza del Altozano, Sevilla',dates:'10/17'},
       {city:'Sevilla',name:'Sevilla-Santa Justa',type:'transport',status:'transport',lat:37.39230,lng:-5.97500,address:'Sevilla',dates:'10/14 14:47'},
+      {city:'Sevilla',name:'Sevilla Plaza de Armas Bus Station',type:'transport',status:'transport',lat:37.39172,lng:-6.00389,address:'Estación de Autobuses Plaza de Armas, Sevilla',dates:'10/18 11:45'},
 
       // Cordoba
       {city:'Cordoba',name:'Mezquita-Catedral de Córdoba',type:'attraction',status:'pending',lat:37.87890,lng:-4.77940,address:'Calle Cardenal Herrero 1, Córdoba',dates:'10/16 約 10:00'},
       {city:'Cordoba',name:'Puente Romano de Córdoba',type:'attraction',status:'flex',lat:37.87660,lng:-4.77890,address:'Córdoba',dates:'10/16'},
+      {city:'Cordoba',name:'Córdoba Central',type:'transport',status:'transport',lat:37.88855,lng:-4.78905,address:'Glorieta de las Tres Culturas, Córdoba',dates:'10/16 08:52'},
 
       // Granada
       {city:'Granada',name:'Hotel Navas',type:'hotel',status:'hotel',lat:37.17355,lng:-3.59805,address:'Calle Navas 24, Granada',dates:'10/18–10/20'},
@@ -310,6 +312,7 @@
       {city:'Granada',name:'Palacios Nazaríes',type:'attraction',status:'confirmed',lat:37.17650,lng:-3.58900,address:'Alhambra, Granada',dates:'10/19 11:30'},
       {city:'Granada',name:'Mirador de San Nicolás',type:'attraction',status:'flex',lat:37.18100,lng:-3.59240,address:'Plaza Mirador de San Nicolás, Granada',dates:'10/18 可選'},
       {city:'Granada',name:'Catedral de Granada',type:'attraction',status:'flex',lat:37.17600,lng:-3.59830,address:'Plaza de las Pasiegas, Granada',dates:'10/20 上午'},
+      {city:'Granada',name:'Granada Bus Station',type:'transport',status:'transport',lat:37.19953,lng:-3.61359,address:'Estación de Autobuses de Granada, Granada',dates:'10/18 14:45'},
       {city:'Granada',name:'Granada Railway Station',type:'transport',status:'transport',lat:37.18400,lng:-3.60960,address:'Granada',dates:'10/20 11:04'},
 
       // Madrid
@@ -344,9 +347,9 @@
       {date:'10/13',dow:'Tue',city:'Barcelona',title:'老城 → Born → 凱旋門 → 海邊',sub:'Barcelona 最完整的一條單向散步線',cats:['flex','rest','pending'],map:googleDirections('Mercat de la Boqueria, Barcelona','Barceloneta Beach, Barcelona',['Barcelona Cathedral','Arc de Triomf, Barcelona','Parc de la Ciutadella, Barcelona'],'walking'),items:[['09:00','La Rambla + Boqueria 早餐','記得看 Joan Miró 地面馬賽克'],['10:00','Barri Gòtic 慢走','Plaça Reial → Sant Jaume → Temple d\'August → Pont del Bisbe → Cathedral'],['12:30','El Born 午餐＋散步','Santa Maria del Mar → Passeig del Born'],['14:00','Arc de Triomf → Parc de la Ciutadella',''],['15:15','Estació de França → Port Vell → Barceloneta',''],['17:30','回飯店休息＋整理行李',''],['19:30','Cruix 晚餐','待訂位']],tags:['單向散步','17:30 緩衝','Cruix 待訂'],note:'導遊提醒點是走到附近記得抬頭看，不是額外增加景點。'},
       {date:'10/14',dow:'Wed',city:'Sevilla',title:'Barcelona → Sevilla',sub:'AVE 03940 直達 · 抵達後只散步',cats:['confirmed','rest'],map:googleDirections('Barcelona Sants','Sevilla Santa Justa',[],'transit'),items:[['08:30','Barcelona-Sants → Sevilla-Santa Justa','Renfe AVE 03940 · 14:47 抵達 · 已固定'],['15:00+','abba Sevilla 入住','Plaza de la Encarnación'],['傍晚','Setas de Sevilla + Centro 初次散步','']],tags:['AVE 已確認','抵達日']},
       {date:'10/15',dow:'Thu',city:'Sevilla',title:'王宮與主教座堂經典日',sub:'一天兩個大型室內點就夠',cats:['confirmed','rest'],map:googleDirections('Real Alcázar de Sevilla','Catedral de Sevilla',[],'walking'),items:[['09:30','Real Alcázar de Sevilla','已確認 · 約至 12:00'],['12:00','Santa Cruz 午餐＋慢走',''],['15:00','Catedral de Sevilla + Giralda','已確認 · 約至 16:45']],tags:['王宮已確認','主教座堂已確認','晚上不趕場']},
-      {date:'10/16',dow:'Fri',city:'Sevilla',title:'Córdoba 一日遊',sub:'以 Mezquita-Catedral 為核心',cats:['pending','flex'],map:googleDirections('Mezquita-Catedral de Córdoba','Puente Romano de Córdoba',[],'walking'),items:[['上午','Sevilla ↔ Córdoba','火車待確認'],['約10:00','Mezquita-Catedral de Córdoba',''],['之後','Judería · 午餐 · Puente Romano 河岸','']],tags:['火車待確認','不塞第二宮殿']},
+      {date:'10/16',dow:'Fri',city:'Sevilla',title:'Córdoba 一日遊',sub:'以 Mezquita-Catedral 為核心',cats:['confirmed','pending','flex'],map:googleDirections('Mezquita-Catedral de Córdoba','Puente Romano de Córdoba',[],'walking'),items:[['08:11','Sevilla-Santa Justa → Córdoba','iryo 06097 Inicial · 08:52 抵達 · 已確認'],['約10:00','Mezquita-Catedral de Córdoba','待購票'],['之後','Judería · 午餐 · Puente Romano 河岸',''],['傍晚','Córdoba → Sevilla','回程交通待確認']],tags:['去程 iryo 已確認','回程交通待確認','Mezquita 待購票']},
       {date:'10/17',dow:'Sat',city:'Sevilla',title:'西班牙廣場、河岸與 Triana',sub:'用一整天感受塞維亞',cats:['flex'],map:googleDirections('Plaza de España, Sevilla','Mercado de Triana, Sevilla',['Torre del Oro, Sevilla'],'walking'),items:[['上午','Plaza de España + Parque de María Luisa',''],['中午','Río Guadalquivir + Torre del Oro',''],['下午','Triana 市場、陶瓷、Calle Betis、晚餐','']],tags:['散步主題日']},
-      {date:'10/18',dow:'Sun',city:'Granada',title:'Sevilla → Granada',sub:'抵達山城，夕陽只是加分',cats:['pending','flex','rest'],map:googleSearch('Hotel Navas Granada'),items:[['上午','Sevilla 市中心自由散步＋退房',''],['移動','Sevilla → Granada','交通目前待確認'],['14:00+','Hotel Navas 入住',''],['午後','Centro → Carrera del Darro',''],['17:30','Albaicín + Mirador de San Nicolás','視抵達時間與體力決定']],tags:['城際交通待確認','夕陽彈性','累就取消']},
+      {date:'10/18',dow:'Sun',city:'Granada',title:'Sevilla → Granada',sub:'ALSA 直達已確認 · 抵達山城後放慢',cats:['confirmed','flex','rest'],map:googleDirections('Estación de Autobuses Plaza de Armas, Sevilla','Estación de Autobuses de Granada',[],'transit'),items:[['上午','Sevilla 市中心自由散步＋退房',''],['11:45','Sevilla Plaza de Armas → Granada Bus Station','ALSA 直達 · 14:45 抵達 · 已確認'],['14:00+','Hotel Navas 入住','抵達後前往市中心'],['午後','Centro → Carrera del Darro',''],['17:30','Albaicín + Mirador de San Nicolás','視抵達時間與體力決定']],tags:['ALSA 已確認','夕陽彈性','累就取消']},
       {date:'10/19',dow:'Mon',city:'Granada',title:'Alhambra 日',sub:'這天唯一的大型景點',cats:['confirmed','rest'],map:googleSearch('Alhambra Granada'),items:[['09:00','抵達 Alhambra 周邊',''],['09:30','Alhambra 行程開始','已確認'],['11:30','Palacios Nazaríes 指定入場','票面固定時間'],['傍晚','Calle Navas · Tapas + 輕鬆晚餐','']],tags:['Alhambra 已確認','11:30 不可移動','參觀後休息']},
       {date:'10/20',dow:'Tue',city:'Madrid',title:'Granada → Madrid',sub:'ALVIA 2087 Confort · 最新已購票狀態',cats:['confirmed','flex'],map:googleDirections('Granada Railway Station','Madrid Puerta de Atocha',[],'transit'),items:[['上午','Granada Cathedral / Capilla Real / Alcaicería','視出發時間縮短'],['11:04','Granada → Madrid-Puerta de Atocha','Renfe ALVIA 2087 Confort · 14:38 抵達 · 已購票'],['之後','Hotel Acta Madfor Check-in',''],['傍晚','Puerta del Sol → Plaza Mayor → Gran Vía','初次散步']],tags:['ALVIA 已確認','住宿已確認','傍晚散步'],note:'採最新 Reservation／Task 狀態，不沿用城市頁較舊的「待確認」。'},
       {date:'10/21',dow:'Wed',city:'Madrid',title:'馬德里王宮日',sub:'王宮是唯一大型固定點',cats:['pending','flex'],map:googleSearch('Palacio Real de Madrid'),items:[['10:00','Palacio Real + Catedral de la Almudena','目前待購票'],['下午','Madrid de los Austrias + La Latina','']],tags:['王宮待購','午後自由']},
