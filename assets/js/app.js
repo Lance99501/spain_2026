@@ -1,0 +1,82 @@
+import {api} from './api.js';
+import {initTripMap} from './map.js';
+import {createTicketController} from './ticket.js';
+import {initItinerary} from './itinerary.js';
+
+const googleSearch = query => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+
+function renderHotels(hotels){
+  const root=document.getElementById('hotels');
+  if(!root) return;
+  root.innerHTML=hotels.map(h=>`<article class="hotel"><div><b>${h.city} · ${h.name}</b><p>${h.address}<br>${h.room}</p></div><a target="_blank" rel="noopener" href="${googleSearch(h.name+' '+h.city)}">Maps ↗</a></article>`).join('');
+}
+
+function initCountdown(config){
+  const now=new Date();
+  const today=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate());
+  const dateUtc=value=>{
+    const [y,m,d]=value.split('-').map(Number);
+    return Date.UTC(y,m-1,d);
+  };
+
+  const depart=dateUtc(config.departDate);
+  const spainStart=dateUtc(config.spainStartDate);
+  const end=dateUtc(config.endDate);
+  const oneDay=86400000;
+  const c=document.getElementById('countdown');
+  const ct=document.getElementById('countdownText');
+  if(!c||!ct) return;
+
+  if(today<depart) c.textContent=Math.ceil((depart-today)/oneDay)+' DAYS';
+  else if(today===depart){c.textContent='DEPART';ct.textContent='今晚 23:50 從 TPE 出發';}
+  else if(today<=end){c.textContent='DAY '+(Math.floor((today-spainStart)/oneDay)+1);ct.textContent='西班牙旅行進行中';}
+  else{c.textContent='17 DAYS';ct.textContent='Spain 2026 · 完成';}
+}
+
+function initCityReturn(){
+  const btn=document.getElementById('cityReturnBtn');
+  const target=document.getElementById('citySwitchSection');
+  if(!btn||!target) return;
+
+  function update(){
+    const threshold=target.offsetTop+target.offsetHeight;
+    btn.classList.toggle('show',window.scrollY>threshold);
+  }
+
+  btn.addEventListener('click',()=>target.scrollIntoView({behavior:'smooth',block:'start'}));
+  window.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update);
+  update();
+}
+
+async function bootstrap(){
+  try{
+    const data=await api.getBootstrapData();
+
+    initTripMap({places:data.places,mapConfig:data.mapConfig});
+    renderHotels(data.hotels);
+
+    const ticketController=createTicketController({
+      encryptedTickets:data.encryptedTickets,
+      sessionMinutes:data.config.ticketSessionMinutes
+    });
+
+    initItinerary({
+      itinerary:data.itinerary,
+      annotations:data.annotations,
+      ticketController
+    });
+
+    initCountdown(data.config);
+    initCityReturn();
+  }catch(error){
+    console.error('Spain 2026 bootstrap failed',error);
+    const empty=document.getElementById('empty');
+    if(empty){
+      empty.hidden=false;
+      empty.textContent='行程資料載入失敗，請重新整理頁面。';
+    }
+  }
+}
+
+bootstrap();
