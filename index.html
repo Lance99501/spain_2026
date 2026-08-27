@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/today.css">
   <link rel="stylesheet" href="assets/css/map.css">
   <link rel="stylesheet" href="assets/css/itinerary.css">
   <link rel="stylesheet" href="assets/css/ticket.css">
@@ -31,6 +32,10 @@
         <span id="countdownText">距離 2026/10/08 出發</span>
       </aside>
     </header>
+
+    <section class="section today-section" id="todaySection" aria-labelledby="todayHeading" hidden>
+      <div id="todayRoot"></div>
+    </section>
 
     <section class="section" id="mapSection">
       <div class="section-head">

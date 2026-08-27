@@ -1,4 +1,4 @@
-function escapeHtml(text){
+export function escapeHtml(text){
   return String(text).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 }
 
@@ -7,7 +7,7 @@ function ticketButton(ticket){
   return `<button type="button" class="ticket-icon" data-ticket-id="${escapeHtml(ticket.id)}" title="開啟票券 QR" aria-label="開啟 ${escapeHtml(ticket.label)} 票券 QR">🎫</button>`;
 }
 
-function renderSegments(segments,item,placeById,ticketById,{allowTicket=true}={}){
+export function renderSegments(segments,item,placeById,ticketById,{allowTicket=true}={}){
   const ticket=item.ticketId?ticketById.get(item.ticketId):null;
   let anchoredTicketRendered=false;
 
@@ -162,6 +162,32 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
     render();
   }));
 
+  function showDay(dayId){
+    activeCity='all';
+    activeFilter='all';
+    expandState=false;
+
+    if(search) search.value='';
+    if(expandAll){
+      expandAll.textContent='展開全部';
+      expandAll.setAttribute('aria-pressed','false');
+    }
+
+    syncCityCards('all');
+    if(initialFilter) setFilterState(initialFilter);
+    render();
+
+    const day=document.querySelector(`.day[data-day-id="${CSS.escape(dayId)}"]`);
+    if(!day) return;
+
+    day.classList.add('open');
+    const button=day.querySelector('.day-main');
+    button?.setAttribute('aria-expanded','true');
+
+    day.scrollIntoView({behavior:'smooth',block:'start'});
+    setTimeout(()=>button?.focus({preventScroll:true}),300);
+  }
+
   render();
-  return {render};
+  return {render,showDay};
 }

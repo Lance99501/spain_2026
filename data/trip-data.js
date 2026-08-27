@@ -6,7 +6,8 @@ export const tripConfig = {
   "departDate": "2026-10-08",
   "spainStartDate": "2026-10-09",
   "endDate": "2026-10-25",
-  "ticketSessionMinutes": 5
+  "ticketSessionMinutes": 5,
+  "timeZone": "Europe/Madrid"
 };
 
 export const places = [

@@ -1,0 +1,109 @@
+.today-section[hidden]{display:none}
+.today-card{
+  position:relative;
+  overflow:hidden;
+  padding:18px;
+  border:1px solid var(--sage);
+  border-radius:var(--radius);
+  background:
+    radial-gradient(circle at 100% 0,rgba(120,146,129,.14),transparent 38%),
+    var(--card);
+  box-shadow:var(--shadow);
+}
+.today-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:18px;
+  align-items:start;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--line);
+}
+.today-kicker{
+  margin-bottom:3px;
+  color:var(--sage);
+  font-size:.7rem;
+  font-weight:800;
+  letter-spacing:.14em;
+}
+.today-head h2{
+  margin:0;
+  font:600 clamp(1.35rem,3vw,2rem)/1.2 Georgia,"Times New Roman",serif;
+  letter-spacing:-.01em;
+}
+.today-head p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:.78rem;
+}
+.today-date{
+  font:500 1.15rem/1 Georgia,"Times New Roman",serif;
+  color:var(--sage);
+  white-space:nowrap;
+}
+.today-timeline{
+  list-style:none;
+  margin:0;
+  padding:15px 0 2px;
+  display:grid;
+  gap:11px;
+}
+.today-timeline li{
+  display:grid;
+  grid-template-columns:64px minmax(0,1fr);
+  gap:11px;
+  align-items:start;
+}
+.today-timeline time{
+  padding-top:1px;
+  font:500 .86rem Georgia,"Times New Roman",serif;
+  color:var(--sage);
+}
+.today-timeline p{
+  margin:0;
+  font-size:.9rem;
+  font-weight:650;
+}
+.today-timeline small{
+  display:block;
+  margin-top:1px;
+  color:var(--muted);
+  font-size:.73rem;
+}
+.today-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:16px;
+}
+.today-action{
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--paper-2);
+  color:var(--ink);
+  text-decoration:none;
+  font-size:.76rem;
+  font-weight:800;
+}
+.today-action.primary{
+  border-color:var(--sage);
+  background:var(--sage-soft);
+  color:var(--ink);
+}
+
+@media (hover:hover) and (pointer:fine){
+  .today-action:hover{transform:translateY(-1px);border-color:var(--sage)}
+}
+@media (max-width:480px){
+  .today-card{padding:15px;border-radius:18px}
+  .today-head{gap:10px}
+  .today-date{font-size:1rem}
+  .today-timeline li{grid-template-columns:54px minmax(0,1fr);gap:8px}
+  .today-timeline p{font-size:.86rem}
+  .today-actions{display:grid;grid-template-columns:1fr 1fr}
+  .today-action{width:100%;padding-left:8px;padding-right:8px}
+}

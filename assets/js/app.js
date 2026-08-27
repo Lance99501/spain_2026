@@ -2,6 +2,7 @@ import {api} from './api.js';
 import {initTripMap} from './map.js';
 import {createTicketController} from './ticket.js';
 import {initItinerary} from './itinerary.js';
+import {initTodayMode} from './today.js';
 
 const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 
@@ -97,11 +98,20 @@ async function bootstrap(){
       sessionMinutes:data.config.ticketSessionMinutes
     });
 
-    initItinerary({
+    const itineraryController=initItinerary({
       itinerary:data.itinerary,
       places:data.places,
       tickets:data.tickets,
       ticketController
+    });
+
+    initTodayMode({
+      itinerary:data.itinerary,
+      places:data.places,
+      tickets:data.tickets,
+      config:data.config,
+      ticketController,
+      itineraryController
     });
 
     initCountdown(data.config);
