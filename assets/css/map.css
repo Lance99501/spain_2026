@@ -1,0 +1,43 @@
+.map-panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.map-toolbar{padding:12px;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:rgba(255,254,251,.94)}
+.map-chip{min-height:40px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);white-space:nowrap}
+.map-chip.active{background:var(--sage-soft);border-color:var(--sage);color:var(--ink);font-weight:700}
+.map-meta{margin-left:auto;color:var(--muted);font-size:.72rem}
+#tripMap{height:clamp(360px,58vw,600px);width:100%;background:#e9ede7}
+.map-note{padding:10px 14px;background:var(--paper-2);border-top:1px solid var(--line);font-size:.72rem;color:var(--muted)}
+.leaflet-control-attribution{font-size:10px!important}
+.leaflet-popup-content-wrapper{border-radius:16px;box-shadow:0 12px 30px rgba(40,53,45,.18)}
+.leaflet-popup-content{margin:14px 16px;min-width:190px}
+.popup-kicker{font-size:.68rem;color:#7e887f;letter-spacing:.05em;margin-bottom:3px}
+.popup-title{font-weight:800;font-size:.95rem;margin-bottom:4px}
+.popup-sub{font-size:.76rem;color:#707a72;margin-bottom:9px}
+.popup-link{display:inline-flex;align-items:center;gap:5px;text-decoration:none;background:#e7eee8;border:1px solid #ccd9cf;border-radius:999px;padding:6px 9px;font-size:.74rem;font-weight:700;color:#34443a}
+.jp-marker{width:30px;height:30px;border-radius:50% 50% 50% 8px;transform:rotate(-45deg);display:grid;place-items:center;border:2px solid rgba(255,255,255,.95);box-shadow:0 4px 10px rgba(30,40,34,.2)}
+.jp-marker span{transform:rotate(45deg);font-size:11px;font-weight:900;line-height:1;color:#fff}
+.m-confirmed{background:#66836f}
+.m-pending{background:#b28b5d}
+.m-hotel{background:#667f88}
+.m-flex{background:#8b8e88}
+.m-transport{background:#9d6f63}
+.legend{display:flex;gap:8px;flex-wrap:wrap}
+.legend span{font-size:.7rem;color:var(--muted)}
+.legend b{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+
+@media (hover:hover) and (pointer:fine){
+  .map-chip:hover{transform:translateY(-1px);border-color:var(--sage)}
+}
+@media (max-width:760px){
+  .map-meta{width:100%;margin-left:0}
+  #tripMap{height:420px}
+}
+@media (max-width:480px){
+  .map-panel{border-radius:18px}
+  .map-toolbar{padding:10px;gap:7px}
+  .map-chip{min-height:40px;padding:7px 11px}
+  .legend{gap:6px 10px}
+  #tripMap{height:380px}
+  .map-note{padding:9px 11px;font-size:.68rem}
+}
+@media (max-width:340px){
+  .map-chip{padding-left:10px;padding-right:10px}
+}

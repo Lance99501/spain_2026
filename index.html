@@ -7,10 +7,15 @@
   <title>Spain 2026｜西班牙 17 天行程</title>
   <link rel="preconnect" href="https://tile.openstreetmap.org">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/map.css">
+  <link rel="stylesheet" href="assets/css/itinerary.css">
+  <link rel="stylesheet" href="assets/css/ticket.css">
   
 </head>
 <body>
+  <a class="skip-link" href="#itinerary">跳到每日行程</a>
   <main class="shell">
     <header class="hero">
       <div>
@@ -33,14 +38,14 @@
         <p>住宿＋主要景點＋城際交通，一張圖快速掌握。</p>
       </div>
       <div class="map-panel">
-        <div class="map-toolbar" id="mapToolbar">
-          <button type="button" class="map-chip active" data-mapcity="all">全旅程</button>
-          <button type="button" class="map-chip" data-mapcity="Barcelona">Barcelona</button>
-          <button type="button" class="map-chip" data-mapcity="Sevilla">Sevilla</button>
-          <button type="button" class="map-chip" data-mapcity="Cordoba">Córdoba</button>
-          <button type="button" class="map-chip" data-mapcity="Granada">Granada</button>
-          <button type="button" class="map-chip" data-mapcity="Madrid">Madrid</button>
-          <button type="button" class="map-chip" data-mapcity="Segovia">Segovia</button>
+        <div class="map-toolbar" id="mapToolbar" role="group" aria-label="地圖城市篩選">
+          <button type="button" class="map-chip active" data-mapcity="all" aria-pressed="true">全旅程</button>
+          <button type="button" class="map-chip" aria-pressed="false" data-mapcity="Barcelona">Barcelona</button>
+          <button type="button" class="map-chip" aria-pressed="false" data-mapcity="Sevilla">Sevilla</button>
+          <button type="button" class="map-chip" aria-pressed="false" data-mapcity="Cordoba">Córdoba</button>
+          <button type="button" class="map-chip" aria-pressed="false" data-mapcity="Granada">Granada</button>
+          <button type="button" class="map-chip" aria-pressed="false" data-mapcity="Madrid">Madrid</button>
+          <button type="button" class="map-chip" aria-pressed="false" data-mapcity="Segovia">Segovia</button>
           <div class="map-meta">
             <span class="legend">
               <span><b style="background:#66836f"></b>已確認</span>
@@ -51,18 +56,18 @@
             </span>
           </div>
         </div>
-        <div id="tripMap" role="application" aria-label="西班牙旅行互動地圖"></div>
+        <div id="tripMap" role="region" aria-label="西班牙旅行互動地圖"></div>
         <div class="map-note">地圖底圖使用 OpenStreetMap。跨城市的連線只表示旅行順序，不代表實際鐵道路線；點任一標記可直接開 Google Maps。</div>
       </div>
     </section>
 
     <section class="section" id="citySwitchSection">
       <div class="section-head"><h2>城市快速切換</h2><p>點城市只篩選下方每日行程，不影響上方旅程地圖。</p></div>
-      <div class="city-grid" id="cityGrid">
-        <button type="button" class="city-card" data-city="Barcelona"><img src="assets/images/barcelona.jpg" alt="Barcelona · Park Güell 城市景觀"><span class="city-copy"><b>Barcelona</b><small>10/09–10/14 · + Sitges</small></span></button>
-        <button type="button" class="city-card" data-city="Sevilla"><img src="assets/images/sevilla.jpg" alt="Sevilla · Plaza de España 城市景觀"><span class="city-copy"><b>Sevilla</b><small>10/14–10/18 · + Córdoba</small></span></button>
-        <button type="button" class="city-card" data-city="Granada"><img src="assets/images/granada.jpg" alt="Granada · Alhambra 城市景觀"><span class="city-copy"><b>Granada</b><small>10/18–10/20</small></span></button>
-        <button type="button" class="city-card" data-city="Madrid"><img src="assets/images/madrid.jpg" alt="Madrid · Gran Vía 城市景觀"><span class="city-copy"><b>Madrid</b><small>10/20–10/25 · + Segovia</small></span></button>
+      <div class="city-grid" id="cityGrid" role="group" aria-label="城市快速切換">
+        <button type="button" class="city-card" aria-pressed="false" data-city="Barcelona"><img src="assets/images/barcelona.jpg" alt="Barcelona · Park Güell 城市景觀"><span class="city-copy"><b>Barcelona</b><small>10/09–10/14 · + Sitges</small></span></button>
+        <button type="button" class="city-card" aria-pressed="false" data-city="Sevilla"><img src="assets/images/sevilla.jpg" alt="Sevilla · Plaza de España 城市景觀"><span class="city-copy"><b>Sevilla</b><small>10/14–10/18 · + Córdoba</small></span></button>
+        <button type="button" class="city-card" aria-pressed="false" data-city="Granada"><img src="assets/images/granada.jpg" alt="Granada · Alhambra 城市景觀"><span class="city-copy"><b>Granada</b><small>10/18–10/20</small></span></button>
+        <button type="button" class="city-card" aria-pressed="false" data-city="Madrid"><img src="assets/images/madrid.jpg" alt="Madrid · Gran Vía 城市景觀"><span class="city-copy"><b>Madrid</b><small>10/20–10/25 · + Segovia</small></span></button>
       </div>
     </section>
 
@@ -70,14 +75,14 @@
       <div class="section-head"><h2>每日行程｜Daily Itinerary</h2><p>每日標題旁的「Maps」會直接開核心景點或當日步行路線。</p></div>
       <div class="tools">
         <input id="search" class="search" type="search" placeholder="找日期、景點、城市…" aria-label="搜尋行程">
-        <button type="button" class="expand-all" id="expandAll">展開全部</button>
+        <button type="button" class="expand-all" id="expandAll" aria-pressed="false">展開全部</button>
       </div>
-      <div class="filter-row" id="filters">
-        <button type="button" class="filter active" data-filter="all">全部</button>
-        <button type="button" class="filter" data-filter="confirmed">✓ 已確認</button>
-        <button type="button" class="filter" data-filter="pending">待確認</button>
-        <button type="button" class="filter" data-filter="flex">彈性</button>
-        <button type="button" class="filter" data-filter="rest">休息／緩衝</button>
+      <div class="filter-row" id="filters" role="group" aria-label="行程狀態篩選">
+        <button type="button" class="filter active" data-filter="all" aria-pressed="true">全部</button>
+        <button type="button" class="filter" aria-pressed="false" data-filter="confirmed">✓ 已確認</button>
+        <button type="button" class="filter" aria-pressed="false" data-filter="pending">待確認</button>
+        <button type="button" class="filter" aria-pressed="false" data-filter="flex">彈性</button>
+        <button type="button" class="filter" aria-pressed="false" data-filter="rest">休息／緩衝</button>
       </div>
       <div class="days" id="days"></div>
       <div class="empty" id="empty" hidden>找不到符合條件的行程。</div>
@@ -94,7 +99,7 @@
     <button type="button" class="city-return" id="cityReturnBtn" aria-label="回到城市快速切換" title="回到城市快速切換"><span aria-hidden="true">↑</span></button>
   </main>
 
-  <div class="ticket-modal" id="ticketModal" role="dialog" aria-modal="true" aria-labelledby="ticketModalTitle">
+  <div class="ticket-modal" id="ticketModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="ticketModalTitle" aria-describedby="ticketModalSub">
     <div class="ticket-sheet">
       <div class="ticket-head">
         <div><h3 id="ticketModalTitle">開啟票券</h3><p id="ticketModalSub">輸入老婆生日後顯示 QR Code</p></div>

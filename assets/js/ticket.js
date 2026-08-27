@@ -47,6 +47,7 @@ export function createTicketController({tickets,encryptedTickets,sessionMinutes=
   const SESSION_MS=sessionMinutes*60*1000;
 
   let activeTicket=null;
+  let returnFocusElement=null;
 
   function getSession(){
     try{
@@ -120,8 +121,10 @@ export function createTicketController({tickets,encryptedTickets,sessionMinutes=
       return;
     }
 
+    returnFocusElement=document.activeElement instanceof HTMLElement?document.activeElement:null;
     reset();
     ticketModal?.classList.add('open');
+    ticketModal?.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
 
     const session=getSession();
@@ -132,6 +135,7 @@ export function createTicketController({tickets,encryptedTickets,sessionMinutes=
 
       try{
         await showResult(session.password);
+        setTimeout(()=>ticketOpenLink?.focus(),0);
         return;
       }catch{
         clearSession();
@@ -145,8 +149,14 @@ export function createTicketController({tickets,encryptedTickets,sessionMinutes=
 
   function close(){
     ticketModal?.classList.remove('open');
+    ticketModal?.setAttribute('aria-hidden','true');
     document.body.style.overflow='';
     reset();
+
+    if(returnFocusElement?.isConnected){
+      returnFocusElement.focus();
+    }
+    returnFocusElement=null;
   }
 
   ticketClose?.addEventListener('click',close);
@@ -155,7 +165,35 @@ export function createTicketController({tickets,encryptedTickets,sessionMinutes=
   });
 
   document.addEventListener('keydown',event=>{
-    if(event.key==='Escape'&&ticketModal?.classList.contains('open')) close();
+    if(!ticketModal?.classList.contains('open')) return;
+
+    if(event.key==='Escape'){
+      event.preventDefault();
+      close();
+      return;
+    }
+
+    if(event.key!=='Tab') return;
+
+    const focusable=[...ticketModal.querySelectorAll(
+      'button:not([disabled]), input:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+    )].filter(element=>element.offsetParent!==null);
+
+    if(!focusable.length){
+      event.preventDefault();
+      return;
+    }
+
+    const first=focusable[0];
+    const last=focusable[focusable.length-1];
+
+    if(event.shiftKey&&document.activeElement===first){
+      event.preventDefault();
+      last.focus();
+    }else if(!event.shiftKey&&document.activeElement===last){
+      event.preventDefault();
+      first.focus();
+    }
   });
 
   ticketUnlockForm?.addEventListener('submit',async event=>{
@@ -166,6 +204,7 @@ export function createTicketController({tickets,encryptedTickets,sessionMinutes=
       const password=ticketPassword.value;
       await showResult(password);
       saveSession(password);
+      setTimeout(()=>ticketOpenLink?.focus(),0);
 
       if(ticketModalSub){
         ticketModalSub.textContent=activeTicket.label+`｜已解鎖，${sessionMinutes} 分鐘內免再輸入`;

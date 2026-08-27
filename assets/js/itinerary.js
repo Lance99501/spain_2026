@@ -116,24 +116,42 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
     ticketController.open(btn.dataset.ticketId);
   });
 
-  document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{
+  const filterButtons=[...document.querySelectorAll('[data-filter]')];
+
+  function setFilterState(activeButton){
+    filterButtons.forEach(button=>{
+      const selected=button===activeButton;
+      button.classList.toggle('active',selected);
+      button.setAttribute('aria-pressed',String(selected));
+    });
+  }
+
+  const initialFilter=filterButtons.find(button=>button.dataset.filter==='all');
+  if(initialFilter) setFilterState(initialFilter);
+
+  filterButtons.forEach(btn=>btn.addEventListener('click',()=>{
     activeFilter=btn.dataset.filter;
-    document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===btn));
+    setFilterState(btn);
     render();
   }));
 
   search?.addEventListener('input',render);
 
+  if(expandAll) expandAll.setAttribute('aria-pressed','false');
+
   expandAll?.addEventListener('click',()=>{
     expandState=!expandState;
     expandAll.textContent=expandState?'收合全部':'展開全部';
+    expandAll.setAttribute('aria-pressed',String(expandState));
     render();
   });
 
   function syncCityCards(city){
     const mainCity=city==='Cordoba'?'Sevilla':city==='Segovia'?'Madrid':city==='Sitges'?'Barcelona':city;
     document.querySelectorAll('.city-card[data-city]').forEach(card=>{
-      card.classList.toggle('active',mainCity!=='all'&&card.dataset.city===mainCity);
+      const selected=mainCity!=='all'&&card.dataset.city===mainCity;
+      card.classList.toggle('active',selected);
+      card.setAttribute('aria-pressed',String(selected));
     });
   }
 

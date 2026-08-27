@@ -82,8 +82,20 @@ export function initTripMap({places,mapConfig}){
   drawAllRoutes();
   fitPlaces('all');
 
-  document.querySelectorAll('[data-mapcity]').forEach(btn=>btn.addEventListener('click',()=>{
-    document.querySelectorAll('[data-mapcity]').forEach(x=>x.classList.toggle('active',x===btn));
+  const mapButtons=[...document.querySelectorAll('[data-mapcity]')];
+  function setMapButtonState(activeButton){
+    mapButtons.forEach(button=>{
+      const selected=button===activeButton;
+      button.classList.toggle('active',selected);
+      button.setAttribute('aria-pressed',String(selected));
+    });
+  }
+
+  const initialButton=mapButtons.find(button=>button.dataset.mapcity==='all');
+  if(initialButton) setMapButtonState(initialButton);
+
+  mapButtons.forEach(btn=>btn.addEventListener('click',()=>{
+    setMapButtonState(btn);
     fitPlaces(btn.dataset.mapcity);
   }));
 
