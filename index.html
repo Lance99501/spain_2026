@@ -109,7 +109,7 @@
     .arrow{color:var(--muted);transition:.2s;text-align:center}.day.open .arrow{transform:rotate(180deg)}
     .day-body{display:none;padding:0 14px 14px 86px}.day.open .day-body{display:block}
     .timeline{list-style:none;padding:0;margin:0;display:grid;gap:9px}.timeline li{display:grid;grid-template-columns:68px minmax(0,1fr);gap:9px}.timeline time{font:500 .83rem Georgia,serif;color:var(--sage)}.timeline p{margin:0;font-size:.86rem}.timeline em{display:block;font-style:normal;color:var(--muted);font-size:.74rem}
-    .unesco-crown,.ticket-icon{display:inline;white-space:nowrap;vertical-align:.06em;line-height:1;cursor:help}.unesco-crown{color:#a88745;font-size:.8em;filter:saturate(.85)}.ticket-icon{font-size:.82em}
+    .poi-annotated{white-space:nowrap}.unesco-crown,.ticket-icon{display:inline-block;margin-left:4px;vertical-align:.06em;line-height:1;cursor:help}.unesco-crown{color:#a88745;font-size:.8em;filter:saturate(.85)}.ticket-icon{font-size:.82em}
     .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}.tag{font-size:.68rem;border-radius:999px;padding:3px 8px}.confirmed{background:var(--sage-soft)}.pending{background:var(--sand)}.flex{background:var(--blue-soft)}.rest{background:var(--rose-soft)}
     .day-note{margin-top:10px;border-left:3px solid var(--sage);background:var(--paper-2);border-radius:0 10px 10px 0;padding:8px 10px;color:var(--muted);font-size:.74rem}
     .empty{padding:28px;text-align:center;color:var(--muted)}
@@ -195,7 +195,7 @@
       </div>
       <aside class="hero-card" aria-live="polite">
         <b id="countdown">—</b>
-        <span id="countdownText">距離 2026/10/09 出發</span>
+        <span id="countdownText">距離 2026/10/08 出發</span>
       </aside>
     </header>
 
@@ -342,6 +342,7 @@
     ];
 
     const itinerary = [
+      {date:'10/08',dow:'Thu',city:'Barcelona',title:'台灣出發｜前往 Barcelona',sub:'Emirates 夜班機 · TPE → DXB → BCN',cats:['confirmed','rest'],map:googleSearch('Taiwan Taoyuan International Airport'),items:[['23:50','TPE → DXB｜EK367','Emirates · 已確認'],['轉機','DXB → Barcelona BCN｜EK185','接續航段 · 10/09 13:25 抵達']],tags:['航班已確認','出發日','夜班機']},
       {date:'10/09',dow:'Fri',city:'Barcelona',title:'抵達巴塞隆納',sub:'先入住、散步、吃飯，適應節奏',cats:['rest'],map:googleSearch('Hotel Royal Passeig de Gracia Barcelona'),items:[['13:25','抵達 Barcelona Airport',''],['15:00+','Hotel Royal Passeig de Gracia 入住','Passeig de Gràcia / Eixample'],['17:00','格拉西亞大道散步＋晚餐','第一天不排主要景點']],tags:['休息優先']},
       {date:'10/10',dow:'Sat',city:'Barcelona',title:'聖家堂＋Sant Pau',sub:'現代主義東側線 · 中午慢走',cats:['confirmed','pending','rest'],map:googleDirections('Sagrada Família, Barcelona','Recinte Modernista de Sant Pau, Barcelona',['Avinguda de Gaudí, Barcelona'],'walking'),items:[['09:15','聖家堂＋誕生立面塔樓','已確認'],['11:30','Avinguda de Gaudí 慢走＋午餐＋咖啡',''],['14:00','Sant Pau 現代主義園區','目前待購票'],['之後','回飯店休息','Montjuïc 視體力加碼']],tags:['聖家堂已確認','Sant Pau 待購','保留休息'],note:'Sant Pau 後不硬走回飯店；白天只抓兩個主要室內點。'},
       {date:'10/11',dow:'Sun',city:'Barcelona',title:'Park Güell → Gràcia → Casa Batlló',sub:'上山靠車、下山靠腳',cats:['confirmed','flex'],map:googleDirections('Park Güell, Barcelona','Casa Batlló, Barcelona',['Casa Vicens, Barcelona','Casa Milà, Barcelona'],'walking'),items:[['09:30','Park Güell','已確認'],['11:30','Gràcia 午餐、咖啡、散步','Casa Vicens 外觀順路看'],['15:45','Casa Batlló · Blue APP + Dragon Rooftop','已確認'],['順路','Casa Milà / Casa Amatller 外觀','彈性']],tags:['Park Güell 已確認','Casa Batlló 已確認','外觀彈性']},
@@ -446,75 +447,81 @@
       return 'flex';
     }
 
-    const UNESCO_PATTERNS = [
-      /聖家堂|Sagrada Fam[ií]lia/i,
-      /Sant Pau/i,
-      /Park Güell/i,
-      /Casa Batll[oó]/i,
-      /Casa Mil[aà]|La Pedrera/i,
-      /Casa Vicens/i,
-      /Real Alc[aá]zar de Sevilla/i,
-      /Catedral de Sevilla|Giralda/i,
-      /Mezquita-Catedral de C[oó]rdoba/i,
-      /Puente Romano/i,
-      /Alhambra|Palacios Nazar[ií]es/i,
-      /Albaic[ií]n/i,
-      /Museo del Prado/i,
-      /Parque del Retiro/i,
-      /Acueducto\s*→\s*Catedral\s*→\s*午餐\s*→\s*Alc[aá]zar/i
-    ];
+    // Icons attach to the exact attraction/transport name, not the whole itinerary line.
+    // World Heritage terms below are the actual listed property/component shown in this itinerary.
+    const ITEM_ANNOTATIONS = [
+      {term:'Catedral de Sevilla + Giralda',heritage:true,ticket:true},
+      {term:'Mezquita-Catedral de Córdoba',heritage:true,ticket:false},
+      {term:'Real Alcázar de Sevilla',heritage:true,ticket:true},
+      {term:'Palacios Nazaríes',heritage:true,ticket:true},
+      {term:'Parque del Retiro',heritage:true,ticket:false},
+      {term:'Museo del Prado',heritage:true,ticket:false},
+      {term:'Casa Batlló',heritage:true,ticket:true},
+      {term:'Casa Vicens',heritage:true,ticket:false},
+      {term:'Casa Milà',heritage:true,ticket:false},
+      {term:'Park Güell',heritage:true,ticket:true},
+      {term:'Sant Pau',heritage:true,ticket:false},
+      {term:'聖家堂',heritage:true,ticket:true},
+      {term:'Albaicín',heritage:true,ticket:false},
+      {term:'Alhambra',heritage:true,ticket:true},
+      {term:'Puente Romano',heritage:true,ticket:false},
 
-    // Confirmed tickets from Notion Reservations & Tickets.
-    // Hotels are intentionally excluded; inbound Barcelona is an arrival event, so no "open ticket" reminder is shown there.
-    const TICKET_PATTERNS = [
-      /聖家堂＋誕生立面塔樓/i,
-      /^Park Güell$/i,
-      /Casa Batll[oó]/i,
-      /Barcelona-Sants\s*→\s*Sevilla-Santa Justa/i,
-      /Real Alc[aá]zar de Sevilla/i,
-      /Catedral de Sevilla\s*\+\s*Giralda/i,
-      /Sevilla-Santa Justa\s*→\s*C[oó]rdoba/i,
-      /Sevilla Plaza de Armas\s*→\s*Granada Bus Station/i,
-      /Alhambra 行程開始/i,
-      /Palacios Nazar[ií]es 指定入場/i,
-      /Granada\s*→\s*Madrid-Puerta de Atocha/i,
-      /EK144 Madrid 起飛/i
-    ];
+      // Segovia's UNESCO property is the Old Town and its Aqueduct.
+      {term:'Acueducto',heritage:true,ticket:false},
+      {term:'Catedral',heritage:true,ticket:false},
+      {term:'Alcázar',heritage:true,ticket:false},
 
-    function directText(el){
-      return [...el.childNodes]
-        .filter(n=>n.nodeType===Node.TEXT_NODE)
-        .map(n=>n.textContent||'').join(' ').trim();
+      // Confirmed transport / flight tickets from Notion Reservations & Tickets.
+      {term:'Barcelona-Sants → Sevilla-Santa Justa',heritage:false,ticket:true},
+      {term:'Sevilla-Santa Justa → Córdoba',heritage:false,ticket:true},
+      {term:'Sevilla Plaza de Armas → Granada Bus Station',heritage:false,ticket:true},
+      {term:'Granada → Madrid-Puerta de Atocha',heritage:false,ticket:true},
+      {term:'TPE → DXB｜EK367',heritage:false,ticket:true},
+      {term:'DXB → Barcelona BCN｜EK185',heritage:false,ticket:true},
+      {term:'EK144 Madrid 起飛',heritage:false,ticket:true}
+    ].sort((a,b)=>b.term.length-a.term.length);
+
+    function annotationIcons(a){
+      let html='';
+      if(a.heritage) html+='<span class="unesco-crown" title="UNESCO 世界文化遺產" aria-label="UNESCO 世界文化遺產">♛</span>';
+      if(a.ticket) html+='<span class="ticket-icon" title="已購票｜出發或入場前開啟票券" aria-label="已購票｜出發或入場前開啟票券">🎫</span>';
+      return html;
     }
 
-    function addInlineIcon(el, className, glyph, title, beforeNode=null){
-      if(el.querySelector(':scope > .'+className)) return;
-      const icon=document.createElement('span');
-      icon.className=className;
-      // NBSP keeps the icon attached to the final word instead of wrapping onto a line by itself.
-      icon.textContent='\u00A0'+glyph;
-      icon.title=title;
-      icon.setAttribute('aria-label',title);
-      if(beforeNode) el.insertBefore(icon,beforeNode);
-      else el.appendChild(icon);
-    }
+    function decorateItemText(text){
+      const found=[];
+      ITEM_ANNOTATIONS.forEach(a=>{
+        let from=0,idx;
+        while((idx=text.indexOf(a.term,from))!==-1){
+          found.push({start:idx,end:idx+a.term.length,a});
+          from=idx+a.term.length;
+        }
+      });
+      found.sort((x,y)=>x.start-y.start || (y.end-y.start)-(x.end-x.start));
 
-    function markItineraryIcons(root=document){
-      // UNESCO: mark the exact text line where the listed property/component appears.
-      root.querySelectorAll('.timeline p, .timeline em').forEach(el=>{
-        const label=directText(el);
-        if(!label || !UNESCO_PATTERNS.some(rx=>rx.test(label))) return;
-        const before=el.matches('p') ? el.querySelector(':scope > em') : null;
-        addInlineIcon(el,'unesco-crown','♛','UNESCO 世界文化遺產',before);
+      const chosen=[];
+      let cursor=-1;
+      found.forEach(m=>{
+        if(m.start>=cursor){
+          chosen.push(m);
+          cursor=m.end;
+        }
       });
 
-      // Ticket: only actual confirmed attraction/transport tickets from the private reservation backend.
-      root.querySelectorAll('.timeline p').forEach(p=>{
-        const label=directText(p);
-        if(!label || !TICKET_PATTERNS.some(rx=>rx.test(label))) return;
-        const before=p.querySelector(':scope > em');
-        addInlineIcon(p,'ticket-icon','🎫','已購票｜出發或入場前開啟票券',before);
+      let out='',pos=0;
+      chosen.forEach(m=>{
+        out+=text.slice(pos,m.start);
+        const icons=annotationIcons(m.a);
+        if(m.a.heritage){
+          // Keep the crown attached to the actual heritage name only.
+          out+=`<span class="poi-annotated">${text.slice(m.start,m.end)}${icons}</span>`;
+        }else{
+          // Ticket-only routes may be long, so don't force the whole route onto one line.
+          out+=text.slice(m.start,m.end)+icons;
+        }
+        pos=m.end;
       });
+      return out+text.slice(pos);
     }
 
     function renderDays(){
@@ -538,14 +545,13 @@
             <a class="day-map" target="_blank" rel="noopener" href="${d.map}" aria-label="在 Google Maps 開啟 ${d.title}"><span class="map-icon">⌖</span><span class="map-label">Maps ↗</span></a>
           </div>
           <div class="day-body" id="${bodyId}">
-            <ul class="timeline">${d.items.map(x=>`<li><time>${x[0]}</time><p>${x[1]}${x[2]?`<em>${x[2]}</em>`:''}</p></li>`).join('')}</ul>
+            <ul class="timeline">${d.items.map(x=>`<li><time>${x[0]}</time><p>${decorateItemText(x[1])}${x[2]?`<em>${decorateItemText(x[2])}</em>`:''}</p></li>`).join('')}</ul>
             <div class="tags">${d.tags.map(t=>`<span class="tag ${tagClass(t)}">${t}</span>`).join('')}</div>
             ${d.note?`<div class="day-note">${d.note}</div>`:''}
           </div>
         </article>`;
       }).join('');
       empty.hidden = rows.length>0;
-      markItineraryIcons(daysRoot);
       daysRoot.querySelectorAll('.day').forEach(day=>{
         const btn=day.querySelector('.day-main');
         btn.addEventListener('click',()=>{
@@ -587,10 +593,11 @@
     // ---- Countdown ----
     const now=new Date();
     const today=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate());
-    const start=Date.UTC(2026,9,9),end=Date.UTC(2026,9,25),oneDay=86400000;
+    const depart=Date.UTC(2026,9,8),spainStart=Date.UTC(2026,9,9),end=Date.UTC(2026,9,25),oneDay=86400000;
     const c=document.getElementById('countdown'),ct=document.getElementById('countdownText');
-    if(today<start){c.textContent=Math.ceil((start-today)/oneDay)+' DAYS';}
-    else if(today<=end){c.textContent='DAY '+(Math.floor((today-start)/oneDay)+1);ct.textContent='西班牙旅行進行中';}
+    if(today<depart){c.textContent=Math.ceil((depart-today)/oneDay)+' DAYS';}
+    else if(today===depart){c.textContent='DEPART';ct.textContent='今晚 23:50 從 TPE 出發';}
+    else if(today<=end){c.textContent='DAY '+(Math.floor((today-spainStart)/oneDay)+1);ct.textContent='西班牙旅行進行中';}
     else{c.textContent='17 DAYS';ct.textContent='Spain 2026 · 完成';}
 
     renderDays();
