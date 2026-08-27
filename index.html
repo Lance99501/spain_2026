@@ -288,11 +288,11 @@
   <div class="ticket-modal" id="ticketModal" role="dialog" aria-modal="true" aria-labelledby="ticketModalTitle">
     <div class="ticket-sheet">
       <div class="ticket-head">
-        <div><h3 id="ticketModalTitle">開啟票券</h3><p id="ticketModalSub">輸入旅行密碼後顯示 QR Code</p></div>
+        <div><h3 id="ticketModalTitle">開啟票券</h3><p id="ticketModalSub">輸入老婆生日後顯示 QR Code</p></div>
         <button type="button" class="ticket-close" id="ticketClose" aria-label="關閉">×</button>
       </div>
       <form class="ticket-form" id="ticketUnlockForm">
-        <input class="ticket-password" id="ticketPassword" type="password" autocomplete="current-password" placeholder="旅行密碼" aria-label="旅行密碼">
+        <input class="ticket-password" id="ticketPassword" type="password" autocomplete="current-password" placeholder="老婆生日" aria-label="老婆生日">
         <button class="ticket-unlock" type="submit">解鎖票券</button>
         <p class="ticket-error" id="ticketError" aria-live="polite"></p>
       </form>
@@ -515,7 +515,7 @@
       {rx:/EK144 Madrid 起飛/i,id:'emirates-return',label:'Emirates｜Madrid → Dubai → Taipei'}
     ];
 
-    const ENCRYPTED_TICKETS = {"emirates-outbound":{"salt":"otvg6/drMi3LkxeFEFP0Lw==","iv":"0wAlE2Qm3kMyNJs4","ct":"WfwV3F7evMzvEXRcH8tuX+nk72P4bAXtArRr2xlKq0DMYyJsvrFmm0aezZJCoU36g5kwodEg9/AeFgnPo/qxESVkfvZtfLaItXtZ9Vyqqggu8miOzh0="},"sagrada":{"salt":"mR0cX8uj7ASOxce9ji+w4Q==","iv":"NTe7Nr036Yswqx+K","ct":"r17lhjhVvpt+WawlBofKmwtjvKuN1/7PhSb8sFEmDp8oRzG7ytUsFdVJ5p9Bxe/frNeGa1QW9S9p/nLKyAi6i+5ewr+qFfLHt6zRvA=="},"park-guell":{"salt":"DdbzCU3B56f2Q91Kg8A+fA==","iv":"SJZCKPpLh7GrzFqe","ct":"+1yn/AelCSbxoX/NwCiB7VZ48i3DL/gWbutz1Foq+OS8ylXtxocy5rmjVSlfzDRTaHjlLySQ8BYWbdX+FUVMjPeF+OtMXbbqxKcnGH1Buw=="},"casa-batllo":{"salt":"2++TWdHJtc9AYEeInA5R6g==","iv":"HQfS4tG+1Vz43qDs","ct":"y0ZwLZiW9xOjW2q81ftCDDr+eHFPDKPcoE+NVJ2JDThQ/OVO1AUP5DJJ5IKKQ12breOYqucHnwi/q9UsX/zSP3hxPu/wi6GKKVkVbj+jnVs="},"ave-bcn-sevilla":{"salt":"lgLQQEJTyDr2J+PlhjRbIg==","iv":"D3roojJK4iFjGaFn","ct":"NmLQvidAaJyO2rez/LAQQvRxbATfsh/LCP6/ALJRAtTSkygdo0NvgeXhBosTrPI9DxBHCpACbyIHTMvrc0UvMefqeZXDBKtNuXx22+U63juDi5zz"},"sevilla-alcazar":{"salt":"BKxlzVMRFXHsQa7j7XKmlw==","iv":"PQ4gPDqdBUdTOEqU","ct":"AYkuBkBpsgWJwcoJNuRtVGSvJ5d/uWLUfe1gtHmc/TUbiGX+cixj5oz7SkWqpGGRPPhMoc+CfVtiXenUB8FVf7c4xchFGN6wkUskLXfjkpeDGPSe"},"sevilla-catedral":{"salt":"4FLiNc3cdnA738UQvs3JLA==","iv":"nxBMnzLDI5HLGzu+","ct":"hHjt9Hi+nbtcGqnr6ECrOwpdCONcgzleQfM3ecQ5OibTDwgGdLpbYxMOpUZPXFTq62dTcmRXhJ+dVtQpwYliPPFq0QvYnpu/qllzWd0USf0ZyiaAkQ=="},"iryo-cordoba":{"salt":"0FmH/KymKi9qyL/3yPVexw==","iv":"VgwXdUywhV6UIiNU","ct":"Pq1Js7RH1IdraLRPyTOjescHGv/m2P843239St6jgm8X9fNl4kcHtzd4xSx2oX9qHUmy3jUpUdHMTPOtwaD6/xARQ3yUmEOE1/TFjD9XCLr0"},"alsa-granada":{"salt":"8S+pNx+ImcW25oB3FYvPdQ==","iv":"bS87PNk6sRNiIC+L","ct":"Nj3G428PpaPMTqz894nCK57XZZCDl0BHokN1+Z4ZsnWlhE/A1pwNAo/jDzlvgw4q8n1NaftfjAmnWw8q2U1ScbHrGZ1n0Ifm2zsLSWuuxWsI"},"alhambra":{"salt":"rIc8vPdQHUZ27l4H9Fizpw==","iv":"G7mEB4RGVW2I3cTM","ct":"Jb+YLjj+SDrvSc/sxmMvdh9jigCvYoc6aC72eO9gqovSHpzB7Y6nw3lUcmAfDQTll6wd3flB8vZiNk4NT/RL/tyK2rnIz6fhlAR2cUo="},"alvia-madrid":{"salt":"Zo+pT7JiCJYmFJCxWY9EdA==","iv":"qzlIxJGR++xBRuWE","ct":"81g9AEoR07E2HV0RVxe3StRdlB3CALENALWazYLQdLV1N3jkSntDdRNCJQxfQJNF56CcI6eOho1/adNl8N9olhUVwU5B1eFKWOjQ+O27qrGX"},"emirates-return":{"salt":"zG1+19ZbnQnoqrTxC+Dr4Q==","iv":"sHk7dIbYg/dbExil","ct":"zGQGbwNxWsFPun606YL97p3IMeXpWHVkQuO8L2rZ64MMgwgdvU2nBzDdH7RP27RXcZPFQudQejWr6y/HBQCj3fAw0+EzcokUK+b0FvmazsBhS3VY"}};
+    const ENCRYPTED_TICKETS = {"emirates-outbound":{"salt":"Gz71GtgfXdWdqcgtYttMDg==","iv":"nk8qbIsDHdYSyG45","ct":"0di963hz6dYgD9AEmw6F9sG9am1FF77i+iVO68R7brGTKTWV4wmHMv1k2DSP6HXy7hkqjFnD6yu2vCtI4fruZakpvO/sULj6RE7UxFDmQ3ddreLdOTE="},"sagrada":{"salt":"fJrevGLAcvi9GkUQW4yYRQ==","iv":"8moyVtmYNx7otI52","ct":"hxdaXEnttKMoMLb8vuHW7Bkfx8Qtm03Pxd+zE7zX87MZRZy05RJq2gV0YLBK+ZhPoxJjBJi3ZBL7z8nz87f0RAKfr1XURa//MDRtwQ=="},"park-guell":{"salt":"L43VXwotFO/m9Mje9ZBKMg==","iv":"6QOrIs2TQkix2jPV","ct":"UBI/we+Ifkn0PUyF4c9QL1P8rbNEunuWA8dliypVtX1X7Eqck+AhDHuGfOAP/TI29GQEVrg5ftM2hg6mmhZRSwnFoaXpG+aiYyvCDMyD4A=="},"casa-batllo":{"salt":"C5wKGvc8pFJ6xgf4/jOzhw==","iv":"vAbWyCDRKv8VhEge","ct":"PueNR3cZRT7NBIUG86jtDkvksCO7sgHFiG9I5XsFTw4IKeotDUWiWNlQmfZZmJMyGTNxJoz/fm4jP5h9NbJeqQZNOJ4y+ItB9B0MBYMJOlI="},"ave-bcn-sevilla":{"salt":"pqZOzrDEC/rf13q59nk6UQ==","iv":"+VEQM4DluyRoz/mZ","ct":"+PUdHgz5EfhHZGFh5BJ/i1RLhOjyMPYlBBNnWG81E+QdKgrwsPuLf9NIgxoa0Aj2zVoHaXLnjPa2iI0MJG/HtJXvPSQbOUn6AzsfMl7lxhmSbFYp"},"sevilla-alcazar":{"salt":"4/ctb22fYKDsyIsLZwWLwA==","iv":"yAVlVq2dQferREob","ct":"f2ylE4JdZIuzqTjO5kTSkIKuixjtNbefuv771w3slFy7ewiGaopV0v9St2+nP/WQ+HQOJ2EkoizH8OxxQqCT3oouzyN+dlIgwLy+bfDxdZY4IN5s"},"sevilla-catedral":{"salt":"QpF5uDmwUWzGpXi4CE+hIA==","iv":"s13OLBkODqiVhHYk","ct":"JDu7DNmxdDyHSmcqh5JJb5lz1+/35F3VOXABqfVfkjAqebUdomObQxycAfsIoCTu2stXiARhVjan9FACIqA3BRHfAX/xSp/mOGm/pwFowVMTz5Kmqg=="},"iryo-cordoba":{"salt":"pi5EujtVEOqrqc8Dfrcmnw==","iv":"xUSP1qxsRTu045dB","ct":"qGYZ0hu7t5kNxNR9Njv341U+eADI3K8jtyjXCQnGwND4JDyDXUVCVT29HIdE2+h5LnEiVr0NWS2Ix+HXoO5qFImzpd1R5uEG5qsRp2JW4lWP"},"alsa-granada":{"salt":"zZprcC9qf/ceqkW2rAcxWw==","iv":"8P1jh0oztckwKeIo","ct":"L4tWEjoybSu0jC0jYQwh80yPCSYzxxEI51xuHKei2bBjhS8NZCoMqKT+abNbnH8KCCcITnP7Pz7mxNQLoTWrs1eLRLxK4coj3uWeDOxrdV9F"},"alhambra":{"salt":"mRe04dLlpUKo63AOmEMr7A==","iv":"MdCP6zsw7tnoxKQs","ct":"OBx6bbgSgUV0sJgOaz85H6gepOXNIUFP9ZLRb57wNHC++QOjuTFVa1Yd4G6Wl3wMMkGSGLcKsA824QyptthWmWfcl92Oz/ppejhyf0I="},"alvia-madrid":{"salt":"CBadyyfRcY7cWcHrDYaEBQ==","iv":"Ne1Ey1SqQytO2qDI","ct":"Z/m7y9fypRzac60hVc8tAOc5YuAuONvNjad25eoAZvperI+x1HyI68SupGFvkuzJ0Z6r68ggWOcp3Q0mmWdbzysCdKJUGlxDFvfz9hPmK4Ic"},"emirates-return":{"salt":"mkwgIUZ4ul2Z6ClsCFZMng==","iv":"VIgV5drIQEFyjz46","ct":"5LGAAKadPn4Z6aEVWYeEe/q3e/10imMSYBK8VOO9TUQV/TAWRCmNcsb9LXHeOMambgM592Vqn0wjnZWIryTZWjeP5pLkgsen+w+k/Uw15DFyfX8y"}};
 
     function escapeHtml(text){
       return String(text).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -585,6 +585,36 @@
     const ticketModalSub=document.getElementById('ticketModalSub');
     let activeTicketId='',activeTicketLabel='';
 
+    const TICKET_SESSION_KEY='spain2026_ticket_unlock_v1';
+    const TICKET_SESSION_MS=5*60*1000;
+
+    function getTicketSession(){
+      try{
+        const raw=sessionStorage.getItem(TICKET_SESSION_KEY);
+        if(!raw) return null;
+        const value=JSON.parse(raw);
+        if(!value?.password || !value?.expiresAt || Date.now()>=value.expiresAt){
+          sessionStorage.removeItem(TICKET_SESSION_KEY);
+          return null;
+        }
+        return value;
+      }catch{
+        sessionStorage.removeItem(TICKET_SESSION_KEY);
+        return null;
+      }
+    }
+
+    function saveTicketSession(password){
+      sessionStorage.setItem(TICKET_SESSION_KEY,JSON.stringify({
+        password,
+        expiresAt:Date.now()+TICKET_SESSION_MS
+      }));
+    }
+
+    function clearTicketSession(){
+      sessionStorage.removeItem(TICKET_SESSION_KEY);
+    }
+
     function resetTicketModal(){
       ticketUnlockForm.reset();
       ticketUnlockForm.style.display='grid';
@@ -594,12 +624,42 @@
       ticketOpenLink.removeAttribute('href');
     }
 
-    function openTicketModal(id,label){
+    async function showTicketResult(password){
+      const url=await decryptTicket(activeTicketId,password);
+      ticketError.textContent='';
+      ticketUnlockForm.style.display='none';
+      ticketResult.classList.add('show');
+      ticketResultTitle.textContent=activeTicketLabel;
+      ticketOpenLink.href=url;
+      ticketQr.innerHTML='';
+      if(window.QRCode){
+        new QRCode(ticketQr,{text:url,width:220,height:220,correctLevel:QRCode.CorrectLevel.M});
+      }else{
+        ticketQr.textContent='QR 元件載入失敗，請使用下方連結。';
+      }
+    }
+
+    async function openTicketModal(id,label){
       activeTicketId=id; activeTicketLabel=label;
       resetTicketModal();
-      ticketModalSub.textContent=label+'｜輸入旅行密碼後顯示 QR Code';
       ticketModal.classList.add('open');
       document.body.style.overflow='hidden';
+
+      const session=getTicketSession();
+      if(session){
+        ticketModalSub.textContent=label+'｜已解鎖，5 分鐘內免再輸入';
+        ticketUnlockForm.style.display='none';
+        ticketError.textContent='正在載入票券…';
+        try{
+          await showTicketResult(session.password);
+          return;
+        }catch{
+          clearTicketSession();
+          resetTicketModal();
+        }
+      }
+
+      ticketModalSub.textContent=label+'｜輸入老婆生日後顯示 QR Code';
       setTimeout(()=>ticketPassword.focus(),80);
     }
 
@@ -617,19 +677,12 @@
       e.preventDefault();
       ticketError.textContent='解鎖中…';
       try{
-        const url=await decryptTicket(activeTicketId,ticketPassword.value);
-        ticketError.textContent='';
-        ticketUnlockForm.style.display='none';
-        ticketResult.classList.add('show');
-        ticketResultTitle.textContent=activeTicketLabel;
-        ticketOpenLink.href=url;
-        ticketQr.innerHTML='';
-        if(window.QRCode){
-          new QRCode(ticketQr,{text:url,width:220,height:220,correctLevel:QRCode.CorrectLevel.M});
-        }else{
-          ticketQr.textContent='QR 元件載入失敗，請使用下方連結。';
-        }
+        const password=ticketPassword.value;
+        await showTicketResult(password);
+        saveTicketSession(password);
+        ticketModalSub.textContent=activeTicketLabel+'｜已解鎖，5 分鐘內免再輸入';
       }catch(err){
+        clearTicketSession();
         ticketError.textContent='密碼錯誤，請再試一次。';
         ticketPassword.select();
       }
