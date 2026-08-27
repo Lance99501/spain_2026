@@ -109,7 +109,18 @@
     .arrow{color:var(--muted);transition:.2s;text-align:center}.day.open .arrow{transform:rotate(180deg)}
     .day-body{display:none;padding:0 14px 14px 86px}.day.open .day-body{display:block}
     .timeline{list-style:none;padding:0;margin:0;display:grid;gap:9px}.timeline li{display:grid;grid-template-columns:68px minmax(0,1fr);gap:9px}.timeline time{font:500 .83rem Georgia,serif;color:var(--sage)}.timeline p{margin:0;font-size:.86rem}.timeline em{display:block;font-style:normal;color:var(--muted);font-size:.74rem}
-    .poi-annotated{white-space:nowrap}.unesco-crown,.ticket-icon{display:inline-block;margin-left:4px;vertical-align:.06em;line-height:1;cursor:help}.unesco-crown{color:#a88745;font-size:.8em;filter:saturate(.85)}.ticket-icon{font-size:.82em}
+    .poi-annotated{white-space:nowrap}.unesco-crown,.ticket-icon{display:inline-block;margin-left:4px;vertical-align:.06em;line-height:1}.unesco-crown{color:#a88745;font-size:.8em;cursor:help;filter:saturate(.85)}.ticket-icon{appearance:none;border:0;background:transparent;padding:0;font-size:.82em;cursor:pointer;-webkit-tap-highlight-color:transparent}
+    .ticket-icon:hover{transform:translateY(-1px)}
+    .ticket-modal{position:fixed;inset:0;z-index:3000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(35,43,38,.48);backdrop-filter:blur(6px)}
+    .ticket-modal.open{display:flex}
+    .ticket-sheet{width:min(420px,100%);max-height:min(720px,calc(100dvh - 32px));overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:0 24px 70px rgba(27,36,30,.28);padding:18px}
+    .ticket-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}.ticket-head h3{margin:0;font-size:1.05rem}.ticket-head p{margin:4px 0 0;color:var(--muted);font-size:.74rem}
+    .ticket-close{flex:0 0 auto;width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--paper-2);color:var(--muted);font-size:1.15rem}
+    .ticket-form{display:grid;gap:10px}.ticket-password{width:100%;min-height:48px;border:1px solid var(--line);border-radius:14px;background:var(--paper-2);color:var(--ink);padding:10px 12px;font-size:16px;outline:none}.ticket-password:focus{border-color:var(--sage);box-shadow:0 0 0 3px rgba(120,146,129,.12)}
+    .ticket-unlock{min-height:48px;border:1px solid var(--sage);border-radius:14px;background:var(--sage-soft);color:var(--ink);font-weight:800}.ticket-error{min-height:1.2em;margin:0;color:#9a6157;font-size:.72rem}
+    .ticket-result{display:none;text-align:center}.ticket-result.show{display:block}.ticket-demo{display:inline-block;margin:0 0 10px;padding:4px 8px;border-radius:999px;background:var(--sand);color:var(--muted);font-size:.68rem}
+    .ticket-qr{width:244px;min-height:244px;margin:0 auto 12px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:18px;display:grid;place-items:center}.ticket-qr img,.ticket-qr canvas{max-width:220px!important;height:auto!important}
+    .ticket-result-title{margin:0 0 4px;font-weight:800}.ticket-result-note{margin:0 0 12px;color:var(--muted);font-size:.72rem}.ticket-open-link{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:var(--paper-2);text-decoration:none;color:var(--sage);font-size:.76rem;font-weight:800}
     .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}.tag{font-size:.68rem;border-radius:999px;padding:3px 8px}.confirmed{background:var(--sage-soft)}.pending{background:var(--sand)}.flex{background:var(--blue-soft)}.rest{background:var(--rose-soft)}
     .day-note{margin-top:10px;border-left:3px solid var(--sage);background:var(--paper-2);border-radius:0 10px 10px 0;padding:8px 10px;color:var(--muted);font-size:.74rem}
     .empty{padding:28px;text-align:center;color:var(--muted)}
@@ -177,6 +188,8 @@
       .hotel{grid-template-columns:1fr;gap:8px;padding:12px}
       .hotel a{justify-self:start}
       .city-return{width:44px;height:44px;right:max(12px,env(safe-area-inset-right));bottom:max(14px,calc(env(safe-area-inset-bottom) + 14px))}
+      .ticket-modal{align-items:flex-end;padding:10px 10px max(10px,env(safe-area-inset-bottom))}
+      .ticket-sheet{width:100%;border-radius:22px 22px 18px 18px;max-height:88dvh}
     }
     @media (max-width:340px){
       .shell{padding-left:10px;padding-right:10px}
@@ -272,7 +285,29 @@
     <button type="button" class="city-return" id="cityReturnBtn" aria-label="回到城市快速切換" title="回到城市快速切換"><span aria-hidden="true">↑</span></button>
   </main>
 
+  <div class="ticket-modal" id="ticketModal" role="dialog" aria-modal="true" aria-labelledby="ticketModalTitle">
+    <div class="ticket-sheet">
+      <div class="ticket-head">
+        <div><h3 id="ticketModalTitle">開啟票券</h3><p id="ticketModalSub">輸入旅行密碼後顯示 QR Code</p></div>
+        <button type="button" class="ticket-close" id="ticketClose" aria-label="關閉">×</button>
+      </div>
+      <form class="ticket-form" id="ticketUnlockForm">
+        <input class="ticket-password" id="ticketPassword" type="password" autocomplete="current-password" placeholder="旅行密碼" aria-label="旅行密碼">
+        <button class="ticket-unlock" type="submit">解鎖票券</button>
+        <p class="ticket-error" id="ticketError" aria-live="polite"></p>
+      </form>
+      <div class="ticket-result" id="ticketResult">
+        <span class="ticket-demo">前端加密示範</span>
+        <div class="ticket-qr" id="ticketQr"></div>
+        <p class="ticket-result-title" id="ticketResultTitle"></p>
+        <p class="ticket-result-note">目前 QR 連結為示範資料；之後只需替換加密 payload，即可改成實際票券連結。</p>
+        <a class="ticket-open-link" id="ticketOpenLink" target="_blank" rel="noopener">開啟票券連結 ↗</a>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <script>
   (() => {
     'use strict';
@@ -454,82 +489,151 @@
       return 'flex';
     }
 
-    // Icons attach to the exact attraction/transport name, not the whole itinerary line.
-    // World Heritage terms below are the actual listed property/component shown in this itinerary.
-    const ITEM_ANNOTATIONS = [
-      {term:'Catedral de Sevilla + Giralda',heritage:true,ticket:true},
-      {term:'Mezquita-Catedral de Córdoba',heritage:true,ticket:false},
-      {term:'Real Alcázar de Sevilla',heritage:true,ticket:true},
-      {term:'Palacios Nazaríes',heritage:true,ticket:true},
-      {term:'Parque del Retiro',heritage:true,ticket:false},
-      {term:'Museo del Prado',heritage:true,ticket:false},
-      {term:'Casa Batlló',heritage:true,ticket:true},
-      {term:'Casa Vicens',heritage:true,ticket:false},
-      {term:'Casa Milà',heritage:true,ticket:false},
-      {term:'Park Güell',heritage:true,ticket:true},
-      {term:'Sant Pau',heritage:true,ticket:false},
-      {term:'聖家堂',heritage:true,ticket:true},
-      {term:'Albaicín',heritage:true,ticket:false},
-      {term:'Alhambra',heritage:true,ticket:true},
-      {term:'Puente Romano',heritage:true,ticket:false},
+    // World Heritage markers attach only to the actual listed sight name.
+    const HERITAGE_TERMS = [
+      'Catedral de Sevilla + Giralda','Mezquita-Catedral de Córdoba','Real Alcázar de Sevilla',
+      'Palacios Nazaríes','Parque del Retiro','Museo del Prado','Casa Batlló','Casa Vicens',
+      'Casa Milà','Park Güell','Sant Pau','聖家堂','Albaicín','Alhambra','Puente Romano',
+      'Acueducto','Catedral','Alcázar'
+    ].sort((a,b)=>b.length-a.length);
 
-      // Segovia's UNESCO property is the Old Town and its Aqueduct.
-      {term:'Acueducto',heritage:true,ticket:false},
-      {term:'Catedral',heritage:true,ticket:false},
-      {term:'Alcázar',heritage:true,ticket:false},
+    // Confirmed ticket lines from Notion Reservations & Tickets.
+    const TICKET_LINES = [
+      {rx:/TPE → DXB｜EK367/i,id:'emirates-outbound',label:'Emirates｜TPE → DXB → BCN'},
+      {rx:/DXB → Barcelona BCN｜EK185/i,id:'emirates-outbound',label:'Emirates｜TPE → DXB → BCN'},
+      {rx:/聖家堂＋誕生立面塔樓/i,id:'sagrada',label:'聖家堂｜Sagrada Família'},
+      {rx:/^Park Güell$/i,id:'park-guell',label:'Park Güell'},
+      {rx:/Casa Batlló/i,id:'casa-batllo',label:'Casa Batlló'},
+      {rx:/Barcelona-Sants → Sevilla-Santa Justa/i,id:'ave-bcn-sevilla',label:'AVE｜Barcelona → Sevilla'},
+      {rx:/Real Alcázar de Sevilla/i,id:'sevilla-alcazar',label:'塞維亞王宮｜Real Alcázar'},
+      {rx:/Catedral de Sevilla \+ Giralda/i,id:'sevilla-catedral',label:'塞維亞主教座堂＋吉拉達塔'},
+      {rx:/Sevilla-Santa Justa → Córdoba/i,id:'iryo-cordoba',label:'iryo｜Sevilla → Córdoba'},
+      {rx:/Sevilla Plaza de Armas → Granada Bus Station/i,id:'alsa-granada',label:'ALSA｜Sevilla → Granada'},
+      {rx:/Alhambra 行程開始/i,id:'alhambra',label:'阿爾罕布拉宮｜Alhambra'},
+      {rx:/Palacios Nazaríes 指定入場/i,id:'alhambra',label:'阿爾罕布拉宮｜Palacios Nazaríes'},
+      {rx:/Granada → Madrid-Puerta de Atocha/i,id:'alvia-madrid',label:'ALVIA｜Granada → Madrid'},
+      {rx:/EK144 Madrid 起飛/i,id:'emirates-return',label:'Emirates｜Madrid → Dubai → Taipei'}
+    ];
 
-      // Confirmed transport / flight tickets from Notion Reservations & Tickets.
-      {term:'Barcelona-Sants → Sevilla-Santa Justa',heritage:false,ticket:true},
-      {term:'Sevilla-Santa Justa → Córdoba',heritage:false,ticket:true},
-      {term:'Sevilla Plaza de Armas → Granada Bus Station',heritage:false,ticket:true},
-      {term:'Granada → Madrid-Puerta de Atocha',heritage:false,ticket:true},
-      {term:'TPE → DXB｜EK367',heritage:false,ticket:true},
-      {term:'DXB → Barcelona BCN｜EK185',heritage:false,ticket:true},
-      {term:'EK144 Madrid 起飛',heritage:false,ticket:true}
-    ].sort((a,b)=>b.term.length-a.term.length);
+    const ENCRYPTED_TICKETS = {"emirates-outbound":{"salt":"otvg6/drMi3LkxeFEFP0Lw==","iv":"0wAlE2Qm3kMyNJs4","ct":"WfwV3F7evMzvEXRcH8tuX+nk72P4bAXtArRr2xlKq0DMYyJsvrFmm0aezZJCoU36g5kwodEg9/AeFgnPo/qxESVkfvZtfLaItXtZ9Vyqqggu8miOzh0="},"sagrada":{"salt":"mR0cX8uj7ASOxce9ji+w4Q==","iv":"NTe7Nr036Yswqx+K","ct":"r17lhjhVvpt+WawlBofKmwtjvKuN1/7PhSb8sFEmDp8oRzG7ytUsFdVJ5p9Bxe/frNeGa1QW9S9p/nLKyAi6i+5ewr+qFfLHt6zRvA=="},"park-guell":{"salt":"DdbzCU3B56f2Q91Kg8A+fA==","iv":"SJZCKPpLh7GrzFqe","ct":"+1yn/AelCSbxoX/NwCiB7VZ48i3DL/gWbutz1Foq+OS8ylXtxocy5rmjVSlfzDRTaHjlLySQ8BYWbdX+FUVMjPeF+OtMXbbqxKcnGH1Buw=="},"casa-batllo":{"salt":"2++TWdHJtc9AYEeInA5R6g==","iv":"HQfS4tG+1Vz43qDs","ct":"y0ZwLZiW9xOjW2q81ftCDDr+eHFPDKPcoE+NVJ2JDThQ/OVO1AUP5DJJ5IKKQ12breOYqucHnwi/q9UsX/zSP3hxPu/wi6GKKVkVbj+jnVs="},"ave-bcn-sevilla":{"salt":"lgLQQEJTyDr2J+PlhjRbIg==","iv":"D3roojJK4iFjGaFn","ct":"NmLQvidAaJyO2rez/LAQQvRxbATfsh/LCP6/ALJRAtTSkygdo0NvgeXhBosTrPI9DxBHCpACbyIHTMvrc0UvMefqeZXDBKtNuXx22+U63juDi5zz"},"sevilla-alcazar":{"salt":"BKxlzVMRFXHsQa7j7XKmlw==","iv":"PQ4gPDqdBUdTOEqU","ct":"AYkuBkBpsgWJwcoJNuRtVGSvJ5d/uWLUfe1gtHmc/TUbiGX+cixj5oz7SkWqpGGRPPhMoc+CfVtiXenUB8FVf7c4xchFGN6wkUskLXfjkpeDGPSe"},"sevilla-catedral":{"salt":"4FLiNc3cdnA738UQvs3JLA==","iv":"nxBMnzLDI5HLGzu+","ct":"hHjt9Hi+nbtcGqnr6ECrOwpdCONcgzleQfM3ecQ5OibTDwgGdLpbYxMOpUZPXFTq62dTcmRXhJ+dVtQpwYliPPFq0QvYnpu/qllzWd0USf0ZyiaAkQ=="},"iryo-cordoba":{"salt":"0FmH/KymKi9qyL/3yPVexw==","iv":"VgwXdUywhV6UIiNU","ct":"Pq1Js7RH1IdraLRPyTOjescHGv/m2P843239St6jgm8X9fNl4kcHtzd4xSx2oX9qHUmy3jUpUdHMTPOtwaD6/xARQ3yUmEOE1/TFjD9XCLr0"},"alsa-granada":{"salt":"8S+pNx+ImcW25oB3FYvPdQ==","iv":"bS87PNk6sRNiIC+L","ct":"Nj3G428PpaPMTqz894nCK57XZZCDl0BHokN1+Z4ZsnWlhE/A1pwNAo/jDzlvgw4q8n1NaftfjAmnWw8q2U1ScbHrGZ1n0Ifm2zsLSWuuxWsI"},"alhambra":{"salt":"rIc8vPdQHUZ27l4H9Fizpw==","iv":"G7mEB4RGVW2I3cTM","ct":"Jb+YLjj+SDrvSc/sxmMvdh9jigCvYoc6aC72eO9gqovSHpzB7Y6nw3lUcmAfDQTll6wd3flB8vZiNk4NT/RL/tyK2rnIz6fhlAR2cUo="},"alvia-madrid":{"salt":"Zo+pT7JiCJYmFJCxWY9EdA==","iv":"qzlIxJGR++xBRuWE","ct":"81g9AEoR07E2HV0RVxe3StRdlB3CALENALWazYLQdLV1N3jkSntDdRNCJQxfQJNF56CcI6eOho1/adNl8N9olhUVwU5B1eFKWOjQ+O27qrGX"},"emirates-return":{"salt":"zG1+19ZbnQnoqrTxC+Dr4Q==","iv":"sHk7dIbYg/dbExil","ct":"zGQGbwNxWsFPun606YL97p3IMeXpWHVkQuO8L2rZ64MMgwgdvU2nBzDdH7RP27RXcZPFQudQejWr6y/HBQCj3fAw0+EzcokUK+b0FvmazsBhS3VY"}};
 
-    function annotationIcons(a){
-      let html='';
-      if(a.heritage) html+='<span class="unesco-crown" title="UNESCO 世界文化遺產" aria-label="UNESCO 世界文化遺產">♛</span>';
-      if(a.ticket) html+='<span class="ticket-icon" title="已購票｜出發或入場前開啟票券" aria-label="已購票｜出發或入場前開啟票券">🎫</span>';
-      return html;
+    function escapeHtml(text){
+      return String(text).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
     }
 
-    function decorateItemText(text){
-      const found=[];
-      ITEM_ANNOTATIONS.forEach(a=>{
-        let from=0,idx;
-        while((idx=text.indexOf(a.term,from))!==-1){
-          found.push({start:idx,end:idx+a.term.length,a});
-          from=idx+a.term.length;
-        }
-      });
-      found.sort((x,y)=>x.start-y.start || (y.end-y.start)-(x.end-x.start));
-
-      const chosen=[];
-      let cursor=-1;
-      found.forEach(m=>{
-        if(m.start>=cursor){
-          chosen.push(m);
-          cursor=m.end;
-        }
-      });
-
+    function decorateHeritage(text){
       let out='',pos=0;
-      chosen.forEach(m=>{
-        out+=text.slice(pos,m.start);
-        const icons=annotationIcons(m.a);
-        if(m.a.heritage){
-          // Keep the crown attached to the actual heritage name only.
-          out+=`<span class="poi-annotated">${text.slice(m.start,m.end)}${icons}</span>`;
-        }else{
-          // Ticket-only routes may be long, so don't force the whole route onto one line.
-          out+=text.slice(m.start,m.end)+icons;
+      const hits=[];
+      HERITAGE_TERMS.forEach(term=>{
+        let from=0,idx;
+        while((idx=text.indexOf(term,from))!==-1){
+          hits.push({start:idx,end:idx+term.length,term});
+          from=idx+term.length;
         }
-        pos=m.end;
       });
-      return out+text.slice(pos);
+      hits.sort((a,b)=>a.start-b.start || (b.end-b.start)-(a.end-a.start));
+      let cursor=-1;
+      hits.forEach(h=>{
+        if(h.start<cursor) return;
+        out+=escapeHtml(text.slice(pos,h.start));
+        out+=`<span class="poi-annotated">${escapeHtml(text.slice(h.start,h.end))}<span class="unesco-crown" title="UNESCO 世界文化遺產" aria-label="UNESCO 世界文化遺產">♛</span></span>`;
+        pos=h.end; cursor=h.end;
+      });
+      return out+escapeHtml(text.slice(pos));
     }
+
+    function ticketInfoFor(text){
+      return TICKET_LINES.find(x=>x.rx.test(text)) || null;
+    }
+
+    function ticketButtonFor(text){
+      const info=ticketInfoFor(text);
+      if(!info) return '';
+      return `<button type="button" class="ticket-icon" data-ticket-id="${info.id}" data-ticket-label="${escapeHtml(info.label)}" title="開啟票券 QR" aria-label="開啟 ${escapeHtml(info.label)} 票券 QR">🎫</button>`;
+    }
+
+    function renderItemLine(text){
+      return decorateHeritage(text)+ticketButtonFor(text);
+    }
+
+    function b64ToBytes(value){
+      const bin=atob(value);
+      return Uint8Array.from(bin,c=>c.charCodeAt(0));
+    }
+
+    async function decryptTicket(ticketId,password){
+      const payload=ENCRYPTED_TICKETS[ticketId];
+      if(!payload) throw new Error('ticket-not-found');
+      const keyMaterial=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveKey']);
+      const key=await crypto.subtle.deriveKey(
+        {name:'PBKDF2',salt:b64ToBytes(payload.salt),iterations:150000,hash:'SHA-256'},
+        keyMaterial,{name:'AES-GCM',length:256},false,['decrypt']
+      );
+      const plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64ToBytes(payload.iv)},key,b64ToBytes(payload.ct));
+      return new TextDecoder().decode(plain);
+    }
+
+    const ticketModal=document.getElementById('ticketModal');
+    const ticketClose=document.getElementById('ticketClose');
+    const ticketUnlockForm=document.getElementById('ticketUnlockForm');
+    const ticketPassword=document.getElementById('ticketPassword');
+    const ticketError=document.getElementById('ticketError');
+    const ticketResult=document.getElementById('ticketResult');
+    const ticketQr=document.getElementById('ticketQr');
+    const ticketResultTitle=document.getElementById('ticketResultTitle');
+    const ticketOpenLink=document.getElementById('ticketOpenLink');
+    const ticketModalSub=document.getElementById('ticketModalSub');
+    let activeTicketId='',activeTicketLabel='';
+
+    function resetTicketModal(){
+      ticketUnlockForm.reset();
+      ticketUnlockForm.style.display='grid';
+      ticketError.textContent='';
+      ticketResult.classList.remove('show');
+      ticketQr.innerHTML='';
+      ticketOpenLink.removeAttribute('href');
+    }
+
+    function openTicketModal(id,label){
+      activeTicketId=id; activeTicketLabel=label;
+      resetTicketModal();
+      ticketModalSub.textContent=label+'｜輸入旅行密碼後顯示 QR Code';
+      ticketModal.classList.add('open');
+      document.body.style.overflow='hidden';
+      setTimeout(()=>ticketPassword.focus(),80);
+    }
+
+    function closeTicketModal(){
+      ticketModal.classList.remove('open');
+      document.body.style.overflow='';
+      resetTicketModal();
+    }
+
+    ticketClose?.addEventListener('click',closeTicketModal);
+    ticketModal?.addEventListener('click',e=>{if(e.target===ticketModal) closeTicketModal();});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ticketModal?.classList.contains('open')) closeTicketModal();});
+
+    ticketUnlockForm?.addEventListener('submit',async e=>{
+      e.preventDefault();
+      ticketError.textContent='解鎖中…';
+      try{
+        const url=await decryptTicket(activeTicketId,ticketPassword.value);
+        ticketError.textContent='';
+        ticketUnlockForm.style.display='none';
+        ticketResult.classList.add('show');
+        ticketResultTitle.textContent=activeTicketLabel;
+        ticketOpenLink.href=url;
+        ticketQr.innerHTML='';
+        if(window.QRCode){
+          new QRCode(ticketQr,{text:url,width:220,height:220,correctLevel:QRCode.CorrectLevel.M});
+        }else{
+          ticketQr.textContent='QR 元件載入失敗，請使用下方連結。';
+        }
+      }catch(err){
+        ticketError.textContent='密碼錯誤，請再試一次。';
+        ticketPassword.select();
+      }
+    });
 
     function renderDays(){
       const term = search.value.trim().toLowerCase();
@@ -552,7 +656,7 @@
             <a class="day-map" target="_blank" rel="noopener" href="${d.map}" aria-label="在 Google Maps 開啟 ${d.title}"><span class="map-icon">⌖</span><span class="map-label">Maps ↗</span></a>
           </div>
           <div class="day-body" id="${bodyId}">
-            <ul class="timeline">${d.items.map(x=>`<li><time>${x[0]}</time><p>${decorateItemText(x[1])}${x[2]?`<em>${decorateItemText(x[2])}</em>`:''}</p></li>`).join('')}</ul>
+            <ul class="timeline">${d.items.map(x=>`<li><time>${escapeHtml(x[0])}</time><p>${renderItemLine(x[1])}${x[2]?`<em>${renderItemLine(x[2])}</em>`:''}</p></li>`).join('')}</ul>
             <div class="tags">${d.tags.map(t=>`<span class="tag ${tagClass(t)}">${t}</span>`).join('')}</div>
             ${d.note?`<div class="day-note">${d.note}</div>`:''}
           </div>
@@ -567,6 +671,14 @@
         });
       });
     }
+
+    daysRoot.addEventListener('click',e=>{
+      const btn=e.target.closest('.ticket-icon[data-ticket-id]');
+      if(!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      openTicketModal(btn.dataset.ticketId,btn.dataset.ticketLabel||'票券');
+    });
 
     document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{
       activeFilter=btn.dataset.filter;
