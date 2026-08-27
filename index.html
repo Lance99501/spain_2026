@@ -37,7 +37,8 @@
     img,svg,canvas{max-width:100%}
     button,input,a{font:inherit}
     a{color:inherit}
-    button{cursor:pointer}
+    button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+    button:focus,button:focus-visible{outline:none;box-shadow:none}
     .shell{width:100%;max-width:1180px;min-width:0;margin:auto;padding:clamp(16px,3vw,34px)}
     .hero{
       display:grid;
@@ -84,7 +85,7 @@
 
     .city-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
     .city-card{background:var(--card);border:1px solid transparent;border-radius:24px;padding:0;text-align:left;min-width:0;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s;box-shadow:0 10px 28px rgba(58,72,62,.06)}
-    .city-card.active{outline:3px solid rgba(120,146,129,.35);outline-offset:2px;border-color:var(--sage)}
+    .city-card.active{border-color:var(--sage)}
     .city-card img{display:block;width:100%;aspect-ratio:1.33/1;object-fit:cover;background:#e9ede7}
     .city-card .city-copy{display:block;padding:14px 17px 16px}
     .city-card b{display:block;font-size:1.05rem;margin:0 0 1px;color:var(--ink)}
@@ -104,10 +105,11 @@
     .date{padding-right:9px;border-right:1px solid var(--line);text-align:center}.date b{display:block;font:500 1.05rem/1 Georgia,serif}.date span{font-size:.7rem;color:var(--muted)}
     .day-title{min-width:0}.day-title b{display:block;font-size:.94rem}.day-title small{display:block;color:var(--muted);font-size:.75rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .day-map{margin-right:12px;display:inline-flex;align-items:center;gap:5px;min-height:36px;border:1px solid var(--line);border-radius:999px;padding:6px 9px;text-decoration:none;color:var(--sage);font-size:.72rem;font-weight:800;background:var(--paper-2);white-space:nowrap}
-    .day-map:focus,.day-main:focus,.city-card:focus,.map-chip:focus,.filter:focus{outline:3px solid rgba(120,146,129,.3);outline-offset:2px}
+    .day-map:focus,.day-map:focus-visible{outline:none;box-shadow:none}
     .arrow{color:var(--muted);transition:.2s;text-align:center}.day.open .arrow{transform:rotate(180deg)}
     .day-body{display:none;padding:0 14px 14px 86px}.day.open .day-body{display:block}
     .timeline{list-style:none;padding:0;margin:0;display:grid;gap:9px}.timeline li{display:grid;grid-template-columns:68px minmax(0,1fr);gap:9px}.timeline time{font:500 .83rem Georgia,serif;color:var(--sage)}.timeline p{margin:0;font-size:.86rem}.timeline em{display:block;font-style:normal;color:var(--muted);font-size:.74rem}
+    .unesco-crown{display:inline-grid;place-items:center;margin-left:5px;vertical-align:.08em;color:#a88745;font-size:.8em;line-height:1;cursor:help;filter:saturate(.85)}
     .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}.tag{font-size:.68rem;border-radius:999px;padding:3px 8px}.confirmed{background:var(--sage-soft)}.pending{background:var(--sand)}.flex{background:var(--blue-soft)}.rest{background:var(--rose-soft)}
     .day-note{margin-top:10px;border-left:3px solid var(--sage);background:var(--paper-2);border-radius:0 10px 10px 0;padding:8px 10px;color:var(--muted);font-size:.74rem}
     .empty{padding:28px;text-align:center;color:var(--muted)}
@@ -444,6 +446,40 @@
       return 'flex';
     }
 
+    const UNESCO_PATTERNS = [
+      /聖家堂|Sagrada Fam[ií]lia/i,
+      /Sant Pau/i,
+      /Park Güell/i,
+      /Casa Batll[oó]/i,
+      /Casa Mil[aà]|La Pedrera/i,
+      /Casa Vicens/i,
+      /Real Alc[aá]zar de Sevilla/i,
+      /Catedral de Sevilla|Giralda/i,
+      /Mezquita-Catedral de C[oó]rdoba/i,
+      /Puente Romano/i,
+      /Alhambra|Palacios Nazar[ií]es/i,
+      /Albaic[ií]n/i,
+      /Museo del Prado/i,
+      /Parque del Retiro/i,
+      /Acueducto\s*→\s*Catedral\s*→\s*午餐\s*→\s*Alc[aá]zar/i
+    ];
+    function markUnesco(root=document){
+      root.querySelectorAll('.timeline p, .timeline em').forEach(el=>{
+        if(el.querySelector(':scope > .unesco-crown')) return;
+        const directText=[...el.childNodes]
+          .filter(n=>n.nodeType===Node.TEXT_NODE)
+          .map(n=>n.textContent||'').join(' ').trim();
+        if(UNESCO_PATTERNS.some(rx=>rx.test(directText))){
+          const crown=document.createElement('span');
+          crown.className='unesco-crown';
+          crown.textContent='♛';
+          crown.title='UNESCO 世界文化遺產';
+          crown.setAttribute('aria-label','UNESCO 世界文化遺產');
+          el.appendChild(crown);
+        }
+      });
+    }
+
     function renderDays(){
       const term = search.value.trim().toLowerCase();
       const rows = itinerary.filter(d=>{
@@ -472,6 +508,7 @@
         </article>`;
       }).join('');
       empty.hidden = rows.length>0;
+      markUnesco(daysRoot);
       daysRoot.querySelectorAll('.day').forEach(day=>{
         const btn=day.querySelector('.day-main');
         btn.addEventListener('click',()=>{
