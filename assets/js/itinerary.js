@@ -2,58 +2,50 @@ function escapeHtml(text){
   return String(text).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 }
 
-function tagClass(text){
-  if(/已確認|不可移動|固定|AVE|ALVIA|返程/.test(text)) return 'confirmed';
-  if(/待/.test(text)) return 'pending';
-  if(/休息|緩衝|累/.test(text)) return 'rest';
-  return 'flex';
+function ticketButton(ticket){
+  if(!ticket) return '';
+  return `<button type="button" class="ticket-icon" data-ticket-id="${escapeHtml(ticket.id)}" title="開啟票券 QR" aria-label="開啟 ${escapeHtml(ticket.label)} 票券 QR">🎫</button>`;
 }
 
-function decorateText(text,annotations){
-  const matches=[];
-  annotations.forEach(a=>{
-    if(a.whenContains && !text.includes(a.whenContains)) return;
-    let from=0,idx;
-    while((idx=text.indexOf(a.term,from))!==-1){
-      matches.push({start:idx,end:idx+a.term.length,a});
-      from=idx+a.term.length;
-    }
-  });
+function renderSegments(segments,item,placeById,ticketById,{allowTicket=true}={}){
+  const ticket=item.ticketId?ticketById.get(item.ticketId):null;
+  let anchoredTicketRendered=false;
 
-  matches.sort((x,y)=>x.start-y.start || (y.end-y.start)-(x.end-x.start));
-  const chosen=[];
-  let cursor=-1;
-  for(const m of matches){
-    if(m.start>=cursor){
-      chosen.push(m);
-      cursor=m.end;
-    }
-  }
-
-  let out='',pos=0;
-  for(const m of chosen){
-    out+=escapeHtml(text.slice(pos,m.start));
-    const label=escapeHtml(text.slice(m.start,m.end));
-    const crown=m.a.heritage
+  const html=segments.map(segment=>{
+    const place=segment.placeId?placeById.get(segment.placeId):null;
+    const crown=place?.unesco
       ? '<span class="unesco-crown" title="UNESCO 世界文化遺產" aria-label="UNESCO 世界文化遺產">♛</span>'
       : '';
-    const ticket=m.a.ticketId
-      ? `<button type="button" class="ticket-icon" data-ticket-id="${escapeHtml(m.a.ticketId)}" data-ticket-label="${escapeHtml(m.a.ticketLabel||m.a.term)}" title="開啟票券 QR" aria-label="開啟 ${escapeHtml(m.a.ticketLabel||m.a.term)} 票券 QR">🎫</button>`
-      : '';
 
-    out+=m.a.heritage
-      ? `<span class="poi-annotated">${label}${crown}${ticket}</span>`
-      : label+ticket;
-    pos=m.end;
+    const anchoredTicket=allowTicket
+      && ticket
+      && item.ticketAnchorPlaceId
+      && segment.placeId===item.ticketAnchorPlaceId;
+
+    if(anchoredTicket) anchoredTicketRendered=true;
+
+    const inner=escapeHtml(segment.text)+crown+(anchoredTicket?ticketButton(ticket):'');
+
+    return place?.unesco
+      ? `<span class="poi-annotated">${inner}</span>`
+      : inner;
+  }).join('');
+
+  if(allowTicket && ticket && !item.ticketAnchorPlaceId && !anchoredTicketRendered){
+    return html+ticketButton(ticket);
   }
-  return out+escapeHtml(text.slice(pos));
+
+  return html;
 }
 
-export function initItinerary({itinerary,annotations,ticketController}){
+export function initItinerary({itinerary,places,tickets,ticketController}){
   const daysRoot=document.getElementById('days');
   const search=document.getElementById('search');
   const empty=document.getElementById('empty');
   const expandAll=document.getElementById('expandAll');
+
+  const placeById=new Map(places.map(place=>[place.id,place]));
+  const ticketById=new Map(tickets.map(ticket=>[ticket.id,ticket]));
 
   let activeCity='all';
   let activeFilter='all';
@@ -61,29 +53,46 @@ export function initItinerary({itinerary,annotations,ticketController}){
 
   function render(){
     const term=(search?.value||'').trim().toLowerCase();
-    const rows=itinerary.filter(d=>{
-      const matchesCity=activeCity==='all'||d.city===activeCity;
-      const matchesFilter=activeFilter==='all'||d.cats.includes(activeFilter);
-      const haystack=JSON.stringify(d).toLowerCase();
-      const matchesSearch=!term||haystack.includes(term);
+
+    const rows=itinerary.filter(day=>{
+      const matchesCity=activeCity==='all'||day.city===activeCity;
+      const matchesFilter=activeFilter==='all'||day.categories.includes(activeFilter);
+
+      const searchable=[
+        day.date,
+        day.dateLabel,
+        day.city,
+        day.title,
+        day.sub,
+        ...day.items.flatMap(item=>[
+          item.time,
+          ...item.segments.map(x=>x.text),
+          ...(item.noteSegments||[]).map(x=>x.text)
+        ]),
+        ...day.tags.map(x=>x.text),
+        day.note||''
+      ].join(' ').toLowerCase();
+
+      const matchesSearch=!term||searchable.includes(term);
       return matchesCity&&matchesFilter&&matchesSearch;
     });
 
-    daysRoot.innerHTML=rows.map(d=>{
-      const bodyId=`day-body-${d.date.replace('/','-')}`;
-      return `<article class="day${expandState?' open':''}" data-city="${escapeHtml(d.city)}">
+    daysRoot.innerHTML=rows.map(day=>{
+      const bodyId=`day-body-${day.id}`;
+
+      return `<article class="day${expandState?' open':''}" data-city="${escapeHtml(day.city)}" data-day-id="${escapeHtml(day.id)}">
         <div class="day-main-wrap">
           <button type="button" class="day-main" aria-expanded="${expandState}" aria-controls="${bodyId}">
-            <span class="date"><b>${escapeHtml(d.date)}</b><span>${escapeHtml(d.dow)}</span></span>
-            <span class="day-title"><b>${escapeHtml(d.title)}</b><small>${escapeHtml(d.sub)}</small></span>
+            <span class="date"><b>${escapeHtml(day.dateLabel)}</b><span>${escapeHtml(day.dow)}</span></span>
+            <span class="day-title"><b>${escapeHtml(day.title)}</b><small>${escapeHtml(day.sub)}</small></span>
             <span class="arrow">⌄</span>
           </button>
-          <a class="day-map" target="_blank" rel="noopener" href="${d.map}" aria-label="在 Google Maps 開啟 ${escapeHtml(d.title)}"><span class="map-icon">⌖</span><span class="map-label">Maps ↗</span></a>
+          <a class="day-map" target="_blank" rel="noopener" href="${day.mapUrl}" aria-label="在 Google Maps 開啟 ${escapeHtml(day.title)}"><span class="map-icon">⌖</span><span class="map-label">Maps ↗</span></a>
         </div>
         <div class="day-body" id="${bodyId}">
-          <ul class="timeline">${d.items.map(x=>`<li><time>${escapeHtml(x[0])}</time><p>${decorateText(x[1],annotations)}${x[2]?`<em>${decorateText(x[2],annotations)}</em>`:''}</p></li>`).join('')}</ul>
-          <div class="tags">${d.tags.map(t=>`<span class="tag ${tagClass(t)}">${escapeHtml(t)}</span>`).join('')}</div>
-          ${d.note?`<div class="day-note">${escapeHtml(d.note)}</div>`:''}
+          <ul class="timeline">${day.items.map(item=>`<li data-item-id="${escapeHtml(item.id)}"><time>${escapeHtml(item.time)}</time><p>${renderSegments(item.segments,item,placeById,ticketById)}${item.noteSegments?`<em>${renderSegments(item.noteSegments,item,placeById,ticketById,{allowTicket:false})}</em>`:''}</p></li>`).join('')}</ul>
+          <div class="tags">${day.tags.map(tag=>`<span class="tag ${escapeHtml(tag.tone)}">${escapeHtml(tag.text)}</span>`).join('')}</div>
+          ${day.note?`<div class="day-note">${escapeHtml(day.note)}</div>`:''}
         </div>
       </article>`;
     }).join('');
@@ -99,12 +108,12 @@ export function initItinerary({itinerary,annotations,ticketController}){
     });
   }
 
-  daysRoot.addEventListener('click',e=>{
-    const btn=e.target.closest('.ticket-icon[data-ticket-id]');
+  daysRoot.addEventListener('click',event=>{
+    const btn=event.target.closest('.ticket-icon[data-ticket-id]');
     if(!btn) return;
-    e.preventDefault();
-    e.stopPropagation();
-    ticketController.open(btn.dataset.ticketId,btn.dataset.ticketLabel||'票券');
+    event.preventDefault();
+    event.stopPropagation();
+    ticketController.open(btn.dataset.ticketId);
   });
 
   document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{
@@ -114,6 +123,7 @@ export function initItinerary({itinerary,annotations,ticketController}){
   }));
 
   search?.addEventListener('input',render);
+
   expandAll?.addEventListener('click',()=>{
     expandState=!expandState;
     expandAll.textContent=expandState?'收合全部':'展開全部';
