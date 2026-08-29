@@ -137,6 +137,10 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
     });
   }
 
+  function announceCity(city){
+    document.dispatchEvent(new CustomEvent('spain:citychange',{detail:{city}}));
+  }
+
   function syncCityControls(city){
     const resolved=mainCity(city);
 
@@ -210,6 +214,7 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
 
     activeCity=resolved;
     syncCityControls(activeCity);
+    announceCity(activeCity);
     if(updateHeight) requestPagerHeight();
   }
 
@@ -217,8 +222,10 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
     const resolved=mainCity(city);
     if(!CITY_ORDER.includes(resolved)||!daysRoot) return false;
 
+    const changed=activeCity!==resolved;
     activeCity=resolved;
     syncCityControls(activeCity);
+    if(changed) announceCity(activeCity);
 
     if(!syncOnly){
       const left=cityIndex(activeCity)*daysRoot.clientWidth;

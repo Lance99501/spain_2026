@@ -1,4 +1,4 @@
-export function initAppShell({itineraryController}={}){
+export function initAppShell({itineraryController,hotelsController}={}){
   const nav=document.getElementById('appBottomNav');
   if(!nav) return;
 
@@ -25,6 +25,7 @@ export function initAppShell({itineraryController}={}){
     if(!target) return;
 
     if(name==='trip') itineraryController?.ensureCity?.();
+    if(name==='stay') hotelsController?.ensureCity?.();
 
     setActive(name);
     target.scrollIntoView({behavior:'smooth',block:'start'});

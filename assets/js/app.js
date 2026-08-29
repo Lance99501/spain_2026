@@ -5,32 +5,7 @@ import {initItinerary} from './itinerary.js';
 import {initTodayMode} from './today.js';
 import {initPwa} from './pwa.js';
 import {initAppShell} from './app-shell.js';
-
-const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
-
-function escapeHtml(text){
-  return String(text).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-}
-
-function renderHotels(hotels,places){
-  const root=document.getElementById('hotels');
-  if(!root) return;
-
-  const placeById=new Map(places.map(place=>[place.id,place]));
-
-  root.innerHTML=hotels.map(hotel=>{
-    const place=placeById.get(hotel.placeId);
-    if(!place) return '';
-
-    return `<article class="hotel">
-      <div>
-        <b>${escapeHtml(place.city)} · ${escapeHtml(place.name)}</b>
-        <p>${escapeHtml(place.address||'')}<br>${escapeHtml(hotel.room)}</p>
-      </div>
-      <a target="_blank" rel="noopener" href="${googleSearch(place.name+' '+place.city)}">Maps ↗</a>
-    </article>`;
-  }).join('');
-}
+import {initHotels} from './hotels.js';
 
 function initCountdown(config){
   const now=new Date();
@@ -92,8 +67,6 @@ async function bootstrap(){
       mapConfig:data.mapConfig
     });
 
-    renderHotels(data.hotels,data.places);
-
     const ticketController=createTicketController({
       tickets:data.tickets,
       encryptedTickets:data.encryptedTickets,
@@ -104,7 +77,14 @@ async function bootstrap(){
       itinerary:data.itinerary,
       places:data.places,
       tickets:data.tickets,
-      ticketController
+      ticketController,
+      config:data.config
+    });
+
+    const hotelsController=initHotels({
+      hotels:data.hotels,
+      places:data.places,
+      itineraryController
     });
 
     initTodayMode({
@@ -119,7 +99,7 @@ async function bootstrap(){
 
     initCountdown(data.config);
     initCityReturn();
-    initAppShell({itineraryController});
+    initAppShell({itineraryController,hotelsController});
   }catch(error){
     console.error('Spain 2026 bootstrap failed',error);
 
