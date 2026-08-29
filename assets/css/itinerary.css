@@ -92,7 +92,36 @@ body.city-dock-visible .tools{top:calc(env(safe-area-inset-top) + 72px)}
 .filter{min-height:40px;border:1px solid var(--line);background:transparent;border-radius:999px;padding:7px 12px;color:var(--muted);white-space:nowrap}
 .filter.active{background:var(--sage-soft);border-color:var(--sage);color:var(--ink);font-weight:700}
 
-.days{display:grid;gap:9px}
+.days{
+  display:flex;
+  width:100%;
+  gap:0;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  overscroll-behavior-x:contain;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  transition:height .2s ease;
+}
+.days::-webkit-scrollbar{display:none}
+.city-page{
+  flex:0 0 100%;
+  min-width:100%;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  padding:0 1px 2px;
+}
+.city-page-days{display:grid;gap:9px}
+.city-page-empty{
+  padding:28px 14px;
+  border:1px dashed var(--line);
+  border-radius:16px;
+  color:var(--muted);
+  text-align:center;
+  font-size:.78rem;
+}
 .day{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
 .day-main-wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}
 .day-main{display:grid;grid-template-columns:62px minmax(0,1fr) 22px;gap:10px;align-items:center;padding:13px;width:100%;border:0;background:transparent;text-align:left;color:var(--ink)}
@@ -168,38 +197,6 @@ footer{margin-top:26px;padding:18px 0 8px;border-top:1px solid var(--line);font-
   .day-main{grid-template-columns:47px minmax(0,1fr) 16px;padding-left:8px}
 }
 
-#days{
-  will-change:transform,opacity;
-}
-#days.city-swipe-out-left{
-  transition:transform .12s ease,opacity .12s ease;
-  transform:translate3d(-28px,0,0);
-  opacity:0;
-}
-#days.city-swipe-out-right{
-  transition:transform .12s ease,opacity .12s ease;
-  transform:translate3d(28px,0,0);
-  opacity:0;
-}
-#days.city-swipe-in-right{animation:city-swipe-in-right .2s cubic-bezier(.22,.8,.25,1)}
-#days.city-swipe-in-left{animation:city-swipe-in-left .2s cubic-bezier(.22,.8,.25,1)}
-#days.city-swipe-bump-left{animation:city-swipe-bump-left .18s ease}
-#days.city-swipe-bump-right{animation:city-swipe-bump-right .18s ease}
-
-@keyframes city-swipe-in-right{
-  from{transform:translate3d(28px,0,0);opacity:.35}
-  to{transform:translate3d(0,0,0);opacity:1}
-}
-@keyframes city-swipe-in-left{
-  from{transform:translate3d(-28px,0,0);opacity:.35}
-  to{transform:translate3d(0,0,0);opacity:1}
-}
-@keyframes city-swipe-bump-left{
-  50%{transform:translate3d(-10px,0,0)}
-}
-@keyframes city-swipe-bump-right{
-  50%{transform:translate3d(10px,0,0)}
-}
 @media (prefers-reduced-motion:reduce){
-  #days{animation:none!important;transition:none!important}
+  .days{scroll-behavior:auto;transition:none}
 }
