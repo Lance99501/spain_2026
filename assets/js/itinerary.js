@@ -361,10 +361,13 @@ export function initItinerary({
       if(dx>0) nextIndex=Math.max(0,activeIndex-1);
     }
 
+    const previousIndex=activeIndex;
     drag=null;
     const city=cityForIndex(nextIndex);
     snapToIndex(nextIndex,{animate:true});
-    navigation?.setCity(city);
+    if(nextIndex!==previousIndex){
+      navigation?.setCity(city);
+    }
   }
 
   pager?.addEventListener('pointerup',finishDrag);

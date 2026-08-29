@@ -196,3 +196,12 @@ footer{margin-top:26px;padding:18px 0 8px;border-top:1px solid var(--line);font-
 @media (prefers-reduced-motion:reduce){
   .city-pager,.city-pager-track{transition:none}
 }
+
+body.city-dock-visible .tools{
+  top:calc(env(safe-area-inset-top) + 70px);
+}
+@media (max-width:480px){
+  body.city-dock-visible .tools{
+    top:calc(env(safe-area-inset-top) + 64px);
+  }
+}
