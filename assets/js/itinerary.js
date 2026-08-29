@@ -49,6 +49,7 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
   let activeFilter='all';
   let expandState=false;
   let scrollFrame=0;
+  let heightTimer=0;
   let resizeFrame=0;
   let resizeObserver=null;
 
@@ -203,13 +204,13 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
     });
   }
 
-  function setActiveCity(city){
+  function setActiveCity(city,{updateHeight=true}={}){
     const resolved=mainCity(city);
     if(!CITY_ORDER.includes(resolved)||resolved===activeCity) return;
 
     activeCity=resolved;
     syncCityControls(activeCity);
-    requestPagerHeight();
+    if(updateHeight) requestPagerHeight();
   }
 
   function scrollToCity(city,{behavior='smooth',syncOnly=false}={}){
@@ -246,7 +247,10 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
       if(width<=0) return;
 
       const index=Math.max(0,Math.min(CITY_ORDER.length-1,Math.round(daysRoot.scrollLeft/width)));
-      setActiveCity(CITY_ORDER[index]);
+      setActiveCity(CITY_ORDER[index],{updateHeight:false});
+
+      window.clearTimeout(heightTimer);
+      heightTimer=window.setTimeout(requestPagerHeight,90);
     });
   },{passive:true});
 

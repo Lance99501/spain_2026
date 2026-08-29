@@ -94,6 +94,7 @@ body.city-dock-visible .tools{top:calc(env(safe-area-inset-top) + 72px)}
 
 .days{
   display:flex;
+  align-items:flex-start;
   width:100%;
   gap:0;
   overflow-x:auto;
