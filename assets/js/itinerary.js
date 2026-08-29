@@ -50,6 +50,9 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
   let expandState=false;
   let scrollFrame=0;
   let heightTimer=0;
+  let pagerSettleTimer=0;
+  let pendingCity=null;
+  let programmaticCity=null;
   let resizeFrame=0;
   let resizeObserver=null;
 
@@ -223,22 +226,50 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
     });
   }
 
-  function setActiveCity(city,{updateHeight=true}={}){
+  function commitActiveCity(city,{announce=true,updateHeight=true}={}){
     const resolved=mainCity(city);
-    if(!CITY_ORDER.includes(resolved)||resolved===activeCity) return;
+    if(!CITY_ORDER.includes(resolved)) return false;
 
+    const changed=resolved!==activeCity;
     activeCity=resolved;
+    pendingCity=null;
     syncCityControls(activeCity);
-    announceCity(activeCity);
+
+    if(changed&&announce) announceCity(activeCity);
     if(updateHeight) requestPagerHeight();
+    return changed;
+  }
+
+  function schedulePagerSettle(){
+    window.clearTimeout(pagerSettleTimer);
+    pagerSettleTimer=window.setTimeout(()=>{
+      if(programmaticCity){
+        programmaticCity=null;
+        pendingCity=null;
+        syncCityControls(activeCity);
+        requestPagerHeight();
+        return;
+      }
+
+      if(pendingCity){
+        commitActiveCity(pendingCity,{announce:true,updateHeight:true});
+      }else{
+        syncCityControls(activeCity);
+        requestPagerHeight();
+      }
+    },120);
   }
 
   function scrollToCity(city,{behavior='smooth',syncOnly=false}={}){
     if(!daysRoot) return false;
 
+    window.clearTimeout(pagerSettleTimer);
+    pendingCity=null;
+
     if(city==='all'){
       const changed=activeCity!=='all';
       activeCity='all';
+      programmaticCity=null;
       syncCityControls('all');
       if(changed) announceCity('all');
       render();
@@ -255,15 +286,20 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
     if(changed) announceCity(activeCity);
 
     if(modeChanged){
+      programmaticCity=null;
       render();
       return true;
     }
 
-    if(!syncOnly){
-      const left=cityIndex(activeCity)*daysRoot.clientWidth;
-      daysRoot.scrollTo({left,top:0,behavior});
+    const left=cityIndex(activeCity)*daysRoot.clientWidth;
+
+    if(syncOnly){
+      programmaticCity=null;
+      daysRoot.scrollLeft=left;
     }else{
-      daysRoot.scrollLeft=cityIndex(activeCity)*daysRoot.clientWidth;
+      programmaticCity=activeCity;
+      daysRoot.scrollTo({left,top:0,behavior});
+      schedulePagerSettle();
     }
 
     requestPagerHeight();
@@ -277,6 +313,20 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
     return city;
   }
 
+  daysRoot.addEventListener('pointerdown',()=>{
+    if(daysRoot.classList.contains('all-mode')) return;
+    window.clearTimeout(pagerSettleTimer);
+    programmaticCity=null;
+    pendingCity=null;
+  },{passive:true});
+
+  daysRoot.addEventListener('touchstart',()=>{
+    if(daysRoot.classList.contains('all-mode')) return;
+    window.clearTimeout(pagerSettleTimer);
+    programmaticCity=null;
+    pendingCity=null;
+  },{passive:true});
+
   daysRoot.addEventListener('scroll',()=>{
     if(daysRoot.classList.contains('all-mode')||scrollFrame) return;
 
@@ -285,11 +335,18 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
       const width=daysRoot.clientWidth;
       if(width<=0) return;
 
+      if(programmaticCity){
+        schedulePagerSettle();
+        return;
+      }
+
       const index=Math.max(0,Math.min(CITY_ORDER.length-1,Math.round(daysRoot.scrollLeft/width)));
-      setActiveCity(CITY_ORDER[index],{updateHeight:false});
+      pendingCity=CITY_ORDER[index];
+      syncCityControls(pendingCity);
 
       window.clearTimeout(heightTimer);
-      heightTimer=window.setTimeout(requestPagerHeight,90);
+      heightTimer=window.setTimeout(requestPagerHeight,140);
+      schedulePagerSettle();
     });
   },{passive:true});
 

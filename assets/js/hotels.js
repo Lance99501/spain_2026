@@ -28,6 +28,9 @@ export function initHotels({hotels,places,itineraryController}){
   const initialCity=itineraryController?.getActiveCity?.();
   let activeCity=initialCity==='all'||CITY_ORDER.includes(initialCity)?initialCity:'Barcelona';
   let scrollFrame=0;
+  let settleTimer=0;
+  let pendingCity=null;
+  let programmaticCity=null;
 
   function hotelCard(city){
     const entry=hotelByCity.get(city);
@@ -70,23 +73,50 @@ export function initHotels({hotels,places,itineraryController}){
     else renderPager();
   }
 
+  function clearProgrammaticScroll(){
+    programmaticCity=null;
+    pendingCity=null;
+  }
+
+  function scheduleHotelSettle(){
+    window.clearTimeout(settleTimer);
+    settleTimer=window.setTimeout(()=>{
+      if(programmaticCity){
+        clearProgrammaticScroll();
+        return;
+      }
+
+      if(!pendingCity||pendingCity===activeCity) return;
+
+      activeCity=pendingCity;
+      pendingCity=null;
+      itineraryController?.setCity?.(activeCity,{behavior:'auto'});
+    },120);
+  }
+
   function setCity(city,{behavior='smooth',syncItinerary=false}={}){
     if(city!=='all'&&!CITY_ORDER.includes(city)) return false;
+
+    window.clearTimeout(settleTimer);
+    pendingCity=null;
 
     const changed=activeCity!==city;
     const modeChanged=(activeCity==='all')!==(city==='all');
     activeCity=city;
 
     if(activeCity==='all'){
+      clearProgrammaticScroll();
       if(modeChanged||!root.classList.contains('all-mode')) renderAll();
     }else{
       if(modeChanged||root.classList.contains('all-mode')||!root.querySelector('.hotel-page')){
         renderPager();
       }
 
+      programmaticCity=activeCity;
       requestAnimationFrame(()=>{
         const left=cityIndex(activeCity)*root.clientWidth;
         root.scrollTo({left,top:0,behavior});
+        scheduleHotelSettle();
       });
     }
 
@@ -104,6 +134,20 @@ export function initHotels({hotels,places,itineraryController}){
     return city;
   }
 
+  root.addEventListener('pointerdown',()=>{
+    if(root.classList.contains('all-mode')) return;
+    window.clearTimeout(settleTimer);
+    programmaticCity=null;
+    pendingCity=null;
+  },{passive:true});
+
+  root.addEventListener('touchstart',()=>{
+    if(root.classList.contains('all-mode')) return;
+    window.clearTimeout(settleTimer);
+    programmaticCity=null;
+    pendingCity=null;
+  },{passive:true});
+
   root.addEventListener('scroll',()=>{
     if(root.classList.contains('all-mode')||scrollFrame) return;
 
@@ -112,12 +156,14 @@ export function initHotels({hotels,places,itineraryController}){
       const width=root.clientWidth;
       if(width<=0) return;
 
-      const index=Math.max(0,Math.min(CITY_ORDER.length-1,Math.round(root.scrollLeft/width)));
-      const city=CITY_ORDER[index];
-      if(city===activeCity) return;
+      if(programmaticCity){
+        scheduleHotelSettle();
+        return;
+      }
 
-      activeCity=city;
-      itineraryController?.setCity?.(activeCity,{behavior:'auto'});
+      const index=Math.max(0,Math.min(CITY_ORDER.length-1,Math.round(root.scrollLeft/width)));
+      pendingCity=CITY_ORDER[index];
+      scheduleHotelSettle();
     });
   },{passive:true});
 
