@@ -1,4 +1,4 @@
-const CACHE_VERSION='spain2026-20260830-v9';
+const CACHE_VERSION='spain2026-20260830-v10';
 const APP_CACHE=`${CACHE_VERSION}-app`;
 const RUNTIME_CACHE=`${CACHE_VERSION}-runtime`;
 const TILE_CACHE=`${CACHE_VERSION}-tiles`;
@@ -25,6 +25,7 @@ const APP_SHELL=[
   './assets/js/pwa.js',
   './assets/js/app-shell.js',
   './assets/js/hotels.js',
+  './assets/js/weather.js',
   './data/trip-data.js',
   './assets/images/barcelona.jpg',
   './assets/images/sevilla.jpg',

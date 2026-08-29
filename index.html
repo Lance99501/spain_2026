@@ -12,6 +12,7 @@
   <link rel="icon" href="assets/icons/app-icon.svg" type="image/svg+xml">
   <title>Spain 2026｜西班牙 17 天行程</title>
   <link rel="preconnect" href="https://tile.openstreetmap.org">
+  <link rel="preconnect" href="https://api.open-meteo.com">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/layout.css">
@@ -111,13 +112,7 @@
     </section>
 
     <section class="section" id="hotelsSection">
-      <div class="section-head"><h2>住宿｜Hotels</h2><p>與每日行程城市同步；可點城市或直接左右滑動查看住宿。</p></div>
-      <div class="hotel-city-tabs" id="hotelCityTabs" role="group" aria-label="住宿城市切換">
-        <button type="button" class="hotel-city-tab" data-hotel-city="Barcelona" aria-pressed="false"><b>Barcelona</b><small>10/09–14</small></button>
-        <button type="button" class="hotel-city-tab" data-hotel-city="Sevilla" aria-pressed="false"><b>Sevilla</b><small>10/14–18</small></button>
-        <button type="button" class="hotel-city-tab" data-hotel-city="Granada" aria-pressed="false"><b>Granada</b><small>10/18–20</small></button>
-        <button type="button" class="hotel-city-tab" data-hotel-city="Madrid" aria-pressed="false"><b>Madrid</b><small>10/20–25</small></button>
-      </div>
+      <div class="section-head"><h2>住宿｜Hotels</h2><p>跟著上方城市切換；可左右滑動換城市。取消城市篩選時會顯示全部住宿。</p></div>
       <div class="hotel-pager" id="hotels" aria-label="住宿，可左右滑動切換城市"></div>
     </section>
 

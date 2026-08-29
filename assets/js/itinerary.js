@@ -104,7 +104,7 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
   }
 
   function matchesCity(day,city){
-    return mainCity(day.city)===city;
+    return city==='all'||mainCity(day.city)===city;
   }
 
   function renderDay(day){
@@ -158,6 +158,9 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
   }
 
   function activePage(){
+    if(activeCity==='all'){
+      return daysRoot?.querySelector('.city-page-all')||null;
+    }
     return daysRoot?.querySelector(`.city-page[data-pager-city="${CSS.escape(activeCity)}"]`)||null;
   }
 
@@ -187,23 +190,35 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
   }
 
   function render(){
-    const pageHtml=CITY_ORDER.map(city=>{
-      const rows=filteredRows(city);
-      return `<section class="city-page" data-pager-city="${city}" aria-label="${city} 行程">
+    const allMode=activeCity==='all';
+    const pageHtml=allMode
+      ?`<section class="city-page city-page-all" data-pager-city="all" aria-label="全部城市行程">
         <div class="city-page-days">
-          ${rows.length
-            ?rows.map(renderDay).join('')
-            :'<div class="city-page-empty">這個城市目前沒有符合條件的行程。</div>'}
+          ${filteredRows('all').length
+            ?filteredRows('all').map(renderDay).join('')
+            :'<div class="city-page-empty">目前沒有符合條件的行程。</div>'}
         </div>
-      </section>`;
-    }).join('');
+      </section>`
+      :CITY_ORDER.map(city=>{
+        const rows=filteredRows(city);
+        return `<section class="city-page" data-pager-city="${city}" aria-label="${city} 行程">
+          <div class="city-page-days">
+            ${rows.length
+              ?rows.map(renderDay).join('')
+              :'<div class="city-page-empty">這個城市目前沒有符合條件的行程。</div>'}
+          </div>
+        </section>`;
+      }).join('');
 
+    daysRoot.classList.toggle('all-mode',allMode);
     daysRoot.innerHTML=pageHtml;
     if(empty) empty.hidden=true;
 
     observePages();
     requestAnimationFrame(()=>{
-      scrollToCity(activeCity,{behavior:'auto',syncOnly:true});
+      if(!allMode){
+        scrollToCity(activeCity,{behavior:'auto',syncOnly:true});
+      }
       requestPagerHeight();
     });
   }
@@ -219,13 +234,30 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
   }
 
   function scrollToCity(city,{behavior='smooth',syncOnly=false}={}){
-    const resolved=mainCity(city);
-    if(!CITY_ORDER.includes(resolved)||!daysRoot) return false;
+    if(!daysRoot) return false;
 
+    if(city==='all'){
+      const changed=activeCity!=='all';
+      activeCity='all';
+      syncCityControls('all');
+      if(changed) announceCity('all');
+      render();
+      return true;
+    }
+
+    const resolved=mainCity(city);
+    if(!CITY_ORDER.includes(resolved)) return false;
+
+    const modeChanged=activeCity==='all'||daysRoot.classList.contains('all-mode');
     const changed=activeCity!==resolved;
     activeCity=resolved;
     syncCityControls(activeCity);
     if(changed) announceCity(activeCity);
+
+    if(modeChanged){
+      render();
+      return true;
+    }
 
     if(!syncOnly){
       const left=cityIndex(activeCity)*daysRoot.clientWidth;
@@ -239,14 +271,14 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
   }
 
   function ensureCity(){
-    if(CITY_ORDER.includes(activeCity)) return activeCity;
+    if(activeCity==='all'||CITY_ORDER.includes(activeCity)) return activeCity;
     const city=getDefaultCity();
     scrollToCity(city,{behavior:'auto'});
     return city;
   }
 
   daysRoot.addEventListener('scroll',()=>{
-    if(scrollFrame) return;
+    if(daysRoot.classList.contains('all-mode')||scrollFrame) return;
 
     scrollFrame=requestAnimationFrame(()=>{
       scrollFrame=0;
@@ -309,7 +341,8 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
   });
 
   document.querySelectorAll('.city-card[data-city]').forEach(card=>card.addEventListener('click',()=>{
-    scrollToCity(card.dataset.city,{behavior:'smooth'});
+    const city=card.dataset.city;
+    scrollToCity(activeCity===city?'all':city,{behavior:'smooth'});
   }));
 
   const cityDock=document.getElementById('cityDock');
@@ -339,7 +372,8 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
   window.addEventListener('scroll',requestDockUpdate,{passive:true});
   window.addEventListener('resize',()=>{
     requestDockUpdate();
-    scrollToCity(activeCity,{behavior:'auto',syncOnly:true});
+    if(activeCity==='all') requestPagerHeight();
+    else scrollToCity(activeCity,{behavior:'auto',syncOnly:true});
   });
   updateDockVisibility();
 
@@ -358,9 +392,9 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
       }
       if(initialFilter) setFilterState(initialFilter);
 
-      render();
+      const nextCity=activeCity===city?'all':city;
+      scrollToCity(nextCity,{behavior:'smooth'});
       requestAnimationFrame(()=>{
-        scrollToCity(city,{behavior:'smooth'});
         document.getElementById('itinerary')?.scrollIntoView({behavior:'smooth',block:'start'});
       });
     });
@@ -381,8 +415,7 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
 
   function showAll(){
     resetView();
-    activeCity=CITY_ORDER.includes(activeCity)?activeCity:getDefaultCity();
-    render();
+    scrollToCity('all',{behavior:'auto'});
     document.getElementById('itinerary')?.scrollIntoView({behavior:'smooth',block:'start'});
   }
 
@@ -418,7 +451,7 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
     render,
     showDay,
     showAll,
-    setCity:city=>scrollToCity(city,{behavior:'smooth'}),
+    setCity:(city,options={})=>scrollToCity(city,{behavior:options.behavior||'smooth',syncOnly:options.syncOnly||false}),
     ensureCity,
     getActiveCity:()=>activeCity
   };

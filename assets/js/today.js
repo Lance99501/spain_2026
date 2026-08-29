@@ -1,4 +1,5 @@
 import {escapeHtml,renderSegments} from './itinerary.js';
+import {initTodayWeather} from './weather.js';
 
 const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 
@@ -195,6 +196,7 @@ export function initTodayMode({
   hotels,
   tickets,
   config,
+  mapConfig,
   ticketController,
   itineraryController
 }){
@@ -256,6 +258,13 @@ export function initTodayMode({
       </div>
     </div>
 
+    <div class="today-weather" id="todayWeather" aria-live="polite">
+      <div class="weather-compact weather-loading">
+        <div class="weather-kicker">WEATHER · 今日</div>
+        <div class="weather-message">正在取得天氣…</div>
+      </div>
+    </div>
+
     ${renderTransport(day,placeById,ticketById)}
 
     <ul class="today-timeline">
@@ -276,6 +285,15 @@ export function initTodayMode({
   </article>`;
 
   section.hidden=false;
+
+  const weatherController=initTodayWeather({
+    root:document.getElementById('todayWeather'),
+    day,
+    mapConfig,
+    previewDate:validPreview?previewDate:null,
+    previewTime:effectivePreviewTime,
+    isPreview:validPreview
+  });
 
   const moments=buildMoments(day,placeById);
   const nowNode=document.getElementById('todayNowTime');
@@ -340,7 +358,10 @@ export function initTodayMode({
     }
   });
 
-  window.addEventListener('pagehide',()=>{if(clockTimer) clearInterval(clockTimer);},{once:true});
+  window.addEventListener('pagehide',()=>{
+    if(clockTimer) clearInterval(clockTimer);
+    weatherController?.destroy?.();
+  },{once:true});
 
   return {
     visible:true,

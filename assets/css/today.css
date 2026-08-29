@@ -49,6 +49,89 @@
 .next-panel b{font:600 1rem Georgia,"Times New Roman",serif}
 .next-panel p{margin:1px 0 2px;font-size:.82rem;font-weight:750;overflow-wrap:anywhere}
 
+
+.today-weather{margin-top:10px}
+.weather-compact{
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(251,250,246,.82);
+  padding:11px 12px;
+}
+.weather-kicker{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  color:var(--sage);
+  font-size:.64rem;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+.weather-kicker small{
+  color:var(--muted);
+  font-size:.58rem;
+  font-weight:700;
+  letter-spacing:0;
+}
+.weather-summary{
+  display:grid;
+  grid-template-columns:auto minmax(120px,.65fr) minmax(0,1fr);
+  gap:12px;
+  align-items:center;
+  margin-top:9px;
+}
+.weather-temp{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+.weather-temp span{font-size:1.35rem}
+.weather-temp b{font:600 1.75rem/1 Georgia,"Times New Roman",serif}
+.weather-condition strong{display:block;font-size:.82rem}
+.weather-condition small{display:block;margin-top:2px;color:var(--muted);font-size:.68rem}
+.weather-stats{
+  display:flex;
+  justify-content:flex-end;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.weather-stats span{
+  border-radius:999px;
+  background:var(--paper-2);
+  padding:5px 8px;
+  color:var(--muted);
+  font-size:.66rem;
+}
+.weather-stats b{color:var(--ink)}
+.weather-hours{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(54px,1fr));
+  gap:5px;
+  margin-top:9px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.weather-hours::-webkit-scrollbar{display:none}
+.weather-hour{
+  min-width:54px;
+  display:grid;
+  justify-items:center;
+  gap:2px;
+  border-radius:11px;
+  background:var(--paper-2);
+  padding:6px 4px;
+}
+.weather-hour time{color:var(--muted);font-size:.6rem}
+.weather-hour span{font-size:.9rem}
+.weather-hour b{font-size:.68rem}
+.weather-hour small{color:var(--muted);font-size:.58rem}
+.weather-message{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:.72rem;
+}
+.weather-loading{opacity:.78}
+
 .today-transport{
   margin-top:12px;
   border:1px solid #d8d8cf;
@@ -155,6 +238,9 @@
   }
 }
 @media (max-width:600px){
+  .weather-summary{grid-template-columns:auto minmax(0,1fr)}
+  .weather-stats{grid-column:1/-1;justify-content:flex-start}
+  .weather-hours{grid-template-columns:repeat(6,56px)}
   .today-card{padding:15px;border-radius:18px}
   .today-head{gap:10px}
   .today-date{font-size:1rem}
