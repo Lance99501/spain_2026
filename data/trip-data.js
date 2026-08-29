@@ -562,25 +562,63 @@ export const places = [
     "status": "flex",
     "unesco": true,
     "mapVisible": false
+  },
+  {
+    "id": "tpe-taoyuan-airport",
+    "city": "Taipei",
+    "name": "Taiwan Taoyuan International Airport",
+    "type": "transport",
+    "status": "transport",
+    "address": "Taoyuan, Taiwan",
+    "unesco": false,
+    "mapVisible": false
+  },
+  {
+    "id": "dxb-dubai-airport",
+    "city": "Dubai",
+    "name": "Dubai International Airport",
+    "type": "transport",
+    "status": "transport",
+    "address": "Dubai, United Arab Emirates",
+    "unesco": false,
+    "mapVisible": false
+  },
+  {
+    "id": "bcn-barcelona-airport",
+    "city": "Barcelona",
+    "name": "Barcelona–El Prat Airport",
+    "type": "transport",
+    "status": "transport",
+    "address": "Barcelona, Spain",
+    "unesco": false,
+    "mapVisible": false
   }
 ];
 
 export const hotels = [
   {
     "placeId": "bcn-hotel-royal-passeig-de-gracia",
-    "room": "Superior Double or Twin Room"
+    "room": "Superior Double or Twin Room",
+    "checkIn": "2026-10-09",
+    "checkOut": "2026-10-14"
   },
   {
     "placeId": "sev-abba-sevilla",
-    "room": "Junior Suite"
+    "room": "Junior Suite",
+    "checkIn": "2026-10-14",
+    "checkOut": "2026-10-18"
   },
   {
     "placeId": "grx-hotel-navas",
-    "room": "Standard Triple Room"
+    "room": "Standard Triple Room",
+    "checkIn": "2026-10-18",
+    "checkOut": "2026-10-20"
   },
   {
     "placeId": "mad-hotel-acta-madfor",
-    "room": "Standard Triple Room"
+    "room": "Standard Triple Room",
+    "checkIn": "2026-10-20",
+    "checkOut": "2026-10-25"
   }
 ];
 
@@ -590,7 +628,12 @@ export const tickets = [
     "label": "Emirates｜TPE → DXB → BCN",
     "kind": "flight",
     "type": "qr",
-    "status": "confirmed"
+    "status": "confirmed",
+    "placeIds": [
+      "tpe-taoyuan-airport",
+      "dxb-dubai-airport",
+      "bcn-barcelona-airport"
+    ]
   },
   {
     "id": "tkt-sagrada",
@@ -702,7 +745,12 @@ export const tickets = [
     "label": "Emirates｜Madrid → Dubai → Taipei",
     "kind": "flight",
     "type": "qr",
-    "status": "confirmed"
+    "status": "confirmed",
+    "placeIds": [
+      "mad-madrid-barajas-airport",
+      "dxb-dubai-airport",
+      "tpe-taoyuan-airport"
+    ]
   }
 ];
 
@@ -734,7 +782,17 @@ export const itinerary = [
           {
             "text": "Emirates · 已確認"
           }
-        ]
+        ],
+        "startTime": "23:50",
+        "transport": {
+          "role": "flight",
+          "kind": "flight",
+          "service": "EK367",
+          "status": "confirmed",
+          "originPlaceId": "tpe-taoyuan-airport",
+          "destinationPlaceId": "dxb-dubai-airport",
+          "departureTime": "23:50"
+        }
       },
       {
         "id": "item-2026-10-08-02",
@@ -749,7 +807,17 @@ export const itinerary = [
           {
             "text": "接續航段 · 10/09 13:25 抵達"
           }
-        ]
+        ],
+        "transport": {
+          "role": "flight",
+          "kind": "flight",
+          "service": "EK185",
+          "status": "confirmed",
+          "originPlaceId": "dxb-dubai-airport",
+          "destinationPlaceId": "bcn-barcelona-airport",
+          "arrivalTime": "13:25",
+          "arrivalDayOffset": 1
+        }
       }
     ],
     "tags": [
@@ -765,7 +833,8 @@ export const itinerary = [
         "text": "夜班機",
         "tone": "flex"
       }
-    ]
+    ],
+    "timeZone": "Asia/Taipei"
   },
   {
     "id": "day-2026-10-09",
@@ -787,7 +856,8 @@ export const itinerary = [
           {
             "text": "抵達 Barcelona Airport"
           }
-        ]
+        ],
+        "startTime": "13:25"
       },
       {
         "id": "item-2026-10-09-02",
@@ -815,7 +885,8 @@ export const itinerary = [
           {
             "text": "第一天不排主要景點"
           }
-        ]
+        ],
+        "startTime": "17:00"
       }
     ],
     "tags": [
@@ -858,7 +929,8 @@ export const itinerary = [
           {
             "text": "已確認"
           }
-        ]
+        ],
+        "startTime": "09:15"
       },
       {
         "id": "item-2026-10-10-02",
@@ -867,7 +939,8 @@ export const itinerary = [
           {
             "text": "Avinguda de Gaudí 慢走＋午餐＋咖啡"
           }
-        ]
+        ],
+        "startTime": "11:30"
       },
       {
         "id": "item-2026-10-10-03",
@@ -885,7 +958,8 @@ export const itinerary = [
           {
             "text": "目前待購票"
           }
-        ]
+        ],
+        "startTime": "14:00"
       },
       {
         "id": "item-2026-10-10-04",
@@ -947,7 +1021,8 @@ export const itinerary = [
           {
             "text": "已確認"
           }
-        ]
+        ],
+        "startTime": "09:30"
       },
       {
         "id": "item-2026-10-11-02",
@@ -965,7 +1040,8 @@ export const itinerary = [
           {
             "text": " 外觀順路看"
           }
-        ]
+        ],
+        "startTime": "11:30"
       },
       {
         "id": "item-2026-10-11-03",
@@ -985,7 +1061,8 @@ export const itinerary = [
           {
             "text": "已確認"
           }
-        ]
+        ],
+        "startTime": "15:45"
       },
       {
         "id": "item-2026-10-11-04",
@@ -1054,7 +1131,8 @@ export const itinerary = [
           {
             "text": "火車班次接近出發再確認"
           }
-        ]
+        ],
+        "startTime": "08:30"
       },
       {
         "id": "item-2026-10-12-02",
@@ -1072,7 +1150,8 @@ export const itinerary = [
           {
             "text": "約回到 Barcelona"
           }
-        ]
+        ],
+        "startTime": "17:30"
       }
     ],
     "tags": [
@@ -1113,7 +1192,8 @@ export const itinerary = [
           {
             "text": "記得看 Joan Miró 地面馬賽克"
           }
-        ]
+        ],
+        "startTime": "09:00"
       },
       {
         "id": "item-2026-10-13-02",
@@ -1127,7 +1207,8 @@ export const itinerary = [
           {
             "text": "Plaça Reial → Sant Jaume → Temple d'August → Pont del Bisbe → Cathedral"
           }
-        ]
+        ],
+        "startTime": "10:00"
       },
       {
         "id": "item-2026-10-13-03",
@@ -1141,7 +1222,8 @@ export const itinerary = [
           {
             "text": "Santa Maria del Mar → Passeig del Born"
           }
-        ]
+        ],
+        "startTime": "12:30"
       },
       {
         "id": "item-2026-10-13-04",
@@ -1150,7 +1232,8 @@ export const itinerary = [
           {
             "text": "Arc de Triomf → Parc de la Ciutadella"
           }
-        ]
+        ],
+        "startTime": "14:00"
       },
       {
         "id": "item-2026-10-13-05",
@@ -1159,7 +1242,8 @@ export const itinerary = [
           {
             "text": "Estació de França → Port Vell → Barceloneta"
           }
-        ]
+        ],
+        "startTime": "15:15"
       },
       {
         "id": "item-2026-10-13-06",
@@ -1168,7 +1252,8 @@ export const itinerary = [
           {
             "text": "回飯店休息＋整理行李"
           }
-        ]
+        ],
+        "startTime": "17:30"
       },
       {
         "id": "item-2026-10-13-07",
@@ -1182,7 +1267,8 @@ export const itinerary = [
           {
             "text": "待訂位"
           }
-        ]
+        ],
+        "startTime": "19:30"
       }
     ],
     "tags": [
@@ -1236,7 +1322,18 @@ export const itinerary = [
           {
             "text": "Renfe AVE 03940 · 14:47 抵達 · 已固定"
           }
-        ]
+        ],
+        "startTime": "08:30",
+        "transport": {
+          "role": "transfer",
+          "kind": "train",
+          "service": "AVE 03940",
+          "status": "confirmed",
+          "originPlaceId": "bcn-barcelona-sants",
+          "destinationPlaceId": "sev-sevilla-santa-justa",
+          "departureTime": "08:30",
+          "arrivalTime": "14:47"
+        }
       },
       {
         "id": "item-2026-10-14-02",
@@ -1302,7 +1399,8 @@ export const itinerary = [
           {
             "text": "已確認 · 約至 12:00"
           }
-        ]
+        ],
+        "startTime": "09:30"
       },
       {
         "id": "item-2026-10-15-02",
@@ -1311,7 +1409,8 @@ export const itinerary = [
           {
             "text": "Santa Cruz 午餐＋慢走"
           }
-        ]
+        ],
+        "startTime": "12:00"
       },
       {
         "id": "item-2026-10-15-03",
@@ -1328,7 +1427,8 @@ export const itinerary = [
           {
             "text": "已確認 · 約至 16:45"
           }
-        ]
+        ],
+        "startTime": "15:00"
       }
     ],
     "tags": [
@@ -1382,7 +1482,18 @@ export const itinerary = [
           {
             "text": "iryo 06097 Inicial · 08:52 抵達 · 已確認"
           }
-        ]
+        ],
+        "startTime": "08:11",
+        "transport": {
+          "role": "daytrip",
+          "kind": "train",
+          "service": "iryo 06097",
+          "status": "confirmed",
+          "originPlaceId": "sev-sevilla-santa-justa",
+          "destinationPlaceId": "cor-cordoba-central",
+          "departureTime": "08:11",
+          "arrivalTime": "08:52"
+        }
       },
       {
         "id": "item-2026-10-16-02",
@@ -1427,7 +1538,15 @@ export const itinerary = [
           {
             "text": "回程交通待確認"
           }
-        ]
+        ],
+        "transport": {
+          "role": "daytrip",
+          "kind": "train",
+          "service": "回程",
+          "status": "pending",
+          "originPlaceId": "cor-cordoba-central",
+          "destinationPlaceId": "sev-sevilla-santa-justa"
+        }
       }
     ],
     "tags": [
@@ -1538,7 +1657,18 @@ export const itinerary = [
           {
             "text": "ALSA 直達 · 14:45 抵達 · 已確認"
           }
-        ]
+        ],
+        "startTime": "11:45",
+        "transport": {
+          "role": "transfer",
+          "kind": "bus",
+          "service": "ALSA",
+          "status": "confirmed",
+          "originPlaceId": "sev-sevilla-plaza-de-armas-bus-station",
+          "destinationPlaceId": "grx-granada-bus-station",
+          "departureTime": "11:45",
+          "arrivalTime": "14:45"
+        }
       },
       {
         "id": "item-2026-10-18-03",
@@ -1583,7 +1713,8 @@ export const itinerary = [
           {
             "text": "視抵達時間與體力決定"
           }
-        ]
+        ],
+        "startTime": "17:30"
       }
     ],
     "tags": [
@@ -1622,7 +1753,8 @@ export const itinerary = [
           {
             "text": "抵達 Alhambra 周邊"
           }
-        ]
+        ],
+        "startTime": "09:00"
       },
       {
         "id": "item-2026-10-19-02",
@@ -1642,7 +1774,8 @@ export const itinerary = [
           {
             "text": "已確認"
           }
-        ]
+        ],
+        "startTime": "09:30"
       },
       {
         "id": "item-2026-10-19-03",
@@ -1662,7 +1795,8 @@ export const itinerary = [
           {
             "text": "票面固定時間"
           }
-        ]
+        ],
+        "startTime": "11:30"
       },
       {
         "id": "item-2026-10-19-04",
@@ -1738,7 +1872,18 @@ export const itinerary = [
           {
             "text": "Renfe ALVIA 2087 Confort · 14:38 抵達 · 已購票"
           }
-        ]
+        ],
+        "startTime": "11:04",
+        "transport": {
+          "role": "transfer",
+          "kind": "train",
+          "service": "ALVIA 2087 · Confort",
+          "status": "confirmed",
+          "originPlaceId": "grx-granada-railway-station",
+          "destinationPlaceId": "mad-madrid-puerta-de-atocha",
+          "departureTime": "11:04",
+          "arrivalTime": "14:38"
+        }
       },
       {
         "id": "item-2026-10-20-03",
@@ -1806,7 +1951,8 @@ export const itinerary = [
           {
             "text": "目前待購票"
           }
-        ]
+        ],
+        "startTime": "10:00"
       },
       {
         "id": "item-2026-10-21-02",
@@ -1856,7 +2002,8 @@ export const itinerary = [
           {
             "text": "目前待購票"
           }
-        ]
+        ],
+        "startTime": "10:00"
       },
       {
         "id": "item-2026-10-22-02",
@@ -2031,7 +2178,8 @@ export const itinerary = [
           {
             "text": "可選；先確認行李寄放與機場交通"
           }
-        ]
+        ],
+        "startTime": "09:00"
       },
       {
         "id": "item-2026-10-25-02",
@@ -2064,7 +2212,17 @@ export const itinerary = [
           {
             "text": "已確認"
           }
-        ]
+        ],
+        "startTime": "21:45",
+        "transport": {
+          "role": "flight",
+          "kind": "flight",
+          "service": "EK144",
+          "status": "confirmed",
+          "originPlaceId": "mad-madrid-barajas-airport",
+          "destinationPlaceId": "dxb-dubai-airport",
+          "departureTime": "21:45"
+        }
       }
     ],
     "tags": [

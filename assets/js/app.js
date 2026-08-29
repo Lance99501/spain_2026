@@ -109,6 +109,7 @@ async function bootstrap(){
     initTodayMode({
       itinerary:data.itinerary,
       places:data.places,
+      hotels:data.hotels,
       tickets:data.tickets,
       config:data.config,
       ticketController,

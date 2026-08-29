@@ -162,7 +162,7 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
     render();
   }));
 
-  function showDay(dayId){
+  function resetView(){
     activeCity='all';
     activeFilter='all';
     expandState=false;
@@ -176,6 +176,15 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
     syncCityCards('all');
     if(initialFilter) setFilterState(initialFilter);
     render();
+  }
+
+  function showAll(){
+    resetView();
+    document.getElementById('itinerary')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  function showDay(dayId){
+    resetView();
 
     const day=document.querySelector(`.day[data-day-id="${CSS.escape(dayId)}"]`);
     if(!day) return;
@@ -189,5 +198,5 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
   }
 
   render();
-  return {render,showDay};
+  return {render,showDay,showAll};
 }
