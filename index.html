@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/app-shell.css">
   <link rel="stylesheet" href="assets/css/today.css">
   <link rel="stylesheet" href="assets/css/map.css">
   <link rel="stylesheet" href="assets/css/itinerary.css">
@@ -109,7 +110,7 @@
       <div class="empty" id="empty" hidden>找不到符合條件的行程。</div>
     </section>
 
-    <section class="section">
+    <section class="section" id="hotelsSection">
       <div class="section-head"><h2>住宿｜Hotels</h2><p>只顯示旅途中需要的公開資訊。</p></div>
       <div class="hotel-grid" id="hotels"></div>
     </section>
@@ -119,6 +120,15 @@
     </footer>
     <button type="button" class="city-return" id="cityReturnBtn" aria-label="回到城市快速切換" title="回到城市快速切換"><span aria-hidden="true">↑</span></button>
   </main>
+
+  <nav class="app-bottom-nav" id="appBottomNav" aria-label="主要導覽">
+    <div class="app-bottom-nav-inner">
+      <button type="button" class="app-nav-btn active" data-nav-target="today" aria-pressed="true" aria-current="page"><span aria-hidden="true">◎</span><b>今日</b></button>
+      <button type="button" class="app-nav-btn" data-nav-target="map" aria-pressed="false" aria-current="false"><span aria-hidden="true">⌖</span><b>地圖</b></button>
+      <button type="button" class="app-nav-btn" data-nav-target="trip" aria-pressed="false" aria-current="false"><span aria-hidden="true">≡</span><b>行程</b></button>
+      <button type="button" class="app-nav-btn" data-nav-target="stay" aria-pressed="false" aria-current="false"><span aria-hidden="true">⌂</span><b>住宿</b></button>
+    </div>
+  </nav>
 
   <div class="pwa-status" id="pwaStatus" role="status" aria-live="polite" hidden></div>
 

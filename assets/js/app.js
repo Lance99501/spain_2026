@@ -4,6 +4,7 @@ import {createTicketController} from './ticket.js';
 import {initItinerary} from './itinerary.js';
 import {initTodayMode} from './today.js';
 import {initPwa} from './pwa.js';
+import {initAppShell} from './app-shell.js';
 
 const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 
@@ -118,6 +119,7 @@ async function bootstrap(){
 
     initCountdown(data.config);
     initCityReturn();
+    initAppShell({itineraryController});
   }catch(error){
     console.error('Spain 2026 bootstrap failed',error);
 
