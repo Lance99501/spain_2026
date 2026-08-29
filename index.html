@@ -60,17 +60,7 @@
     <section class="section" id="mapSection">
       <div class="section-head">
         <div><h2>旅程地圖｜Trip Map</h2></div>
-        <div>
-          <p>住宿＋主要景點＋城際交通，一張圖快速掌握。</p>
-          <div class="place-language-control">
-            <button type="button" class="place-language-toggle" id="placeLanguageToggle" aria-pressed="false">
-              <span class="lang-mark">文A</span>
-              <span data-lang-choice="zh">中</span>
-              <i aria-hidden="true">⇄</i>
-              <span data-lang-choice="original">原</span>
-            </button>
-          </div>
-        </div>
+        <p>住宿＋主要景點＋城際交通，一張圖快速掌握。</p>
       </div>
       <div class="map-panel">
         <div class="map-toolbar" id="mapToolbar" role="group" aria-label="地圖城市篩選">
@@ -143,6 +133,13 @@
     </footer>
     <button type="button" class="city-return" id="cityReturnBtn" aria-label="回到城市快速切換" title="回到城市快速切換"><span aria-hidden="true">↑</span></button>
   </main>
+
+  <button type="button" class="place-language-toggle place-language-fab" id="placeLanguageToggle" aria-pressed="false">
+    <span class="place-language-fab-mark" aria-hidden="true">文A</span>
+    <span class="place-language-fab-face" data-lang-choice="zh">中</span>
+    <span class="place-language-fab-face" data-lang-choice="original">原</span>
+    <span class="place-language-fab-ring" aria-hidden="true">↻</span>
+  </button>
 
   <nav class="app-bottom-nav" id="appBottomNav" aria-label="主要導覽">
     <div class="app-bottom-nav-inner">

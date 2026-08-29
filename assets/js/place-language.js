@@ -60,7 +60,10 @@ function updateToggle(){
   button.querySelectorAll('[data-lang-choice]').forEach(node=>{
     const active=node.dataset.langChoice===mode;
     node.classList.toggle('active',active);
+    node.setAttribute('aria-hidden',String(!active));
   });
+
+  button.classList.toggle('original-mode',mode==='original');
 }
 
 export function setPlaceLanguageMode(next,{animate=true,persist=true}={}){
@@ -80,6 +83,17 @@ export function setPlaceLanguageMode(next,{animate=true,persist=true}={}){
 
 export function getPlaceLanguageMode(){return mode;}
 
+export function renderPlaceBilingual(place,{fallbackText=''}={}){
+  if(!place?.displayName){
+    return '<span class="poi-bilingual-single">'+escapeHtml(fallbackText||place?.name||'')+'</span>';
+  }
+
+  return '<span class="poi-bilingual" data-place-id="'+escapeHtml(place.id||'')+'">'
+    +'<span class="poi-bilingual-name poi-bilingual-zh">'+escapeHtml(place.displayName)+'</span>'
+    +'<span class="poi-bilingual-name poi-bilingual-original">'+escapeHtml(place.name)+'</span>'
+    +'</span>';
+}
+
 export function renderPlaceName(place,{fallbackText=''}={}){
   if(!place?.displayName) return escapeHtml(fallbackText||place?.name||'');
   const current=mode==='original'?place.name:place.displayName;
@@ -98,6 +112,11 @@ export function initPlaceLanguage(){
   const button=document.getElementById('placeLanguageToggle');
   updateToggle();
   button?.addEventListener('click',()=>{
+    button.classList.remove('is-switching');
+    requestAnimationFrame(()=>{
+      button.classList.add('is-switching');
+      window.setTimeout(()=>button.classList.remove('is-switching'),260);
+    });
     setPlaceLanguageMode(mode==='zh'?'original':'zh',{animate:true,persist:true});
   });
   return {getMode:getPlaceLanguageMode,setMode:setPlaceLanguageMode};

@@ -1,4 +1,4 @@
-import {renderPlaceName,refreshPlaceLanguageNames} from './place-language.js';
+import {renderPlaceBilingual} from './place-language.js';
 const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 
 const MAIN_CITY_GROUPS={
@@ -86,7 +86,7 @@ export function initTripMap({places,mapConfig}){
 
   function popupHtml(place){
     return `<div class="popup-kicker">${place.city} · ${statusLabel[place.status]||''}</div>
-      <div class="popup-title">${renderPlaceName(place)}</div>
+      <div class="popup-title popup-title-bilingual">${renderPlaceBilingual(place)}</div>
       <div class="popup-sub">${place.dates||''}${place.address?'<br>'+place.address:''}</div>
       <a class="popup-link" target="_blank" rel="noopener" href="${googleSearch(place.name+' '+place.city)}">↗ Google Maps</a>`;
   }
@@ -97,7 +97,6 @@ export function initTripMap({places,mapConfig}){
       zIndexOffset:place.status==='hotel'?1000:(place.status==='confirmed'?500:0),
       riseOnHover:true
     }).bindPopup(()=>popupHtml(place));
-    marker.on('popupopen',()=>refreshPlaceLanguageNames({animate:false}));
 
     markerByPlaceId.set(place.id,marker);
     markerLayer.addLayer(marker);

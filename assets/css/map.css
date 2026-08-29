@@ -10,6 +10,38 @@
 .leaflet-popup-content{margin:14px 16px;min-width:190px}
 .popup-kicker{font-size:.68rem;color:#7e887f;letter-spacing:.05em;margin-bottom:3px}
 .popup-title{font-weight:800;font-size:.95rem;margin-bottom:4px}
+.popup-title-bilingual .poi-bilingual{
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+}
+.popup-title-bilingual .poi-bilingual-name{
+  display:block;
+  transition:font-size .18s ease,color .18s ease,font-weight .18s ease,opacity .18s ease;
+}
+html[data-place-lang="zh"] .popup-title-bilingual .poi-bilingual-zh,
+html[data-place-lang="original"] .popup-title-bilingual .poi-bilingual-original{
+  order:1;
+  color:#26322b;
+  font-size:.98rem;
+  font-weight:850;
+  line-height:1.3;
+}
+html[data-place-lang="zh"] .popup-title-bilingual .poi-bilingual-original,
+html[data-place-lang="original"] .popup-title-bilingual .poi-bilingual-zh{
+  order:2;
+  color:#7a847c;
+  font-size:.7rem;
+  font-weight:600;
+  line-height:1.35;
+  opacity:.92;
+}
+.popup-title-bilingual .poi-bilingual-single{
+  display:block;
+  color:#26322b;
+  font-size:.95rem;
+  font-weight:800;
+}
 .popup-sub{font-size:.76rem;color:#707a72;margin-bottom:9px}
 .popup-link{display:inline-flex;align-items:center;gap:5px;text-decoration:none;background:#e7eee8;border:1px solid #ccd9cf;border-radius:999px;padding:6px 9px;font-size:.74rem;font-weight:700;color:#34443a}
 .jp-marker{width:30px;height:30px;border-radius:50% 50% 50% 8px;transform:rotate(-45deg);display:grid;place-items:center;border:2px solid rgba(255,255,255,.95);box-shadow:0 4px 10px rgba(30,40,34,.2)}
