@@ -175,7 +175,14 @@
 .transport-service span{display:block;font-size:.69rem;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .transport-service i{display:block;color:var(--sage);font-style:normal;font-size:1.05rem;line-height:1.1}
 .transport-service small{display:block;color:var(--muted);font-size:.62rem}
-.transport-ticket-actions{display:flex;gap:7px;flex-wrap:wrap;padding:0 12px 12px}
+.transport-ticket-actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  padding:14px 12px 14px;
+  border-top:1px solid var(--line);
+  background:rgba(255,254,251,.7);
+}
 .today-mini-action{
   min-height:36px;
   border:1px solid var(--sage);

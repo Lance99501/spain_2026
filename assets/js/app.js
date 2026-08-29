@@ -8,14 +8,18 @@ import {initAppShell} from './app-shell.js';
 import {initHotels} from './hotels.js';
 import {initDemoMode} from './demo.js';
 
-function initCountdown(config){
+function initCountdown(config,demoContext){
   const now=new Date();
-  const today=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate());
 
   const dateUtc=value=>{
     const [y,m,d]=value.split('-').map(Number);
     return Date.UTC(y,m-1,d);
   };
+
+  const actualToday=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate());
+  const today=demoContext?.isDemo&&demoContext.previewDate
+    ?dateUtc(demoContext.previewDate)
+    :actualToday;
 
   const depart=dateUtc(config.departDate);
   const spainStart=dateUtc(config.spainStartDate);
@@ -31,9 +35,10 @@ function initCountdown(config){
   }else if(today===depart){
     c.textContent='DEPART';
     ct.textContent='今晚 23:50 從 TPE 出發';
-  }else if(today<=end){
-    c.textContent='DAY '+(Math.floor((today-spainStart)/oneDay)+1);
-    ct.textContent='西班牙旅行進行中';
+  }else if(today>=spainStart&&today<=end){
+    const tripDay=Math.floor((today-spainStart)/oneDay)+1;
+    c.textContent='DAY '+tripDay;
+    ct.textContent=`西班牙旅程第 ${tripDay} / 17 天`;
   }else{
     c.textContent='17 DAYS';
     ct.textContent='Spain 2026 · 完成';
@@ -83,6 +88,13 @@ async function bootstrap(){
       config:data.config
     });
 
+    const demoDay=demoContext?.isDemo
+      ?data.itinerary.find(day=>day.date===demoContext.previewDate)
+      :null;
+    if(demoDay){
+      itineraryController.setCity(demoDay.city,{behavior:'auto'});
+    }
+
     const hotelsController=initHotels({
       hotels:data.hotels,
       places:data.places,
@@ -101,7 +113,7 @@ async function bootstrap(){
       itineraryController
     });
 
-    initCountdown(data.config);
+    initCountdown(data.config,demoContext);
     initCityReturn();
     initAppShell({itineraryController,hotelsController});
   }catch(error){

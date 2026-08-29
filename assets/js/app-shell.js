@@ -19,6 +19,9 @@ export function initAppShell({itineraryController,hotelsController}={}){
     });
   }
 
+  let manualTarget=null;
+  let manualTimer=0;
+
   buttons.forEach(button=>button.addEventListener('click',()=>{
     const name=button.dataset.navTarget;
     const target=targets[name];
@@ -27,6 +30,10 @@ export function initAppShell({itineraryController,hotelsController}={}){
     if(name==='trip') itineraryController?.ensureCity?.();
     if(name==='stay') hotelsController?.ensureCity?.();
 
+    manualTarget=name;
+    window.clearTimeout(manualTimer);
+    manualTimer=window.setTimeout(()=>{manualTarget=null;requestUpdate();},1100);
+
     setActive(name);
     target.scrollIntoView({behavior:'smooth',block:'start'});
   }));
@@ -34,6 +41,12 @@ export function initAppShell({itineraryController,hotelsController}={}){
   let frame=0;
   function updateActive(){
     frame=0;
+
+    if(manualTarget){
+      setActive(manualTarget);
+      return;
+    }
+
     const marker=window.scrollY+window.innerHeight*.38;
     const ordered=['today','map','trip','stay'];
     let active='today';
@@ -41,6 +54,14 @@ export function initAppShell({itineraryController,hotelsController}={}){
     for(const name of ordered){
       const target=targets[name];
       if(target&&target.offsetTop<=marker) active=name;
+    }
+
+    const stayRect=targets.stay?.getBoundingClientRect();
+    const nearPageBottom=window.scrollY+window.innerHeight>=document.documentElement.scrollHeight-80;
+    if(stayRect&&stayRect.top<=window.innerHeight*.68){
+      active='stay';
+    }else if(nearPageBottom){
+      active='stay';
     }
 
     setActive(active);
