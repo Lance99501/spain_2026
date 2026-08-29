@@ -148,10 +148,17 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
 
   function syncCityCards(city){
     const mainCity=city==='Cordoba'?'Sevilla':city==='Segovia'?'Madrid':city==='Sitges'?'Barcelona':city;
+
     document.querySelectorAll('.city-card[data-city]').forEach(card=>{
       const selected=mainCity!=='all'&&card.dataset.city===mainCity;
       card.classList.toggle('active',selected);
       card.setAttribute('aria-pressed',String(selected));
+    });
+
+    document.querySelectorAll('.city-dock-btn[data-dock-city]').forEach(button=>{
+      const selected=mainCity!=='all'&&button.dataset.dockCity===mainCity;
+      button.classList.toggle('active',selected);
+      button.setAttribute('aria-pressed',String(selected));
     });
   }
 
@@ -161,6 +168,56 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
     syncCityCards(activeCity);
     render();
   }));
+
+  const cityDock=document.getElementById('cityDock');
+  const citySwitchSection=document.getElementById('citySwitchSection');
+  let dockFrame=0;
+
+  function setDockVisible(visible){
+    if(!cityDock) return;
+    cityDock.classList.toggle('show',visible);
+    cityDock.setAttribute('aria-hidden',String(!visible));
+    cityDock.inert=!visible;
+    document.body.classList.toggle('city-dock-visible',visible);
+  }
+
+  function updateDockVisibility(){
+    dockFrame=0;
+    if(!cityDock||!citySwitchSection) return;
+    const rect=citySwitchSection.getBoundingClientRect();
+    setDockVisible(rect.bottom<=8);
+  }
+
+  function requestDockUpdate(){
+    if(dockFrame) return;
+    dockFrame=requestAnimationFrame(updateDockVisibility);
+  }
+
+  window.addEventListener('scroll',requestDockUpdate,{passive:true});
+  window.addEventListener('resize',requestDockUpdate);
+  updateDockVisibility();
+
+  document.querySelectorAll('.city-dock-btn[data-dock-city]').forEach(button=>{
+    button.addEventListener('click',()=>{
+      const city=button.dataset.dockCity;
+      if(!city) return;
+
+      activeCity=city;
+      activeFilter='all';
+      expandState=false;
+
+      if(search) search.value='';
+      if(expandAll){
+        expandAll.textContent='展開全部';
+        expandAll.setAttribute('aria-pressed','false');
+      }
+      if(initialFilter) setFilterState(initialFilter);
+
+      syncCityCards(activeCity);
+      render();
+      document.getElementById('itinerary')?.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
 
   function resetView(){
     activeCity='all';

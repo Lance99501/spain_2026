@@ -1,3 +1,80 @@
+/* Floating city switch: appears after the original city cards leave the top of the page. */
+.city-dock{
+  position:fixed;
+  top:calc(env(safe-area-inset-top) + 8px);
+  left:50%;
+  z-index:1400;
+  width:min(680px,calc(100vw - 28px));
+  opacity:0;
+  pointer-events:none;
+  transform:translate(-50%,-12px);
+  transition:opacity .18s ease,transform .18s ease;
+}
+.city-dock.show{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+.city-dock-inner{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:4px;
+  padding:5px;
+  border:1px solid rgba(222,223,215,.92);
+  border-radius:18px;
+  background:rgba(255,254,251,.94);
+  box-shadow:0 12px 32px rgba(58,72,62,.14);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+.city-dock-btn{
+  min-width:0;
+  min-height:50px;
+  border:0;
+  border-radius:13px;
+  background:transparent;
+  color:var(--ink);
+  padding:6px 5px 5px;
+  text-align:center;
+}
+.city-dock-btn b{
+  display:block;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:.74rem;
+  line-height:1.12;
+}
+.city-dock-btn small{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:.61rem;
+  line-height:1;
+  white-space:nowrap;
+}
+.city-dock-btn.active{
+  background:var(--sage-soft);
+  box-shadow:inset 0 0 0 1px rgba(120,146,129,.48);
+}
+.city-dock-btn.active small{color:var(--sage)}
+body.city-dock-visible .tools{top:calc(env(safe-area-inset-top) + 72px)}
+#itinerary{scroll-margin-top:calc(env(safe-area-inset-top) + 78px)}
+@media (hover:hover) and (pointer:fine){
+  .city-dock-btn:hover{background:rgba(230,238,231,.55)}
+}
+@media (max-width:480px){
+  .city-dock{top:calc(env(safe-area-inset-top) + 6px);width:calc(100vw - 16px)}
+  .city-dock-inner{gap:3px;padding:4px;border-radius:16px}
+  .city-dock-btn{min-height:48px;padding:6px 3px 5px;border-radius:12px}
+  .city-dock-btn b{font-size:.68rem}
+  .city-dock-btn small{font-size:.57rem;margin-top:3px}
+  body.city-dock-visible .tools{top:calc(env(safe-area-inset-top) + 66px)}
+  #itinerary{scroll-margin-top:calc(env(safe-area-inset-top) + 72px)}
+}
+@media (max-width:340px){
+  .city-dock{width:calc(100vw - 10px)}
+  .city-dock-btn b{font-size:.64rem}
+  .city-dock-btn small{font-size:.54rem}
+}
+
 .city-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .city-card{background:var(--card);border:1px solid transparent;border-radius:24px;padding:0;text-align:left;min-width:0;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s;box-shadow:0 10px 28px rgba(58,72,62,.06)}
 .city-card.active{border-color:var(--sage)}
