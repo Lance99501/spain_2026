@@ -93,6 +93,7 @@ async function bootstrap(){
       hotels:data.hotels,
       tickets:data.tickets,
       config:data.config,
+      mapConfig:data.mapConfig,
       ticketController,
       itineraryController
     });
