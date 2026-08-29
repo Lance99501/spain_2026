@@ -301,9 +301,18 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
 
   daysRoot.style.touchAction='pan-y pinch-zoom';
 
+  let suppressSwipeClick=false;
+
+  daysRoot.addEventListener('click',event=>{
+    if(!suppressSwipeClick) return;
+    suppressSwipeClick=false;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  },true);
+
   daysRoot.addEventListener('pointerdown',event=>{
     if(swipeAnimating||event.button!==0) return;
-    if(event.target.closest('button,a,input')) return;
+    if(event.target.closest('a,input,select,textarea,.ticket-icon')) return;
 
     const rect=daysRoot.getBoundingClientRect();
     const localX=event.clientX-rect.left;
@@ -332,6 +341,7 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
     }
     if(!swipe.horizontal) return;
 
+    suppressSwipeClick=true;
     event.preventDefault();
     const limited=Math.max(-42,Math.min(42,dx*.28));
     daysRoot.style.transform=`translate3d(${limited}px,0,0)`;
@@ -352,7 +362,10 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
     daysRoot.style.transform='';
     daysRoot.style.opacity='';
 
-    if(!shouldMove) return;
+    if(!shouldMove){
+      window.setTimeout(()=>{suppressSwipeClick=false;},250);
+      return;
+    }
 
     const direction=dx<0?1:-1;
     const current=ensureCity();
