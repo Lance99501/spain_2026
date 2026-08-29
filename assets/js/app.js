@@ -4,6 +4,7 @@ import {createTicketController} from './ticket.js';
 import {initItinerary} from './itinerary.js';
 import {initTodayMode} from './today.js';
 import {initPwa} from './pwa.js';
+import {initAppRouter} from './router.js';
 
 const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 
@@ -69,6 +70,10 @@ function initCityReturn(){
   if(!btn||!target) return;
 
   function update(){
+    if(document.body.dataset.appView!=='trip'){
+      btn.classList.remove('show');
+      return;
+    }
     const threshold=target.offsetTop+target.offsetHeight;
     btn.classList.toggle('show',window.scrollY>threshold);
   }
@@ -79,14 +84,16 @@ function initCityReturn(){
 
   window.addEventListener('scroll',update,{passive:true});
   window.addEventListener('resize',update);
+  document.addEventListener('app:routechange',update);
   update();
 }
 
 async function bootstrap(){
   try{
     const data=await api.getBootstrapData();
+    const navigation=initAppRouter();
 
-    initTripMap({
+    const mapController=initTripMap({
       places:data.places,
       mapConfig:data.mapConfig
     });
@@ -103,7 +110,9 @@ async function bootstrap(){
       itinerary:data.itinerary,
       places:data.places,
       tickets:data.tickets,
-      ticketController
+      ticketController,
+      config:data.config,
+      navigation
     });
 
     initTodayMode({
@@ -115,6 +124,10 @@ async function bootstrap(){
       ticketController,
       itineraryController
     });
+
+    navigation.subscribe(route=>{
+      if(route.view==='map') mapController?.refresh?.();
+    },{immediate:true});
 
     initCountdown(data.config);
     initCityReturn();

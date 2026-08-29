@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/app-shell.css">
   <link rel="stylesheet" href="assets/css/today.css">
   <link rel="stylesheet" href="assets/css/map.css">
   <link rel="stylesheet" href="assets/css/itinerary.css">
@@ -23,7 +24,7 @@
   
 </head>
 <body>
-  <a class="skip-link" href="#itinerary">跳到每日行程</a>
+  <a class="skip-link" href="#appMain">跳到主要內容</a>
   <nav class="city-dock" id="cityDock" aria-label="快速切換城市" aria-hidden="true" inert>
     <div class="city-dock-inner">
       <button type="button" class="city-dock-btn" data-dock-city="Barcelona" aria-pressed="false"><b>Barcelona</b><small>10/09–14</small></button>
@@ -33,7 +34,8 @@
     </div>
   </nav>
 
-  <main class="shell">
+  <main class="shell" id="appMain">
+    <section class="app-view active" id="viewToday" data-app-view="today" aria-label="今日">
     <header class="hero">
       <div>
         <div class="eyebrow">SPAIN · 17 DAYS · 2026 AUTUMN</div>
@@ -53,6 +55,9 @@
       <div id="todayRoot"></div>
     </section>
 
+    </section>
+
+    <section class="app-view" id="viewMap" data-app-view="map" aria-label="旅程地圖" hidden>
     <section class="section" id="mapSection">
       <div class="section-head">
         <div><h2>旅程地圖｜Trip Map</h2></div>
@@ -82,8 +87,11 @@
       </div>
     </section>
 
+    </section>
+
+    <section class="app-view" id="viewTrip" data-app-view="trip" aria-label="行程" hidden>
     <section class="section" id="citySwitchSection">
-      <div class="section-head"><h2>城市快速切換</h2><p>點城市只篩選下方每日行程，不影響上方旅程地圖。</p></div>
+      <div class="section-head"><h2>城市快速切換</h2><p>點城市或在下方行程左右滑動切換，不影響旅程地圖。</p></div>
       <div class="city-grid" id="cityGrid" role="group" aria-label="城市快速切換">
         <button type="button" class="city-card" aria-pressed="false" data-city="Barcelona"><img src="assets/images/barcelona.jpg" alt="Barcelona · Park Güell 城市景觀"><span class="city-copy"><b>Barcelona</b><small>10/09–10/14 · + Sitges</small></span></button>
         <button type="button" class="city-card" aria-pressed="false" data-city="Sevilla"><img src="assets/images/sevilla.jpg" alt="Sevilla · Plaza de España 城市景觀"><span class="city-copy"><b>Sevilla</b><small>10/14–10/18 · + Córdoba</small></span></button>
@@ -105,10 +113,13 @@
         <button type="button" class="filter" aria-pressed="false" data-filter="flex">彈性</button>
         <button type="button" class="filter" aria-pressed="false" data-filter="rest">休息／緩衝</button>
       </div>
-      <div class="days" id="days"></div>
+      <div class="city-pager" id="cityPager" aria-label="城市行程，可左右滑動切換"><div class="city-pager-track" id="cityPagerTrack"></div></div>
       <div class="empty" id="empty" hidden>找不到符合條件的行程。</div>
     </section>
 
+    </section>
+
+    <section class="app-view" id="viewStay" data-app-view="stay" aria-label="住宿" hidden>
     <section class="section">
       <div class="section-head"><h2>住宿｜Hotels</h2><p>只顯示旅途中需要的公開資訊。</p></div>
       <div class="hotel-grid" id="hotels"></div>
@@ -117,8 +128,20 @@
     <footer>
       資料基準：Notion 最新旅伴行程＋已確認 Reservation，更新基準 2026/08/27。10/16 Sevilla → Córdoba 去程 iryo 06097、10/18 Sevilla → Granada ALSA，以及 10/20 Granada → Madrid ALVIA 2087 均採最新已確認狀態；訂單號、付款與票券私人資訊未放入本頁。
     </footer>
+    </section>
+    </section>
+
     <button type="button" class="city-return" id="cityReturnBtn" aria-label="回到城市快速切換" title="回到城市快速切換"><span aria-hidden="true">↑</span></button>
   </main>
+
+  <nav class="app-bottom-nav" id="appBottomNav" aria-label="主要導覽">
+    <div class="app-bottom-nav-inner">
+      <button type="button" class="app-nav-btn active" data-nav-view="today" aria-pressed="true" aria-current="page"><span aria-hidden="true">◎</span><b>今日</b></button>
+      <button type="button" class="app-nav-btn" data-nav-view="map" aria-pressed="false" aria-current="false"><span aria-hidden="true">⌖</span><b>地圖</b></button>
+      <button type="button" class="app-nav-btn" data-nav-view="trip" aria-pressed="false" aria-current="false"><span aria-hidden="true">≡</span><b>行程</b></button>
+      <button type="button" class="app-nav-btn" data-nav-view="stay" aria-pressed="false" aria-current="false"><span aria-hidden="true">⌂</span><b>住宿</b></button>
+    </div>
+  </nav>
 
   <div class="pwa-status" id="pwaStatus" role="status" aria-live="polite" hidden></div>
 

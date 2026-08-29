@@ -18,6 +18,7 @@ export function initTripMap({places,mapConfig}){
   const markerLayer=L.layerGroup().addTo(map);
   const routeLayer=L.layerGroup().addTo(map);
   const markerByPlaceId=new Map();
+  let activeMapCity='all';
   const statusLabel={confirmed:'已確認',pending:'待確認',hotel:'住宿',flex:'彈性',transport:'交通'};
   const markerText={confirmed:'確',pending:'待',hotel:'宿',flex:'遊',transport:'移'};
 
@@ -67,6 +68,7 @@ export function initTripMap({places,mapConfig}){
   }
 
   function fitPlaces(city='all'){
+    activeMapCity=city;
     const selected=city==='all'
       ? mapPlaces
       : mapPlaces.filter(place=>place.city===city||(city==='Barcelona'&&place.city==='Sitges'));
@@ -105,5 +107,12 @@ export function initTripMap({places,mapConfig}){
     fitPlaces(btn.dataset.mapcity);
   }));
 
-  return {map,fitPlaces};
+  function refresh(){
+    setTimeout(()=>{
+      map.invalidateSize();
+      fitPlaces(activeMapCity);
+    },60);
+  }
+
+  return {map,fitPlaces,refresh};
 }

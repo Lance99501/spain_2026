@@ -1,7 +1,7 @@
 .pwa-status{
   position:fixed;
   left:50%;
-  bottom:max(14px,calc(env(safe-area-inset-bottom) + 14px));
+  bottom:max(88px,calc(env(safe-area-inset-bottom) + 88px));
   z-index:2400;
   transform:translateX(-50%);
   max-width:calc(100vw - 28px);
