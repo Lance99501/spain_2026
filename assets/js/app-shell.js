@@ -1,4 +1,4 @@
-export function initAppShell({itineraryController,hotelsController}={}){
+export function initAppShell({itineraryController,hotelsController,mapController}={}){
   const nav=document.getElementById('appBottomNav');
   if(!nav) return;
 
@@ -29,6 +29,7 @@ export function initAppShell({itineraryController,hotelsController}={}){
 
     if(name==='trip') itineraryController?.ensureCity?.();
     if(name==='stay') hotelsController?.ensureCity?.();
+    if(name!=='map') mapController?.lockInteraction?.();
 
     manualTarget=name;
     window.clearTimeout(manualTimer);

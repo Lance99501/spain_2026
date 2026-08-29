@@ -69,7 +69,7 @@ async function bootstrap(){
     const data=await api.getBootstrapData();
     const demoContext=initDemoMode({itinerary:data.itinerary});
 
-    initTripMap({
+    const mapController=initTripMap({
       places:data.places,
       mapConfig:data.mapConfig
     });
@@ -115,7 +115,7 @@ async function bootstrap(){
 
     initCountdown(data.config,demoContext);
     initCityReturn();
-    initAppShell({itineraryController,hotelsController});
+    initAppShell({itineraryController,hotelsController,mapController});
   }catch(error){
     console.error('Spain 2026 bootstrap failed',error);
 
