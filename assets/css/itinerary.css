@@ -167,3 +167,39 @@ footer{margin-top:26px;padding:18px 0 8px;border-top:1px solid var(--line);font-
   .city-card .city-copy{padding:9px 9px 11px}
   .day-main{grid-template-columns:47px minmax(0,1fr) 16px;padding-left:8px}
 }
+
+#days{
+  will-change:transform,opacity;
+}
+#days.city-swipe-out-left{
+  transition:transform .12s ease,opacity .12s ease;
+  transform:translate3d(-28px,0,0);
+  opacity:0;
+}
+#days.city-swipe-out-right{
+  transition:transform .12s ease,opacity .12s ease;
+  transform:translate3d(28px,0,0);
+  opacity:0;
+}
+#days.city-swipe-in-right{animation:city-swipe-in-right .2s cubic-bezier(.22,.8,.25,1)}
+#days.city-swipe-in-left{animation:city-swipe-in-left .2s cubic-bezier(.22,.8,.25,1)}
+#days.city-swipe-bump-left{animation:city-swipe-bump-left .18s ease}
+#days.city-swipe-bump-right{animation:city-swipe-bump-right .18s ease}
+
+@keyframes city-swipe-in-right{
+  from{transform:translate3d(28px,0,0);opacity:.35}
+  to{transform:translate3d(0,0,0);opacity:1}
+}
+@keyframes city-swipe-in-left{
+  from{transform:translate3d(-28px,0,0);opacity:.35}
+  to{transform:translate3d(0,0,0);opacity:1}
+}
+@keyframes city-swipe-bump-left{
+  50%{transform:translate3d(-10px,0,0)}
+}
+@keyframes city-swipe-bump-right{
+  50%{transform:translate3d(10px,0,0)}
+}
+@media (prefers-reduced-motion:reduce){
+  #days{animation:none!important;transition:none!important}
+}

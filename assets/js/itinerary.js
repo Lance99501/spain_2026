@@ -38,7 +38,8 @@ export function renderSegments(segments,item,placeById,ticketById,{allowTicket=t
   return html;
 }
 
-export function initItinerary({itinerary,places,tickets,ticketController}){
+export function initItinerary({itinerary,places,tickets,ticketController,config}){
+  const CITY_ORDER=['Barcelona','Sevilla','Granada','Madrid'];
   const daysRoot=document.getElementById('days');
   const search=document.getElementById('search');
   const empty=document.getElementById('empty');
@@ -50,6 +51,33 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
   let activeCity='all';
   let activeFilter='all';
   let expandState=false;
+  let swipeAnimating=false;
+
+  function dateInTimeZone(timeZone){
+    const formatter=new Intl.DateTimeFormat('en-US',{
+      timeZone,
+      year:'numeric',
+      month:'2-digit',
+      day:'2-digit'
+    });
+    const parts=Object.fromEntries(
+      formatter.formatToParts(new Date())
+        .filter(part=>part.type!=='literal')
+        .map(part=>[part.type,part.value])
+    );
+    return `${parts.year}-${parts.month}-${parts.day}`;
+  }
+
+  function mainCity(city){
+    return city==='Cordoba'?'Sevilla':city==='Segovia'?'Madrid':city==='Sitges'?'Barcelona':city;
+  }
+
+  function getDefaultCity(){
+    const today=dateInTimeZone(config?.timeZone||'Europe/Madrid');
+    const day=itinerary.find(entry=>entry.date===today);
+    const city=mainCity(day?.city);
+    return CITY_ORDER.includes(city)?city:'Barcelona';
+  }
 
   function render(){
     const term=(search?.value||'').trim().toLowerCase();
@@ -147,16 +175,16 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
   });
 
   function syncCityCards(city){
-    const mainCity=city==='Cordoba'?'Sevilla':city==='Segovia'?'Madrid':city==='Sitges'?'Barcelona':city;
+    const resolvedCity=mainCity(city);
 
     document.querySelectorAll('.city-card[data-city]').forEach(card=>{
-      const selected=mainCity!=='all'&&card.dataset.city===mainCity;
+      const selected=resolvedCity!=='all'&&card.dataset.city===resolvedCity;
       card.classList.toggle('active',selected);
       card.setAttribute('aria-pressed',String(selected));
     });
 
     document.querySelectorAll('.city-dock-btn[data-dock-city]').forEach(button=>{
-      const selected=mainCity!=='all'&&button.dataset.dockCity===mainCity;
+      const selected=resolvedCity!=='all'&&button.dataset.dockCity===resolvedCity;
       button.classList.toggle('active',selected);
       button.setAttribute('aria-pressed',String(selected));
     });
@@ -202,7 +230,6 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
       const city=button.dataset.dockCity;
       if(!city) return;
 
-      activeCity=city;
       activeFilter='all';
       expandState=false;
 
@@ -213,11 +240,136 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
       }
       if(initialFilter) setFilterState(initialFilter);
 
-      syncCityCards(activeCity);
-      render();
-      document.getElementById('itinerary')?.scrollIntoView({behavior:'smooth',block:'start'});
+      setCity(city,{scroll:true});
     });
   });
+
+  function setCity(city,{scroll=false,direction=0}={}){
+    const resolvedCity=mainCity(city);
+    if(!CITY_ORDER.includes(resolvedCity)) return false;
+
+    const apply=()=>{
+      activeCity=resolvedCity;
+      syncCityCards(activeCity);
+      render();
+
+      if(direction!==0&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        const incoming=direction>0?'city-swipe-in-right':'city-swipe-in-left';
+        daysRoot.classList.add(incoming);
+        window.setTimeout(()=>daysRoot.classList.remove(incoming),220);
+      }
+
+      if(scroll){
+        document.getElementById('itinerary')?.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    };
+
+    if(direction===0||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      apply();
+      return true;
+    }
+
+    if(swipeAnimating) return false;
+    swipeAnimating=true;
+    const outgoing=direction>0?'city-swipe-out-left':'city-swipe-out-right';
+    daysRoot.classList.add(outgoing);
+
+    window.setTimeout(()=>{
+      daysRoot.classList.remove(outgoing);
+      apply();
+      swipeAnimating=false;
+    },120);
+
+    return true;
+  }
+
+  function ensureCity(){
+    if(CITY_ORDER.includes(activeCity)) return activeCity;
+    const city=getDefaultCity();
+    setCity(city);
+    return city;
+  }
+
+  function adjacentCity(direction){
+    const city=ensureCity();
+    const index=CITY_ORDER.indexOf(city);
+    const next=Math.max(0,Math.min(CITY_ORDER.length-1,index+direction));
+    return CITY_ORDER[next];
+  }
+
+  let swipe=null;
+
+  daysRoot.style.touchAction='pan-y pinch-zoom';
+
+  daysRoot.addEventListener('pointerdown',event=>{
+    if(swipeAnimating||event.button!==0) return;
+    if(event.target.closest('button,a,input')) return;
+
+    const rect=daysRoot.getBoundingClientRect();
+    const localX=event.clientX-rect.left;
+    if(localX<24||localX>rect.width-24) return;
+
+    swipe={
+      id:event.pointerId,
+      startX:event.clientX,
+      startY:event.clientY,
+      lastX:event.clientX,
+      startedAt:performance.now(),
+      horizontal:null
+    };
+    daysRoot.setPointerCapture?.(event.pointerId);
+  });
+
+  daysRoot.addEventListener('pointermove',event=>{
+    if(!swipe||event.pointerId!==swipe.id) return;
+
+    const dx=event.clientX-swipe.startX;
+    const dy=event.clientY-swipe.startY;
+    swipe.lastX=event.clientX;
+
+    if(swipe.horizontal===null&&Math.max(Math.abs(dx),Math.abs(dy))>8){
+      swipe.horizontal=Math.abs(dx)>Math.abs(dy)*1.2;
+    }
+    if(!swipe.horizontal) return;
+
+    event.preventDefault();
+    const limited=Math.max(-42,Math.min(42,dx*.28));
+    daysRoot.style.transform=`translate3d(${limited}px,0,0)`;
+    daysRoot.style.opacity=String(Math.max(.82,1-Math.abs(limited)/260));
+  });
+
+  function finishSwipe(event){
+    if(!swipe||event.pointerId!==swipe.id) return;
+
+    const dx=swipe.lastX-swipe.startX;
+    const elapsed=Math.max(1,performance.now()-swipe.startedAt);
+    const velocity=Math.abs(dx)/elapsed;
+    const width=daysRoot.clientWidth||1;
+    const horizontal=swipe.horizontal===true;
+    const shouldMove=horizontal&&(Math.abs(dx)>Math.min(76,width*.18)||velocity>.55);
+
+    swipe=null;
+    daysRoot.style.transform='';
+    daysRoot.style.opacity='';
+
+    if(!shouldMove) return;
+
+    const direction=dx<0?1:-1;
+    const current=ensureCity();
+    const target=adjacentCity(direction);
+    if(target===current){
+      daysRoot.classList.add(direction>0?'city-swipe-bump-left':'city-swipe-bump-right');
+      window.setTimeout(()=>{
+        daysRoot.classList.remove('city-swipe-bump-left','city-swipe-bump-right');
+      },180);
+      return;
+    }
+
+    setCity(target,{direction});
+  }
+
+  daysRoot.addEventListener('pointerup',finishSwipe);
+  daysRoot.addEventListener('pointercancel',finishSwipe);
 
   function resetView(){
     activeCity='all';
@@ -255,5 +407,5 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
   }
 
   render();
-  return {render,showDay,showAll};
+  return {render,showDay,showAll,setCity,ensureCity,getActiveCity:()=>activeCity};
 }
