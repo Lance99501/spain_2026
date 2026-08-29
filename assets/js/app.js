@@ -7,6 +7,7 @@ import {initPwa} from './pwa.js';
 import {initAppShell} from './app-shell.js';
 import {initHotels} from './hotels.js';
 import {initDemoMode} from './demo.js';
+import {initPlaceLanguage} from './place-language.js';
 
 function initCountdown(config,demoContext){
   const now=new Date();
@@ -127,5 +128,6 @@ async function bootstrap(){
   }
 }
 
+initPlaceLanguage();
 initPwa();
 bootstrap();

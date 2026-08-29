@@ -1,5 +1,6 @@
 import {escapeHtml,renderSegments} from './itinerary.js';
 import {initTodayWeather} from './weather.js';
+import {renderPlaceName} from './place-language.js';
 
 const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 
@@ -110,7 +111,8 @@ function buildMoments(day,placeById){
         minutes:arrival,
         type:'arrival',
         item,
-        label:destination?`抵達 ${destination.name}`:'抵達目的地'
+        label:destination?`抵達 ${destination.name}`:'抵達目的地',
+        place:destination||null
       });
     }
   });
@@ -143,7 +145,7 @@ function renderTransport(day,placeById,ticketById){
         return `<div class="transport-leg ${escapeHtml(leg.status||'')}">
           <a class="transport-place" href="${origin?placeMapsUrl(origin):'#'}" ${origin?'target="_blank" rel="noopener"':''}>
             <small>FROM</small>
-            <b>${escapeHtml(origin?.name||'待確認')}</b>
+            <b>${origin?renderPlaceName(origin):'待確認'}</b>
             <strong>${escapeHtml(dep)}</strong>
           </a>
 
@@ -155,7 +157,7 @@ function renderTransport(day,placeById,ticketById){
 
           <a class="transport-place end" href="${destination?placeMapsUrl(destination):'#'}" ${destination?'target="_blank" rel="noopener"':''}>
             <small>TO</small>
-            <b>${escapeHtml(destination?.name||'待確認')}</b>
+            <b>${destination?renderPlaceName(destination):'待確認'}</b>
             <strong>${escapeHtml(arr)}</strong>
           </a>
         </div>`;
@@ -320,7 +322,9 @@ export function initTodayMode({
     const diff=next.minutes-clock.minutes;
     const title=next.type==='item'
       ?renderSegments(next.item.segments,next.item,placeById,ticketById,{allowTicket:false})
-      :escapeHtml(next.label);
+      :next.place
+        ?`抵達 ${renderPlaceName(next.place)}`
+        :escapeHtml(next.label);
 
     nextNode.innerHTML=`<b>${escapeHtml(String(Math.floor(next.minutes/60)).padStart(2,'0'))}:${escapeHtml(String(next.minutes%60).padStart(2,'0'))}</b>
       <p>${title}</p>

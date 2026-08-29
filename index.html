@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="assets/css/demo.css">
   <link rel="stylesheet" href="assets/css/today.css">
   <link rel="stylesheet" href="assets/css/map.css">
+  <link rel="stylesheet" href="assets/css/place-language.css">
   <link rel="stylesheet" href="assets/css/itinerary.css">
   <link rel="stylesheet" href="assets/css/ticket.css">
   <link rel="stylesheet" href="assets/css/pwa.css">
@@ -59,7 +60,17 @@
     <section class="section" id="mapSection">
       <div class="section-head">
         <div><h2>旅程地圖｜Trip Map</h2></div>
-        <p>住宿＋主要景點＋城際交通，一張圖快速掌握。</p>
+        <div>
+          <p>住宿＋主要景點＋城際交通，一張圖快速掌握。</p>
+          <div class="place-language-control">
+            <button type="button" class="place-language-toggle" id="placeLanguageToggle" aria-pressed="false">
+              <span class="lang-mark">文A</span>
+              <span data-lang-choice="zh">中</span>
+              <i aria-hidden="true">⇄</i>
+              <span data-lang-choice="original">原</span>
+            </button>
+          </div>
+        </div>
       </div>
       <div class="map-panel">
         <div class="map-toolbar" id="mapToolbar" role="group" aria-label="地圖城市篩選">

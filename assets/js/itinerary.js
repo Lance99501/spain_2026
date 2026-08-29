@@ -1,3 +1,4 @@
+import {renderPlaceName} from './place-language.js';
 export function escapeHtml(text){
   return String(text).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 }
@@ -24,7 +25,10 @@ export function renderSegments(segments,item,placeById,ticketById,{allowTicket=t
 
     if(anchoredTicket) anchoredTicketRendered=true;
 
-    const inner=escapeHtml(segment.text)+crown+(anchoredTicket?ticketButton(ticket):'');
+    const segmentName=place
+      ?renderPlaceName(place,{fallbackText:segment.text})
+      :escapeHtml(segment.text);
+    const inner=segmentName+crown+(anchoredTicket?ticketButton(ticket):'');
     return place?.unesco?`<span class="poi-annotated">${inner}</span>`:inner;
   }).join('');
 
@@ -98,7 +102,10 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
       day.sub,
       ...day.items.flatMap(item=>[
         item.time,
-        ...item.segments.map(x=>x.text),
+        ...item.segments.flatMap(x=>{
+          const place=x.placeId?placeById.get(x.placeId):null;
+          return [x.text,place?.displayName||'',place?.name||''];
+        }),
         ...(item.noteSegments||[]).map(x=>x.text)
       ]),
       ...day.tags.map(x=>x.text),
