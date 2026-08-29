@@ -80,13 +80,23 @@
             </span>
           </div>
         </div>
-        <div id="tripMap" role="region" aria-label="西班牙旅行互動地圖"></div>
+        <div class="map-stage" id="mapStage">
+          <div id="tripMap" role="region" aria-label="西班牙旅行互動地圖"></div>
+          <div class="map-interaction-guard" id="mapInteractionGuard">
+            <button type="button" class="map-guard-activate" id="mapGuardActivate" aria-label="啟用地圖操作">
+              <span aria-hidden="true">⌖</span>
+              <b>點一下操作地圖</b>
+              <small>上下滑動可直接捲動頁面</small>
+            </button>
+          </div>
+          <button type="button" class="map-interaction-done" id="mapInteractionDone" hidden>✓ 完成</button>
+        </div>
         <div class="map-note">地圖底圖使用 OpenStreetMap。跨城市的連線只表示旅行順序，不代表實際鐵道路線；點任一標記可直接開 Google Maps。</div>
       </div>
     </section>
 
     <section class="section" id="citySwitchSection">
-      <div class="section-head"><h2>城市快速切換</h2><p>點城市或直接左右滑動下方行程切換，不影響上方旅程地圖。</p></div>
+      <div class="section-head"><h2>城市快速切換</h2><p>點城市或直接左右滑動下方行程切換；旅程地圖與住宿會同步目前城市。</p></div>
       <div class="city-grid" id="cityGrid" role="group" aria-label="城市快速切換">
         <button type="button" class="city-card" aria-pressed="false" data-city="Barcelona"><img src="assets/images/barcelona.jpg" alt="Barcelona · Park Güell 城市景觀"><span class="city-copy"><b>Barcelona</b><small>10/09–10/14 · + Sitges</small></span></button>
         <button type="button" class="city-card" aria-pressed="false" data-city="Sevilla"><img src="assets/images/sevilla.jpg" alt="Sevilla · Plaza de España 城市景觀"><span class="city-copy"><b>Sevilla</b><small>10/14–10/18 · + Córdoba</small></span></button>
