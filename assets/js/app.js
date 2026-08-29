@@ -6,6 +6,7 @@ import {initTodayMode} from './today.js';
 import {initPwa} from './pwa.js';
 import {initAppShell} from './app-shell.js';
 import {initHotels} from './hotels.js';
+import {initDemoMode} from './demo.js';
 
 function initCountdown(config){
   const now=new Date();
@@ -61,6 +62,7 @@ function initCityReturn(){
 async function bootstrap(){
   try{
     const data=await api.getBootstrapData();
+    const demoContext=initDemoMode({itinerary:data.itinerary});
 
     initTripMap({
       places:data.places,
@@ -94,6 +96,7 @@ async function bootstrap(){
       tickets:data.tickets,
       config:data.config,
       mapConfig:data.mapConfig,
+      demoContext,
       ticketController,
       itineraryController
     });

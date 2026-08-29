@@ -197,6 +197,7 @@ export function initTodayMode({
   tickets,
   config,
   mapConfig,
+  demoContext,
   ticketController,
   itineraryController
 }){
@@ -205,7 +206,7 @@ export function initTodayMode({
   if(!section||!root) return {visible:false};
 
   const params=new URLSearchParams(window.location.search);
-  const previewDate=params.get('previewDate');
+  const previewDate=demoContext?.previewDate||params.get('previewDate');
   const validPreview=previewDate&&/^\d{4}-\d{2}-\d{2}$/.test(previewDate)
     &&itinerary.some(day=>day.date===previewDate);
 
@@ -223,7 +224,7 @@ export function initTodayMode({
   const placeById=new Map(places.map(place=>[place.id,place]));
   const ticketById=new Map(tickets.map(ticket=>[ticket.id,ticket]));
   const timeZone=day.timeZone||config.timeZone||'Europe/Madrid';
-  const previewTime=params.get('previewTime');
+  const previewTime=demoContext?.previewTime||params.get('previewTime');
   const effectivePreviewTime=validPreview&&/^\d{2}:\d{2}$/.test(previewTime||'')
     ?previewTime
     :validPreview?'12:00':null;
@@ -234,7 +235,7 @@ export function initTodayMode({
     .map(id=>ticketById.get(id))
     .filter(Boolean);
   const hotelEntry=resolveHotel(day,hotels,placeById);
-  const badge=validPreview?'PREVIEW':'TODAY';
+  const badge=demoContext?.isDemo?'DEMO':validPreview?'PREVIEW':'TODAY';
 
   root.innerHTML=`<article class="today-card" data-day-id="${escapeHtml(day.id)}">
     <div class="today-head">
@@ -292,7 +293,9 @@ export function initTodayMode({
     mapConfig,
     previewDate:validPreview?previewDate:null,
     previewTime:effectivePreviewTime,
-    isPreview:validPreview
+    isPreview:validPreview,
+    weatherMode:demoContext?.weatherMode||'trip',
+    isDemo:demoContext?.isDemo===true
   });
 
   const moments=buildMoments(day,placeById);

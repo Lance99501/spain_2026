@@ -136,7 +136,9 @@ function renderUnavailable(root,location,message){
   </div>`;
 }
 
-export function initTodayWeather({root,day,mapConfig,previewDate=null,previewTime=null,isPreview=false}){
+export function initTodayWeather({
+  root,day,mapConfig,previewDate=null,previewTime=null,isPreview=false,weatherMode='trip',isDemo=false
+}){
   if(!root) return {destroy(){}};
 
   const location=resolveLocation(day,mapConfig);
@@ -160,16 +162,17 @@ export function initTodayWeather({root,day,mapConfig,previewDate=null,previewTim
     }
 
     const localToday=dateInTimeZone(new Date(),location.timeZone);
-    const targetDate=previewDate||localToday;
+    const currentMode=weatherMode==='current';
+    const targetDate=currentMode?localToday:(previewDate||localToday);
     const delta=daysBetween(localToday,targetDate);
 
-    if(isPreview&&(delta<0||delta>15)){
+    if(!currentMode&&isPreview&&(delta<0||delta>15)){
       renderUnavailable(root,location,'此日期尚未進入約 16 天的天氣預報範圍。');
       return;
     }
 
     root.innerHTML=`<div class="weather-compact weather-loading">
-      <div class="weather-kicker">WEATHER · ${escapeHtml(location.label)}</div>
+      <div class="weather-kicker">WEATHER${currentMode?' CURRENT':''} · ${escapeHtml(location.label)}</div>
       <div class="weather-message">正在取得天氣…</div>
     </div>`;
 
@@ -183,9 +186,11 @@ export function initTodayWeather({root,day,mapConfig,previewDate=null,previewTim
       if(!response.ok) throw new Error(`Weather HTTP ${response.status}`);
 
       const data=await response.json();
-      const targetTime=isPreview
-        ?(previewTime||'12:00')
-        :(data.current?.time?.slice(11,16)||'12:00');
+      const targetTime=currentMode
+        ?(data.current?.time?.slice(11,16)||'12:00')
+        :isPreview
+          ?(previewTime||'12:00')
+          :(data.current?.time?.slice(11,16)||'12:00');
       const hours=hourlyWindow(data,targetDate,targetTime);
       const daily=dailyFor(data,targetDate);
 
@@ -195,7 +200,7 @@ export function initTodayWeather({root,day,mapConfig,previewDate=null,previewTim
       }
 
       const currentHour=hours[0];
-      const useCurrent=!isPreview&&data.current?.time?.startsWith(targetDate);
+      const useCurrent=(currentMode||!isPreview)&&data.current?.time?.startsWith(targetDate);
       const temp=useCurrent?data.current.temperature_2m:currentHour.temp;
       const apparent=useCurrent?data.current.apparent_temperature:currentHour.apparent;
       const code=useCurrent?data.current.weather_code:currentHour.code;
@@ -206,7 +211,7 @@ export function initTodayWeather({root,day,mapConfig,previewDate=null,previewTim
 
       root.innerHTML=`<div class="weather-compact">
         <div class="weather-kicker">
-          <span>WEATHER · ${escapeHtml(location.label)}</span>
+          <span>${isDemo?'DEMO · ':''}WEATHER${currentMode?' CURRENT':''} · ${escapeHtml(location.label)}</span>
           <small>Open-Meteo</small>
         </div>
         <div class="weather-summary">
