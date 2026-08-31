@@ -1,120 +1,99 @@
-function b64ToBytes(value){
-  const bin=atob(value);
-  return Uint8Array.from(bin,c=>c.charCodeAt(0));
+const DRIVE_FILE_ID_PATTERN=/^[A-Za-z0-9_-]{10,}$/;
+
+export function driveFileUrl(fileId){
+  if(!DRIVE_FILE_ID_PATTERN.test(fileId||'')){
+    throw new Error('invalid-drive-file-id');
+  }
+  return `https://drive.google.com/file/d/${encodeURIComponent(fileId)}/view`;
 }
 
-async function decryptTicket(payload,password){
-  const keyMaterial=await crypto.subtle.importKey(
-    'raw',
-    new TextEncoder().encode(password),
-    'PBKDF2',
-    false,
-    ['deriveKey']
+function createDriveLink(ticket,fileId,index,total){
+  const link=document.createElement('a');
+  link.className='ticket-drive-link';
+  link.href=driveFileUrl(fileId);
+  link.target='_blank';
+  link.rel='noopener noreferrer';
+  link.referrerPolicy='no-referrer';
+  link.setAttribute(
+    'aria-label',
+    `在 Google Drive 開啟 ${ticket.label}${total>1?`，票券 ${index+1}`:''}`
   );
 
-  const key=await crypto.subtle.deriveKey(
-    {name:'PBKDF2',salt:b64ToBytes(payload.salt),iterations:150000,hash:'SHA-256'},
-    keyMaterial,
-    {name:'AES-GCM',length:256},
-    false,
-    ['decrypt']
-  );
+  const icon=document.createElement('span');
+  icon.className='ticket-drive-icon';
+  icon.setAttribute('aria-hidden','true');
+  icon.textContent='▤';
 
-  const plain=await crypto.subtle.decrypt(
-    {name:'AES-GCM',iv:b64ToBytes(payload.iv)},
-    key,
-    b64ToBytes(payload.ct)
-  );
+  const copy=document.createElement('span');
+  copy.className='ticket-drive-copy';
 
-  return new TextDecoder().decode(plain);
+  const title=document.createElement('b');
+  title.textContent=total>1?`票券 ${index+1}`:'開啟 PDF 票券';
+
+  const hint=document.createElement('small');
+  hint.textContent='Google Drive 會確認目前帳戶的存取權限';
+
+  const arrow=document.createElement('span');
+  arrow.className='ticket-drive-arrow';
+  arrow.setAttribute('aria-hidden','true');
+  arrow.textContent='↗';
+
+  copy.append(title,hint);
+  link.append(icon,copy,arrow);
+  return link;
 }
 
-export function createTicketController({tickets,encryptedTickets,sessionMinutes=5}){
+export function createTicketController({tickets,ticketDriveFileIds={}}){
   const ticketById=new Map(tickets.map(ticket=>[ticket.id,ticket]));
 
   const ticketModal=document.getElementById('ticketModal');
   const ticketClose=document.getElementById('ticketClose');
-  const ticketUnlockForm=document.getElementById('ticketUnlockForm');
-  const ticketPassword=document.getElementById('ticketPassword');
-  const ticketError=document.getElementById('ticketError');
-  const ticketResult=document.getElementById('ticketResult');
-  const ticketQr=document.getElementById('ticketQr');
-  const ticketResultTitle=document.getElementById('ticketResultTitle');
-  const ticketOpenLink=document.getElementById('ticketOpenLink');
+  const ticketModalTitle=document.getElementById('ticketModalTitle');
   const ticketModalSub=document.getElementById('ticketModalSub');
-
-  const SESSION_KEY='spain2026_ticket_unlock_v1';
-  const SESSION_MS=sessionMinutes*60*1000;
+  const ticketResultTitle=document.getElementById('ticketResultTitle');
+  const ticketDriveStatus=document.getElementById('ticketDriveStatus');
+  const ticketDriveList=document.getElementById('ticketDriveList');
 
   let activeTicket=null;
   let returnFocusElement=null;
 
-  function getSession(){
-    try{
-      const raw=sessionStorage.getItem(SESSION_KEY);
-      if(!raw) return null;
-      const value=JSON.parse(raw);
-
-      if(!value?.password||!value?.expiresAt||Date.now()>=value.expiresAt){
-        sessionStorage.removeItem(SESSION_KEY);
-        return null;
-      }
-
-      return value;
-    }catch{
-      sessionStorage.removeItem(SESSION_KEY);
-      return null;
-    }
-  }
-
-  function saveSession(password){
-    sessionStorage.setItem(SESSION_KEY,JSON.stringify({
-      password,
-      expiresAt:Date.now()+SESSION_MS
-    }));
-  }
-
-  function clearSession(){
-    sessionStorage.removeItem(SESSION_KEY);
-  }
-
   function reset(){
-    ticketUnlockForm?.reset();
-    if(ticketUnlockForm) ticketUnlockForm.style.display='grid';
-    if(ticketError) ticketError.textContent='';
-    ticketResult?.classList.remove('show');
-    if(ticketQr) ticketQr.innerHTML='';
-    ticketOpenLink?.removeAttribute('href');
-  }
-
-  async function showResult(password){
-    if(!activeTicket) throw new Error('ticket-not-selected');
-
-    const payload=encryptedTickets[activeTicket.id];
-    if(!payload) throw new Error('ticket-payload-not-found');
-
-    const url=await decryptTicket(payload,password);
-
-    if(ticketError) ticketError.textContent='';
-    if(ticketUnlockForm) ticketUnlockForm.style.display='none';
-    ticketResult?.classList.add('show');
-    if(ticketResultTitle) ticketResultTitle.textContent=activeTicket.label;
-    if(ticketOpenLink) ticketOpenLink.href=url;
-    if(ticketQr) ticketQr.innerHTML='';
-
-    if(window.QRCode&&ticketQr){
-      new QRCode(ticketQr,{
-        text:url,
-        width:220,
-        height:220,
-        correctLevel:QRCode.CorrectLevel.M
-      });
-    }else if(ticketQr){
-      ticketQr.textContent='QR 元件載入失敗，請使用下方連結。';
+    ticketDriveList?.replaceChildren();
+    if(ticketDriveStatus){
+      ticketDriveStatus.className='ticket-drive-status';
+      ticketDriveStatus.textContent='';
     }
   }
 
-  async function open(ticketId){
+  function render(){
+    reset();
+    if(!activeTicket) return;
+
+    const fileIds=ticketDriveFileIds[activeTicket.id]||[];
+    if(ticketModalTitle) ticketModalTitle.textContent='Google Drive 票券';
+    if(ticketModalSub) ticketModalSub.textContent=activeTicket.label;
+    if(ticketResultTitle) ticketResultTitle.textContent=activeTicket.label;
+
+    if(!fileIds.length){
+      if(ticketDriveStatus){
+        ticketDriveStatus.classList.add('missing');
+        ticketDriveStatus.textContent='此票券尚未同步到 Google Drive。';
+      }
+      return;
+    }
+
+    if(ticketDriveStatus){
+      ticketDriveStatus.textContent=navigator.onLine===false
+        ?'目前處於離線狀態；開啟票券需要網路或 Google Drive 的離線檔案。'
+        :'檔案維持原有 Drive 權限；請使用已獲授權的 Google 帳戶開啟。';
+    }
+
+    fileIds.forEach((fileId,index)=>{
+      ticketDriveList?.append(createDriveLink(activeTicket,fileId,index,fileIds.length));
+    });
+  }
+
+  function open(ticketId){
     activeTicket=ticketById.get(ticketId)||null;
     if(!activeTicket){
       console.error('Unknown ticketId',ticketId);
@@ -122,29 +101,15 @@ export function createTicketController({tickets,encryptedTickets,sessionMinutes=
     }
 
     returnFocusElement=document.activeElement instanceof HTMLElement?document.activeElement:null;
-    reset();
+    render();
     ticketModal?.classList.add('open');
     ticketModal?.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
 
-    const session=getSession();
-    if(session){
-      if(ticketModalSub) ticketModalSub.textContent=activeTicket.label+`｜已解鎖，${sessionMinutes} 分鐘內免再輸入`;
-      if(ticketUnlockForm) ticketUnlockForm.style.display='none';
-      if(ticketError) ticketError.textContent='正在載入票券…';
-
-      try{
-        await showResult(session.password);
-        setTimeout(()=>ticketOpenLink?.focus(),0);
-        return;
-      }catch{
-        clearSession();
-        reset();
-      }
-    }
-
-    if(ticketModalSub) ticketModalSub.textContent=activeTicket.label+'｜輸入老婆生日後顯示 QR Code';
-    setTimeout(()=>ticketPassword?.focus(),80);
+    setTimeout(()=>{
+      const firstLink=ticketDriveList?.querySelector('a[href]');
+      (firstLink||ticketClose)?.focus();
+    },0);
   }
 
   function close(){
@@ -157,6 +122,7 @@ export function createTicketController({tickets,encryptedTickets,sessionMinutes=
       returnFocusElement.focus();
     }
     returnFocusElement=null;
+    activeTicket=null;
   }
 
   ticketClose?.addEventListener('click',close);
@@ -176,7 +142,7 @@ export function createTicketController({tickets,encryptedTickets,sessionMinutes=
     if(event.key!=='Tab') return;
 
     const focusable=[...ticketModal.querySelectorAll(
-      'button:not([disabled]), input:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+      'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
     )].filter(element=>element.offsetParent!==null);
 
     if(!focusable.length){
@@ -196,25 +162,5 @@ export function createTicketController({tickets,encryptedTickets,sessionMinutes=
     }
   });
 
-  ticketUnlockForm?.addEventListener('submit',async event=>{
-    event.preventDefault();
-    if(ticketError) ticketError.textContent='解鎖中…';
-
-    try{
-      const password=ticketPassword.value;
-      await showResult(password);
-      saveSession(password);
-      setTimeout(()=>ticketOpenLink?.focus(),0);
-
-      if(ticketModalSub){
-        ticketModalSub.textContent=activeTicket.label+`｜已解鎖，${sessionMinutes} 分鐘內免再輸入`;
-      }
-    }catch{
-      clearSession();
-      if(ticketError) ticketError.textContent='密碼錯誤，請再試一次。';
-      ticketPassword?.select();
-    }
-  });
-
-  return {open,close,clearSession};
+  return {open,close};
 }

@@ -1,4 +1,4 @@
-const CACHE_VERSION='spain2026-20260831-v19';
+const CACHE_VERSION='spain2026-20260831-v20';
 const APP_CACHE=`${CACHE_VERSION}-app`;
 const RUNTIME_CACHE=`${CACHE_VERSION}-runtime`;
 const TILE_CACHE=`${CACHE_VERSION}-tiles`;
@@ -40,8 +40,7 @@ const APP_SHELL=[
 
 const OPTIONAL_EXTERNAL=[
   'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css',
-  'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js',
-  'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js'
+  'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js'
 ];
 
 self.addEventListener('install',event=>{

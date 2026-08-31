@@ -4,7 +4,7 @@ import {
   hotels,
   tickets,
   itinerary,
-  encryptedTickets,
+  ticketDriveFileIds,
   mapConfig
 } from '../../data/trip-data.js';
 
@@ -35,7 +35,21 @@ function validateRelations(data){
     for(const placeId of ticket.placeIds||[]){
       if(!placeIds.has(placeId)) throw new Error(`Ticket ${ticket.id} references unknown place ${placeId}`);
     }
-    if(!data.encryptedTickets[ticket.id]) throw new Error(`Missing encrypted payload for ticket ${ticket.id}`);
+  }
+
+  for(const [ticketId,fileIds] of Object.entries(data.ticketDriveFileIds)){
+    if(!ticketIds.has(ticketId)) throw new Error(`Drive mapping references unknown ticket ${ticketId}`);
+    if(!Array.isArray(fileIds)||!fileIds.length){
+      throw new Error(`Drive mapping ${ticketId} must contain at least one file ID`);
+    }
+    if(new Set(fileIds).size!==fileIds.length){
+      throw new Error(`Drive mapping ${ticketId} contains duplicate file IDs`);
+    }
+    for(const fileId of fileIds){
+      if(!/^[A-Za-z0-9_-]{10,}$/.test(fileId)){
+        throw new Error(`Drive mapping ${ticketId} contains invalid file ID`);
+      }
+    }
   }
 
   for(const day of data.itinerary){
@@ -72,17 +86,17 @@ export const api = {
   async getTickets(){ return tickets; },
   async getItinerary(){ return itinerary; },
   async getMapConfig(){ return mapConfig; },
-  async getEncryptedTickets(){ return encryptedTickets; },
+  async getTicketDriveFileIds(){ return ticketDriveFileIds; },
 
   async getBootstrapData(){
-    const [config,placeData,hotelData,ticketData,itineraryData,map,ticketPayloads]=await Promise.all([
+    const [config,placeData,hotelData,ticketData,itineraryData,map,driveFileIds]=await Promise.all([
       this.getTripConfig(),
       this.getPlaces(),
       this.getHotels(),
       this.getTickets(),
       this.getItinerary(),
       this.getMapConfig(),
-      this.getEncryptedTickets()
+      this.getTicketDriveFileIds()
     ]);
 
     return validateRelations({
@@ -92,7 +106,7 @@ export const api = {
       tickets:ticketData,
       itinerary:itineraryData,
       mapConfig:map,
-      encryptedTickets:ticketPayloads
+      ticketDriveFileIds:driveFileIds
     });
   }
 };
