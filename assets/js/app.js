@@ -78,8 +78,7 @@ async function bootstrap(){
 
     const ticketController=createTicketController({
       tickets:data.tickets,
-      encryptedTickets:data.encryptedTickets,
-      sessionMinutes:data.config.ticketSessionMinutes
+      ticketDriveFileIds:data.ticketDriveFileIds
     });
 
     const itineraryController=initItinerary({

@@ -5,8 +5,7 @@
 export const tripConfig = {
   "departDate": "2026-10-08",
   "spainStartDate": "2026-10-09",
-  "endDate": "2026-10-25",
-  "ticketSessionMinutes": 5
+  "endDate": "2026-10-25"
 };
 
 export const places = [
@@ -672,7 +671,7 @@ export const tickets = [
     "id": "tkt-emirates-outbound",
     "label": "Emirates｜TPE → DXB → BCN",
     "kind": "flight",
-    "type": "qr",
+    "type": "drive",
     "status": "confirmed",
     "placeIds": [
       "tpe-taoyuan-airport",
@@ -687,7 +686,7 @@ export const tickets = [
     "placeIds": [
       "bcn-basilica-de-la-sagrada-familia"
     ],
-    "type": "qr",
+    "type": "drive",
     "status": "confirmed"
   },
   {
@@ -697,7 +696,7 @@ export const tickets = [
     "placeIds": [
       "bcn-park-guell"
     ],
-    "type": "qr",
+    "type": "drive",
     "status": "confirmed"
   },
   {
@@ -707,7 +706,7 @@ export const tickets = [
     "placeIds": [
       "bcn-casa-batllo"
     ],
-    "type": "qr",
+    "type": "drive",
     "status": "confirmed"
   },
   {
@@ -718,7 +717,7 @@ export const tickets = [
       "bcn-barcelona-sants",
       "sev-sevilla-santa-justa"
     ],
-    "type": "qr",
+    "type": "drive",
     "status": "confirmed"
   },
   {
@@ -728,7 +727,7 @@ export const tickets = [
     "placeIds": [
       "sev-real-alcazar-de-sevilla"
     ],
-    "type": "qr",
+    "type": "drive",
     "status": "confirmed"
   },
   {
@@ -738,7 +737,7 @@ export const tickets = [
     "placeIds": [
       "sev-catedral-de-sevilla-giralda"
     ],
-    "type": "qr",
+    "type": "drive",
     "status": "confirmed"
   },
   {
@@ -749,7 +748,7 @@ export const tickets = [
       "sev-sevilla-santa-justa",
       "cor-cordoba-central"
     ],
-    "type": "qr",
+    "type": "drive",
     "status": "confirmed"
   },
   {
@@ -760,7 +759,7 @@ export const tickets = [
       "sev-sevilla-plaza-de-armas-bus-station",
       "grx-granada-bus-station"
     ],
-    "type": "qr",
+    "type": "drive",
     "status": "confirmed"
   },
   {
@@ -771,7 +770,7 @@ export const tickets = [
       "grx-alhambra",
       "grx-palacios-nazaries"
     ],
-    "type": "qr",
+    "type": "drive",
     "status": "confirmed"
   },
   {
@@ -782,14 +781,14 @@ export const tickets = [
       "grx-granada-railway-station",
       "mad-madrid-puerta-de-atocha"
     ],
-    "type": "qr",
+    "type": "drive",
     "status": "confirmed"
   },
   {
     "id": "tkt-emirates-return",
     "label": "Emirates｜Madrid → Dubai → Taipei",
     "kind": "flight",
-    "type": "qr",
+    "type": "drive",
     "status": "confirmed",
     "placeIds": [
       "mad-madrid-barajas-airport",
@@ -2286,67 +2285,45 @@ export const itinerary = [
   }
 ];
 
-export const encryptedTickets = {
-  "tkt-emirates-outbound": {
-    "salt": "Gz71GtgfXdWdqcgtYttMDg==",
-    "iv": "nk8qbIsDHdYSyG45",
-    "ct": "0di963hz6dYgD9AEmw6F9sG9am1FF77i+iVO68R7brGTKTWV4wmHMv1k2DSP6HXy7hkqjFnD6yu2vCtI4fruZakpvO/sULj6RE7UxFDmQ3ddreLdOTE="
-  },
-  "tkt-sagrada": {
-    "salt": "fJrevGLAcvi9GkUQW4yYRQ==",
-    "iv": "8moyVtmYNx7otI52",
-    "ct": "hxdaXEnttKMoMLb8vuHW7Bkfx8Qtm03Pxd+zE7zX87MZRZy05RJq2gV0YLBK+ZhPoxJjBJi3ZBL7z8nz87f0RAKfr1XURa//MDRtwQ=="
-  },
-  "tkt-park-guell": {
-    "salt": "L43VXwotFO/m9Mje9ZBKMg==",
-    "iv": "6QOrIs2TQkix2jPV",
-    "ct": "UBI/we+Ifkn0PUyF4c9QL1P8rbNEunuWA8dliypVtX1X7Eqck+AhDHuGfOAP/TI29GQEVrg5ftM2hg6mmhZRSwnFoaXpG+aiYyvCDMyD4A=="
-  },
-  "tkt-casa-batllo": {
-    "salt": "C5wKGvc8pFJ6xgf4/jOzhw==",
-    "iv": "vAbWyCDRKv8VhEge",
-    "ct": "PueNR3cZRT7NBIUG86jtDkvksCO7sgHFiG9I5XsFTw4IKeotDUWiWNlQmfZZmJMyGTNxJoz/fm4jP5h9NbJeqQZNOJ4y+ItB9B0MBYMJOlI="
-  },
-  "tkt-ave-bcn-sevilla": {
-    "salt": "pqZOzrDEC/rf13q59nk6UQ==",
-    "iv": "+VEQM4DluyRoz/mZ",
-    "ct": "+PUdHgz5EfhHZGFh5BJ/i1RLhOjyMPYlBBNnWG81E+QdKgrwsPuLf9NIgxoa0Aj2zVoHaXLnjPa2iI0MJG/HtJXvPSQbOUn6AzsfMl7lxhmSbFYp"
-  },
-  "tkt-sevilla-alcazar": {
-    "salt": "4/ctb22fYKDsyIsLZwWLwA==",
-    "iv": "yAVlVq2dQferREob",
-    "ct": "f2ylE4JdZIuzqTjO5kTSkIKuixjtNbefuv771w3slFy7ewiGaopV0v9St2+nP/WQ+HQOJ2EkoizH8OxxQqCT3oouzyN+dlIgwLy+bfDxdZY4IN5s"
-  },
-  "tkt-sevilla-catedral": {
-    "salt": "QpF5uDmwUWzGpXi4CE+hIA==",
-    "iv": "s13OLBkODqiVhHYk",
-    "ct": "JDu7DNmxdDyHSmcqh5JJb5lz1+/35F3VOXABqfVfkjAqebUdomObQxycAfsIoCTu2stXiARhVjan9FACIqA3BRHfAX/xSp/mOGm/pwFowVMTz5Kmqg=="
-  },
-  "tkt-iryo-cordoba": {
-    "salt": "pi5EujtVEOqrqc8Dfrcmnw==",
-    "iv": "xUSP1qxsRTu045dB",
-    "ct": "qGYZ0hu7t5kNxNR9Njv341U+eADI3K8jtyjXCQnGwND4JDyDXUVCVT29HIdE2+h5LnEiVr0NWS2Ix+HXoO5qFImzpd1R5uEG5qsRp2JW4lWP"
-  },
-  "tkt-alsa-granada": {
-    "salt": "zZprcC9qf/ceqkW2rAcxWw==",
-    "iv": "8P1jh0oztckwKeIo",
-    "ct": "L4tWEjoybSu0jC0jYQwh80yPCSYzxxEI51xuHKei2bBjhS8NZCoMqKT+abNbnH8KCCcITnP7Pz7mxNQLoTWrs1eLRLxK4coj3uWeDOxrdV9F"
-  },
-  "tkt-alhambra": {
-    "salt": "mRe04dLlpUKo63AOmEMr7A==",
-    "iv": "MdCP6zsw7tnoxKQs",
-    "ct": "OBx6bbgSgUV0sJgOaz85H6gepOXNIUFP9ZLRb57wNHC++QOjuTFVa1Yd4G6Wl3wMMkGSGLcKsA824QyptthWmWfcl92Oz/ppejhyf0I="
-  },
-  "tkt-alvia-madrid": {
-    "salt": "CBadyyfRcY7cWcHrDYaEBQ==",
-    "iv": "Ne1Ey1SqQytO2qDI",
-    "ct": "Z/m7y9fypRzac60hVc8tAOc5YuAuONvNjad25eoAZvperI+x1HyI68SupGFvkuzJ0Z6r68ggWOcp3Q0mmWdbzysCdKJUGlxDFvfz9hPmK4Ic"
-  },
-  "tkt-emirates-return": {
-    "salt": "mkwgIUZ4ul2Z6ClsCFZMng==",
-    "iv": "VIgV5drIQEFyjz46",
-    "ct": "5LGAAKadPn4Z6aEVWYeEe/q3e/10imMSYBK8VOO9TUQV/TAWRCmNcsb9LXHeOMambgM592Vqn0wjnZWIryTZWjeP5pLkgsen+w+k/Uw15DFyfX8y"
-  }
+// Google Drive permissions remain the authorization boundary. These are opaque
+// file IDs only; the app never stores OAuth tokens or changes file sharing.
+export const ticketDriveFileIds = {
+  "tkt-emirates-outbound": [
+    "1gykqXZ5BFQHzEn0pr9s6ZRu9krhsC4-D",
+    "1XQsHdIYT2dqZOO5KrTNhIfXKpHYFlT3C"
+  ],
+  "tkt-sagrada": [
+    "1Q9GHOQrsRsH4PT8PbpbXnTLnu54gMlpE"
+  ],
+  "tkt-park-guell": [
+    "14Gnj9fU-XlooKNrY8hs3MUvMfh4QB3y1"
+  ],
+  "tkt-ave-bcn-sevilla": [
+    "1lJYQqZKDLVbdC34-zPquDzDBCgej9KG7"
+  ],
+  "tkt-sevilla-alcazar": [
+    "1eQsULkV0pYcmUu-YUDotHAkVSVj9mgyj"
+  ],
+  "tkt-sevilla-catedral": [
+    "1Mqn8SumEd0R7DJ4jiRK7tBG2-mlbyrfZ"
+  ],
+  "tkt-iryo-cordoba": [
+    "1q3602yB4fiTZyQWg5Q10Fi53M8Njuebb"
+  ],
+  "tkt-alsa-granada": [
+    "1qlDqSFryakHAELtK6UuIZ1Rilr1NDczj"
+  ],
+  "tkt-alhambra": [
+    "1zg83eAQ5iEN9z7AbAS_dsBYMv9yTF819",
+    "1mttMclav8ki3Ye--GRz6dO-j_50JFs_2"
+  ],
+  "tkt-alvia-madrid": [
+    "1-dT8a91z0mkKugfOb6sRRhfF2sF5tP7v"
+  ],
+  "tkt-emirates-return": [
+    "1gykqXZ5BFQHzEn0pr9s6ZRu9krhsC4-D",
+    "1XQsHdIYT2dqZOO5KrTNhIfXKpHYFlT3C"
+  ]
 };
 
 export const mapConfig = {

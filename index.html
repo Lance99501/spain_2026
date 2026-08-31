@@ -155,26 +155,19 @@
   <div class="ticket-modal" id="ticketModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="ticketModalTitle" aria-describedby="ticketModalSub">
     <div class="ticket-sheet">
       <div class="ticket-head">
-        <div><h3 id="ticketModalTitle">開啟票券</h3><p id="ticketModalSub">輸入老婆生日後顯示 QR Code</p></div>
+        <div><h3 id="ticketModalTitle">Google Drive 票券</h3><p id="ticketModalSub">選擇要開啟的票券檔案</p></div>
         <button type="button" class="ticket-close" id="ticketClose" aria-label="關閉">×</button>
       </div>
-      <form class="ticket-form" id="ticketUnlockForm">
-        <input class="ticket-password" id="ticketPassword" type="password" autocomplete="current-password" placeholder="老婆生日" aria-label="老婆生日">
-        <button class="ticket-unlock" type="submit">解鎖票券</button>
-        <p class="ticket-error" id="ticketError" aria-live="polite"></p>
-      </form>
       <div class="ticket-result" id="ticketResult">
-        <span class="ticket-demo">前端加密示範</span>
-        <div class="ticket-qr" id="ticketQr"></div>
+        <span class="ticket-drive-badge">GOOGLE DRIVE</span>
         <p class="ticket-result-title" id="ticketResultTitle"></p>
-        <p class="ticket-result-note">目前 QR 連結為示範資料；之後只需替換加密 payload，即可改成實際票券連結。</p>
-        <a class="ticket-open-link" id="ticketOpenLink" target="_blank" rel="noopener">開啟票券連結 ↗</a>
+        <p class="ticket-drive-status" id="ticketDriveStatus" role="status" aria-live="polite"></p>
+        <div class="ticket-drive-list" id="ticketDriveList"></div>
       </div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   
   <script type="module" src="assets/js/app.js"></script>
 </body>

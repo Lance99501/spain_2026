@@ -6,7 +6,7 @@ export function escapeHtml(text){
 
 function ticketButton(ticket){
   if(!ticket) return '';
-  return `<button type="button" class="ticket-icon" data-ticket-id="${escapeHtml(ticket.id)}" title="開啟票券 QR" aria-label="開啟 ${escapeHtml(ticket.label)} 票券 QR">🎫</button>`;
+  return `<button type="button" class="ticket-icon" data-ticket-id="${escapeHtml(ticket.id)}" title="開啟 Google Drive 票券" aria-label="開啟 ${escapeHtml(ticket.label)} Google Drive 票券">🎫</button>`;
 }
 
 export function renderSegments(segments,item,placeById,ticketById,{allowTicket=true}={}){

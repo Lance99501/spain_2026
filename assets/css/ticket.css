@@ -1,27 +1,34 @@
 .ticket-icon{display:inline-block;margin-left:4px;vertical-align:.06em;line-height:1;appearance:none;border:0;background:transparent;padding:0;font-size:.82em;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .ticket-icon:hover{transform:translateY(-1px)}
+.ticket-icon:focus-visible{outline:2px solid var(--sage);outline-offset:3px;border-radius:4px}
 .ticket-modal{position:fixed;inset:0;z-index:3000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(35,43,38,.48);backdrop-filter:blur(6px)}
 .ticket-modal.open{display:flex}
-.ticket-sheet{width:min(420px,100%);max-height:min(720px,calc(100dvh - 32px));overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:0 24px 70px rgba(27,36,30,.28);padding:18px}
+.ticket-sheet{width:min(460px,100%);max-height:min(720px,calc(100dvh - 32px));overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:0 24px 70px rgba(27,36,30,.28);padding:18px}
 .ticket-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
 .ticket-head h3{margin:0;font-size:1.05rem}
 .ticket-head p{margin:4px 0 0;color:var(--muted);font-size:.74rem}
 .ticket-close{flex:0 0 auto;width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--paper-2);color:var(--muted);font-size:1.15rem}
-.ticket-form{display:grid;gap:10px}
-.ticket-password{width:100%;min-height:48px;border:1px solid var(--line);border-radius:14px;background:var(--paper-2);color:var(--ink);padding:10px 12px;font-size:16px;outline:none}
-.ticket-password:focus{border-color:var(--sage);box-shadow:0 0 0 3px rgba(120,146,129,.12)}
-.ticket-unlock{min-height:48px;border:1px solid var(--sage);border-radius:14px;background:var(--sage-soft);color:var(--ink);font-weight:800}
-.ticket-error{min-height:1.2em;margin:0;color:#9a6157;font-size:.72rem}
-.ticket-result{display:none;text-align:center}
-.ticket-result.show{display:block}
-.ticket-demo{display:inline-block;margin:0 0 10px;padding:4px 8px;border-radius:999px;background:var(--sand);color:var(--muted);font-size:.68rem}
-.ticket-qr{width:244px;min-height:244px;margin:0 auto 12px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:18px;display:grid;place-items:center}
-.ticket-qr img,.ticket-qr canvas{max-width:220px!important;height:auto!important}
-.ticket-result-title{margin:0 0 4px;font-weight:800}
-.ticket-result-note{margin:0 0 12px;color:var(--muted);font-size:.72rem}
-.ticket-open-link{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:var(--paper-2);text-decoration:none;color:var(--sage);font-size:.76rem;font-weight:800}
+.ticket-result{text-align:left}
+.ticket-drive-badge{display:inline-flex;align-items:center;min-height:25px;margin-bottom:10px;padding:4px 9px;border:1px solid #d7ded8;border-radius:999px;background:#f4f7f4;color:#53675a;font-size:.64rem;font-weight:900;letter-spacing:.12em}
+.ticket-result-title{margin:0 0 5px;font-size:.98rem;font-weight:850}
+.ticket-drive-status{min-height:1.4em;margin:0 0 13px;color:var(--muted);font-size:.73rem;line-height:1.5}
+.ticket-drive-status.missing{margin:10px 0 2px;padding:13px 14px;border:1px dashed #cbbd9f;border-radius:14px;background:var(--sand);color:#78684c}
+.ticket-drive-list{display:grid;gap:9px}
+.ticket-drive-link{display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:11px;min-height:64px;padding:10px 12px;border:1px solid var(--line);border-radius:16px;background:var(--paper-2);text-decoration:none;color:var(--ink);transition:border-color .18s,transform .18s,box-shadow .18s}
+.ticket-drive-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#e6efe8,#f4ead4);color:#567461;font-size:1.1rem;font-weight:900}
+.ticket-drive-copy{min-width:0}
+.ticket-drive-copy b{display:block;font-size:.84rem}
+.ticket-drive-copy small{display:block;margin-top:2px;color:var(--muted);font-size:.67rem;line-height:1.35}
+.ticket-drive-arrow{color:var(--sage);font-size:1rem;font-weight:900}
+.ticket-drive-link:focus-visible{outline:3px solid rgba(120,146,129,.28);outline-offset:2px;border-color:var(--sage)}
+
+@media (hover:hover) and (pointer:fine){
+  .ticket-drive-link:hover{transform:translateY(-1px);border-color:var(--sage);box-shadow:0 8px 22px rgba(58,72,62,.08)}
+}
 
 @media (max-width:480px){
   .ticket-modal{align-items:flex-end;padding:10px 10px max(10px,env(safe-area-inset-bottom))}
   .ticket-sheet{width:100%;border-radius:22px 22px 18px 18px;max-height:88dvh}
+  .ticket-drive-link{grid-template-columns:38px minmax(0,1fr) auto;padding:9px 10px}
+  .ticket-drive-icon{width:36px;height:36px}
 }
