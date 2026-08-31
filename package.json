@@ -1,0 +1,19 @@
+{
+  "name": "spain-2026",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node tests/support/static-server.mjs",
+    "test": "npm run test:data && npm run test:smoke",
+    "test:data": "node --test tests/data-relations.test.mjs",
+    "test:smoke": "playwright test",
+    "test:smoke:headed": "playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
+  }
+}
