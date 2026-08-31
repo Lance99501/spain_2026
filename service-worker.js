@@ -1,4 +1,4 @@
-const CACHE_VERSION='spain2026-20260831-v20';
+const CACHE_VERSION='spain2026-20260831-v21';
 const APP_CACHE=`${CACHE_VERSION}-app`;
 const RUNTIME_CACHE=`${CACHE_VERSION}-runtime`;
 const TILE_CACHE=`${CACHE_VERSION}-tiles`;
@@ -7,7 +7,8 @@ const APP_SHELL=[
   './',
   './index.html',
   './manifest.webmanifest',
-  './assets/icons/app-icon.svg',
+  './assets/icons/app-icon-otter.png',
+  './assets/icons/app-icon-spain.png',
   './assets/css/base.css',
   './assets/css/layout.css',
   './assets/css/app-shell.css',
