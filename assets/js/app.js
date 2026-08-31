@@ -8,6 +8,7 @@ import {initAppShell} from './app-shell.js';
 import {initHotels} from './hotels.js';
 import {initDemoMode} from './demo.js';
 import {initPlaceLanguage} from './place-language.js';
+import {dateInDeviceTimeZone} from './device-time.js';
 
 function initCountdown(config,demoContext){
   const now=new Date();
@@ -17,7 +18,7 @@ function initCountdown(config,demoContext){
     return Date.UTC(y,m-1,d);
   };
 
-  const actualToday=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate());
+  const actualToday=dateUtc(dateInDeviceTimeZone(now));
   const today=demoContext?.isDemo&&demoContext.previewDate
     ?dateUtc(demoContext.previewDate)
     :actualToday;
@@ -85,8 +86,7 @@ async function bootstrap(){
       itinerary:data.itinerary,
       places:data.places,
       tickets:data.tickets,
-      ticketController,
-      config:data.config
+      ticketController
     });
 
     const demoDay=demoContext?.isDemo
@@ -107,7 +107,6 @@ async function bootstrap(){
       places:data.places,
       hotels:data.hotels,
       tickets:data.tickets,
-      config:data.config,
       mapConfig:data.mapConfig,
       demoContext,
       ticketController,

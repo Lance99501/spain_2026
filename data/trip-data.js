@@ -6,8 +6,7 @@ export const tripConfig = {
   "departDate": "2026-10-08",
   "spainStartDate": "2026-10-09",
   "endDate": "2026-10-25",
-  "ticketSessionMinutes": 5,
-  "timeZone": "Europe/Madrid"
+  "ticketSessionMinutes": 5
 };
 
 export const places = [
@@ -879,8 +878,7 @@ export const itinerary = [
         "text": "夜班機",
         "tone": "flex"
       }
-    ],
-    "timeZone": "Asia/Taipei"
+    ]
   },
   {
     "id": "day-2026-10-09",
