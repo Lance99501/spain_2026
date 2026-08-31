@@ -1,43 +1,9 @@
 import {escapeHtml,renderSegments} from './itinerary.js';
 import {initTodayWeather} from './weather.js';
 import {renderPlaceName} from './place-language.js';
+import {dateInDeviceTimeZone,timeInDeviceTimeZone} from './device-time.js';
 
 const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
-
-function isoDateInTimeZone(date,timeZone){
-  const formatter=new Intl.DateTimeFormat('en-US',{
-    timeZone,
-    year:'numeric',
-    month:'2-digit',
-    day:'2-digit'
-  });
-
-  const parts=Object.fromEntries(
-    formatter.formatToParts(date)
-      .filter(part=>part.type!=='literal')
-      .map(part=>[part.type,part.value])
-  );
-
-  return `${parts.year}-${parts.month}-${parts.day}`;
-}
-
-function timeInTimeZone(date,timeZone){
-  const formatter=new Intl.DateTimeFormat('en-GB',{
-    timeZone,
-    hour:'2-digit',
-    minute:'2-digit',
-    hourCycle:'h23'
-  });
-
-  const parts=Object.fromEntries(
-    formatter.formatToParts(date)
-      .filter(part=>part.type!=='literal')
-      .map(part=>[part.type,part.value])
-  );
-
-  const text=`${parts.hour}:${parts.minute}`;
-  return {text,minutes:Number(parts.hour)*60+Number(parts.minute)};
-}
 
 function parseClock(value){
   if(!/^\d{2}:\d{2}$/.test(value||'')) return null;
@@ -197,7 +163,6 @@ export function initTodayMode({
   places,
   hotels,
   tickets,
-  config,
   mapConfig,
   demoContext,
   ticketController,
@@ -214,7 +179,7 @@ export function initTodayMode({
 
   const todayDate=validPreview
     ?previewDate
-    :isoDateInTimeZone(new Date(),config.timeZone||'Europe/Madrid');
+    :dateInDeviceTimeZone();
 
   const day=itinerary.find(entry=>entry.date===todayDate);
   if(!day){
@@ -225,7 +190,6 @@ export function initTodayMode({
 
   const placeById=new Map(places.map(place=>[place.id,place]));
   const ticketById=new Map(tickets.map(ticket=>[ticket.id,ticket]));
-  const timeZone=day.timeZone||config.timeZone||'Europe/Madrid';
   const previewTime=demoContext?.previewTime||params.get('previewTime');
   const effectivePreviewTime=validPreview&&/^\d{2}:\d{2}$/.test(previewTime||'')
     ?previewTime
@@ -253,7 +217,7 @@ export function initTodayMode({
       <div class="now-panel">
         <span>NOW</span>
         <b id="todayNowTime">—</b>
-        <small>${timeZone==='Asia/Taipei'?'台灣時間':'西班牙時間'}</small>
+        <small>${effectivePreviewTime?'預覽時間':'裝置時間'}</small>
       </div>
       <div class="next-panel">
         <span>NEXT</span>
@@ -307,7 +271,7 @@ export function initTodayMode({
   function updateNowNext(){
     const clock=effectivePreviewTime
       ?{text:effectivePreviewTime,minutes:parseClock(effectivePreviewTime)}
-      :timeInTimeZone(new Date(),timeZone);
+      :timeInDeviceTimeZone();
 
     if(nowNode) nowNode.textContent=clock.text;
 

@@ -1,4 +1,5 @@
 import {renderPlaceName} from './place-language.js';
+import {dateInDeviceTimeZone} from './device-time.js';
 export function escapeHtml(text){
   return String(text).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 }
@@ -39,7 +40,7 @@ export function renderSegments(segments,item,placeById,ticketById,{allowTicket=t
   return html;
 }
 
-export function initItinerary({itinerary,places,tickets,ticketController,config}){
+export function initItinerary({itinerary,places,tickets,ticketController}){
   const CITY_ORDER=['Barcelona','Sevilla','Granada','Madrid'];
   const daysRoot=document.getElementById('days');
   const search=document.getElementById('search');
@@ -60,29 +61,12 @@ export function initItinerary({itinerary,places,tickets,ticketController,config}
   let resizeFrame=0;
   let resizeObserver=null;
 
-  function dateInTimeZone(timeZone){
-    const formatter=new Intl.DateTimeFormat('en-US',{
-      timeZone,
-      year:'numeric',
-      month:'2-digit',
-      day:'2-digit'
-    });
-
-    const parts=Object.fromEntries(
-      formatter.formatToParts(new Date())
-        .filter(part=>part.type!=='literal')
-        .map(part=>[part.type,part.value])
-    );
-
-    return `${parts.year}-${parts.month}-${parts.day}`;
-  }
-
   function mainCity(city){
     return city==='Cordoba'?'Sevilla':city==='Segovia'?'Madrid':city==='Sitges'?'Barcelona':city;
   }
 
   function getDefaultCity(){
-    const today=dateInTimeZone(config?.timeZone||'Europe/Madrid');
+    const today=dateInDeviceTimeZone();
     const day=itinerary.find(entry=>entry.date===today);
     const city=mainCity(day?.city);
     return CITY_ORDER.includes(city)?city:'Barcelona';
