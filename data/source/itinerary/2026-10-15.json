@@ -1,0 +1,76 @@
+{
+  "id": "day-2026-10-15",
+  "date": "2026-10-15",
+  "dateLabel": "10/15",
+  "dow": "Thu",
+  "city": "Sevilla",
+  "title": "王宮與主教座堂經典日",
+  "sub": "一天兩個大型室內點就夠",
+  "categories": [
+    "confirmed",
+    "rest"
+  ],
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Real%20Alc%C3%A1zar%20de%20Sevilla&destination=Catedral%20de%20Sevilla&travelmode=walking",
+  "items": [
+    {
+      "id": "item-2026-10-15-01",
+      "time": "09:30",
+      "segments": [
+        {
+          "text": "Real Alcázar de Sevilla",
+          "placeId": "sev-real-alcazar-de-sevilla"
+        }
+      ],
+      "ticketId": "tkt-sevilla-alcazar",
+      "ticketAnchorPlaceId": "sev-real-alcazar-de-sevilla",
+      "noteSegments": [
+        {
+          "text": "已確認 · 約至 12:00"
+        }
+      ],
+      "startTime": "09:30"
+    },
+    {
+      "id": "item-2026-10-15-02",
+      "time": "12:00",
+      "segments": [
+        {
+          "text": "Santa Cruz 午餐＋慢走"
+        }
+      ],
+      "startTime": "12:00"
+    },
+    {
+      "id": "item-2026-10-15-03",
+      "time": "15:00",
+      "segments": [
+        {
+          "text": "Catedral de Sevilla + Giralda",
+          "placeId": "sev-catedral-de-sevilla-giralda"
+        }
+      ],
+      "ticketId": "tkt-sevilla-catedral",
+      "ticketAnchorPlaceId": "sev-catedral-de-sevilla-giralda",
+      "noteSegments": [
+        {
+          "text": "已確認 · 約至 16:45"
+        }
+      ],
+      "startTime": "15:00"
+    }
+  ],
+  "tags": [
+    {
+      "text": "王宮已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "主教座堂已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "晚上不趕場",
+      "tone": "flex"
+    }
+  ]
+}

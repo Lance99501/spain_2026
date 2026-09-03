@@ -35,3 +35,20 @@ npm run test:smoke
 ```
 
 資料測試會驗證地點、住宿、票券、行程與地圖設定之間的 ID 關聯；瀏覽器測試會啟動本機靜態伺服器並確認主要頁面、搜尋、展開行程與 Today Mode 能正常運作。
+
+
+## 資料與未來後端邊界
+
+目前 UI 不直接 import 大型行程 JavaScript。可編輯資料放在 `data/source/`，執行 `npm run build:data` 後產生 `data/generated/bootstrap.json`，網站只讀這個 bootstrap DTO。
+
+```text
+data/source
+   ↓ npm run build:data
+data/generated/bootstrap.json
+   ↓
+assets/js/api.js
+   ↓
+Today / Map / Itinerary / Hotels / Tickets
+```
+
+未來接 Pages CMS、Notion publisher、Cloudflare Worker 或 ASP.NET Core 時，維持 bootstrap DTO 即可。HTML 的 `spain-data-endpoint` 可直接切換資料 endpoint，畫面模組不需要跟著改資料來源。

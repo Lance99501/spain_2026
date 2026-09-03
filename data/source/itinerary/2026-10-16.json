@@ -1,0 +1,118 @@
+{
+  "id": "day-2026-10-16",
+  "date": "2026-10-16",
+  "dateLabel": "10/16",
+  "dow": "Fri",
+  "city": "Sevilla",
+  "title": "Córdoba 一日遊",
+  "sub": "以 Mezquita-Catedral 為核心",
+  "categories": [
+    "confirmed",
+    "pending",
+    "flex"
+  ],
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Mezquita-Catedral%20de%20C%C3%B3rdoba&destination=Puente%20Romano%20de%20C%C3%B3rdoba&travelmode=walking",
+  "items": [
+    {
+      "id": "item-2026-10-16-01",
+      "time": "08:11",
+      "segments": [
+        {
+          "text": "Sevilla-Santa Justa",
+          "placeId": "sev-sevilla-santa-justa"
+        },
+        {
+          "text": " → "
+        },
+        {
+          "text": "Córdoba",
+          "placeId": "cor-cordoba-central"
+        }
+      ],
+      "ticketId": "tkt-iryo-cordoba",
+      "noteSegments": [
+        {
+          "text": "iryo 06097 Inicial · 08:52 抵達 · 已確認"
+        }
+      ],
+      "startTime": "08:11",
+      "transport": {
+        "role": "daytrip",
+        "kind": "train",
+        "service": "iryo 06097",
+        "status": "confirmed",
+        "originPlaceId": "sev-sevilla-santa-justa",
+        "destinationPlaceId": "cor-cordoba-central",
+        "departureTime": "08:11",
+        "arrivalTime": "08:52"
+      }
+    },
+    {
+      "id": "item-2026-10-16-02",
+      "time": "約10:00",
+      "segments": [
+        {
+          "text": "Mezquita-Catedral de Córdoba",
+          "placeId": "cor-mezquita-catedral-de-cordoba"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "待購票"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-16-03",
+      "time": "之後",
+      "segments": [
+        {
+          "text": "Judería · 午餐 · "
+        },
+        {
+          "text": "Puente Romano",
+          "placeId": "cor-puente-romano-de-cordoba"
+        },
+        {
+          "text": " 河岸"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-16-04",
+      "time": "傍晚",
+      "segments": [
+        {
+          "text": "Córdoba → Sevilla"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "回程交通待確認"
+        }
+      ],
+      "transport": {
+        "role": "daytrip",
+        "kind": "train",
+        "service": "回程",
+        "status": "pending",
+        "originPlaceId": "cor-cordoba-central",
+        "destinationPlaceId": "sev-sevilla-santa-justa"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "text": "去程 iryo 已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "回程交通待確認",
+      "tone": "pending"
+    },
+    {
+      "text": "Mezquita 待購票",
+      "tone": "pending"
+    }
+  ]
+}

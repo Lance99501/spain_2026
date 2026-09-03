@@ -1,0 +1,96 @@
+{
+  "id": "day-2026-10-10",
+  "date": "2026-10-10",
+  "dateLabel": "10/10",
+  "dow": "Sat",
+  "city": "Barcelona",
+  "title": "聖家堂＋Sant Pau",
+  "sub": "現代主義東側線 · 中午慢走",
+  "categories": [
+    "confirmed",
+    "pending",
+    "rest"
+  ],
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Sagrada%20Fam%C3%ADlia%2C%20Barcelona&destination=Recinte%20Modernista%20de%20Sant%20Pau%2C%20Barcelona&travelmode=walking&waypoints=Avinguda%20de%20Gaud%C3%AD%2C%20Barcelona",
+  "items": [
+    {
+      "id": "item-2026-10-10-01",
+      "time": "09:15",
+      "segments": [
+        {
+          "text": "聖家堂",
+          "placeId": "bcn-basilica-de-la-sagrada-familia"
+        },
+        {
+          "text": "＋誕生立面塔樓"
+        }
+      ],
+      "ticketId": "tkt-sagrada",
+      "ticketAnchorPlaceId": "bcn-basilica-de-la-sagrada-familia",
+      "noteSegments": [
+        {
+          "text": "已確認"
+        }
+      ],
+      "startTime": "09:15"
+    },
+    {
+      "id": "item-2026-10-10-02",
+      "time": "11:30",
+      "segments": [
+        {
+          "text": "Avinguda de Gaudí 慢走＋午餐＋咖啡"
+        }
+      ],
+      "startTime": "11:30"
+    },
+    {
+      "id": "item-2026-10-10-03",
+      "time": "14:00",
+      "segments": [
+        {
+          "text": "Sant Pau",
+          "placeId": "bcn-recinte-modernista-de-sant-pau"
+        },
+        {
+          "text": " 現代主義園區"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "目前待購票"
+        }
+      ],
+      "startTime": "14:00"
+    },
+    {
+      "id": "item-2026-10-10-04",
+      "time": "之後",
+      "segments": [
+        {
+          "text": "回飯店休息"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "Montjuïc 視體力加碼"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "text": "聖家堂已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "Sant Pau 待購",
+      "tone": "pending"
+    },
+    {
+      "text": "保留休息",
+      "tone": "rest"
+    }
+  ],
+  "note": "Sant Pau 後不硬走回飯店；白天只抓兩個主要室內點。"
+}

@@ -1,0 +1,122 @@
+{
+  "id": "day-2026-10-13",
+  "date": "2026-10-13",
+  "dateLabel": "10/13",
+  "dow": "Tue",
+  "city": "Barcelona",
+  "title": "老城 → Born → 凱旋門 → 海邊",
+  "sub": "Barcelona 最完整的一條單向散步線",
+  "categories": [
+    "flex",
+    "rest",
+    "pending"
+  ],
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Mercat%20de%20la%20Boqueria%2C%20Barcelona&destination=Barceloneta%20Beach%2C%20Barcelona&travelmode=walking&waypoints=Barcelona%20Cathedral%7CArc%20de%20Triomf%2C%20Barcelona%7CParc%20de%20la%20Ciutadella%2C%20Barcelona",
+  "items": [
+    {
+      "id": "item-2026-10-13-01",
+      "time": "09:00",
+      "segments": [
+        {
+          "text": "La Rambla + Boqueria 早餐"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "記得看 Joan Miró 地面馬賽克"
+        }
+      ],
+      "startTime": "09:00"
+    },
+    {
+      "id": "item-2026-10-13-02",
+      "time": "10:00",
+      "segments": [
+        {
+          "text": "Barri Gòtic 慢走"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "Plaça Reial → Sant Jaume → Temple d'August → Pont del Bisbe → Cathedral"
+        }
+      ],
+      "startTime": "10:00"
+    },
+    {
+      "id": "item-2026-10-13-03",
+      "time": "12:30",
+      "segments": [
+        {
+          "text": "El Born 午餐＋散步"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "Santa Maria del Mar → Passeig del Born"
+        }
+      ],
+      "startTime": "12:30"
+    },
+    {
+      "id": "item-2026-10-13-04",
+      "time": "14:00",
+      "segments": [
+        {
+          "text": "Arc de Triomf → Parc de la Ciutadella"
+        }
+      ],
+      "startTime": "14:00"
+    },
+    {
+      "id": "item-2026-10-13-05",
+      "time": "15:15",
+      "segments": [
+        {
+          "text": "Estació de França → Port Vell → Barceloneta"
+        }
+      ],
+      "startTime": "15:15"
+    },
+    {
+      "id": "item-2026-10-13-06",
+      "time": "17:30",
+      "segments": [
+        {
+          "text": "回飯店休息＋整理行李"
+        }
+      ],
+      "startTime": "17:30"
+    },
+    {
+      "id": "item-2026-10-13-07",
+      "time": "19:30",
+      "segments": [
+        {
+          "text": "Cruix 晚餐"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "待訂位"
+        }
+      ],
+      "startTime": "19:30"
+    }
+  ],
+  "tags": [
+    {
+      "text": "單向散步",
+      "tone": "flex"
+    },
+    {
+      "text": "17:30 緩衝",
+      "tone": "rest"
+    },
+    {
+      "text": "Cruix 待訂",
+      "tone": "pending"
+    }
+  ],
+  "note": "導遊提醒點是走到附近記得抬頭看，不是額外增加景點。"
+}

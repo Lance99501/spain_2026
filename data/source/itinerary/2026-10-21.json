@@ -1,0 +1,50 @@
+{
+  "id": "day-2026-10-21",
+  "date": "2026-10-21",
+  "dateLabel": "10/21",
+  "dow": "Wed",
+  "city": "Madrid",
+  "title": "馬德里王宮日",
+  "sub": "王宮是唯一大型固定點",
+  "categories": [
+    "pending",
+    "flex"
+  ],
+  "mapUrl": "https://www.google.com/maps/search/?api=1&query=Palacio%20Real%20de%20Madrid",
+  "items": [
+    {
+      "id": "item-2026-10-21-01",
+      "time": "10:00",
+      "segments": [
+        {
+          "text": "Palacio Real + Catedral de la Almudena"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "目前待購票"
+        }
+      ],
+      "startTime": "10:00"
+    },
+    {
+      "id": "item-2026-10-21-02",
+      "time": "下午",
+      "segments": [
+        {
+          "text": "Madrid de los Austrias + La Latina"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "text": "王宮待購",
+      "tone": "pending"
+    },
+    {
+      "text": "午後自由",
+      "tone": "flex"
+    }
+  ]
+}

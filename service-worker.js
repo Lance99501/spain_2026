@@ -1,4 +1,4 @@
-const CACHE_VERSION='spain2026-20260831-v21';
+const CACHE_VERSION='spain2026-20260903-v22';
 const APP_CACHE=`${CACHE_VERSION}-app`;
 const RUNTIME_CACHE=`${CACHE_VERSION}-runtime`;
 const TILE_CACHE=`${CACHE_VERSION}-tiles`;
@@ -21,6 +21,8 @@ const APP_SHELL=[
   './assets/css/pwa.css',
   './assets/js/app.js',
   './assets/js/api.js',
+  './assets/js/data/source.js',
+  './assets/js/data/validate.js',
   './assets/js/map.js',
   './assets/js/place-language.js',
   './assets/js/ticket.js',
@@ -32,7 +34,7 @@ const APP_SHELL=[
   './assets/js/demo.js',
   './assets/js/weather.js',
   './assets/js/device-time.js',
-  './data/trip-data.js',
+  './data/generated/bootstrap.json',
   './assets/images/barcelona.jpg',
   './assets/images/sevilla.jpg',
   './assets/images/granada.jpg',

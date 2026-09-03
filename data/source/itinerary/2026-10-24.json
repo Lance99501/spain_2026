@@ -1,0 +1,44 @@
+{
+  "id": "day-2026-10-24",
+  "date": "2026-10-24",
+  "dateLabel": "10/24",
+  "dow": "Sat",
+  "city": "Madrid",
+  "title": "街區、購物與咖啡",
+  "sub": "真正的緩衝日，不因空白就塞滿",
+  "categories": [
+    "flex",
+    "rest"
+  ],
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Malasa%C3%B1a%20Madrid&destination=Gran%20V%C3%ADa%20Madrid&travelmode=walking&waypoints=Chueca%20Madrid",
+  "items": [
+    {
+      "id": "item-2026-10-24-01",
+      "time": "白天",
+      "segments": [
+        {
+          "text": "Malasaña + Chueca + Gran Vía"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-24-02",
+      "time": "隨興",
+      "segments": [
+        {
+          "text": "購物 · 咖啡 · 散步 · 最後一晚晚餐"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "text": "緩衝日",
+      "tone": "rest"
+    },
+    {
+      "text": "完全彈性",
+      "tone": "flex"
+    }
+  ]
+}

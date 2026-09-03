@@ -9,9 +9,11 @@
   "scripts": {
     "start": "node tests/support/static-server.mjs",
     "test": "npm run test:data && npm run test:smoke",
-    "test:data": "node --test tests/data-relations.test.mjs",
+    "test:data": "npm run check:data && node --test tests/data-relations.test.mjs",
     "test:smoke": "playwright test",
-    "test:smoke:headed": "playwright test --headed"
+    "test:smoke:headed": "playwright test --headed",
+    "build:data": "node scripts/build-data.mjs",
+    "check:data": "node scripts/build-data.mjs --check"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1"

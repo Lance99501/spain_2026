@@ -1,0 +1,89 @@
+{
+  "id": "day-2026-10-25",
+  "date": "2026-10-25",
+  "dateLabel": "10/25",
+  "dow": "Sun",
+  "city": "Madrid",
+  "title": "最後一個上午＋返台",
+  "sub": "夜班機，上午比平常更輕",
+  "categories": [
+    "confirmed",
+    "flex",
+    "rest"
+  ],
+  "mapUrl": "https://www.google.com/maps/search/?api=1&query=El%20Rastro%20Madrid",
+  "items": [
+    {
+      "id": "item-2026-10-25-01",
+      "time": "09:00",
+      "segments": [
+        {
+          "text": "El Rastro + La Latina"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "可選；先確認行李寄放與機場交通"
+        }
+      ],
+      "startTime": "09:00"
+    },
+    {
+      "id": "item-2026-10-25-02",
+      "time": "12:00前",
+      "segments": [
+        {
+          "text": "Hotel Acta Madfor Check-out"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-25-03",
+      "time": "之後",
+      "segments": [
+        {
+          "text": "休息 · 領行李 · 前往 Madrid-Barajas Airport"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-25-04",
+      "time": "21:45",
+      "segments": [
+        {
+          "text": "EK144 Madrid 起飛"
+        }
+      ],
+      "ticketId": "tkt-emirates-return",
+      "noteSegments": [
+        {
+          "text": "已確認"
+        }
+      ],
+      "startTime": "21:45",
+      "transport": {
+        "role": "flight",
+        "kind": "flight",
+        "service": "EK144",
+        "status": "confirmed",
+        "originPlaceId": "mad-madrid-barajas-airport",
+        "destinationPlaceId": "dxb-dubai-airport",
+        "departureTime": "21:45"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "text": "返程航班已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "市集可選",
+      "tone": "flex"
+    },
+    {
+      "text": "預留機場緩衝",
+      "tone": "rest"
+    }
+  ]
+}

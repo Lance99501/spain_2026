@@ -1,0 +1,52 @@
+{
+  "cityCenter": {
+    "Barcelona": [
+      41.3874,
+      2.1686
+    ],
+    "Sevilla": [
+      37.3891,
+      -5.9845
+    ],
+    "Cordoba": [
+      37.8882,
+      -4.7794
+    ],
+    "Granada": [
+      37.1773,
+      -3.5986
+    ],
+    "Madrid": [
+      40.4168,
+      -3.7038
+    ],
+    "Segovia": [
+      40.9429,
+      -4.1088
+    ],
+    "Sitges": [
+      41.2372,
+      1.8059
+    ]
+  },
+  "mainRouteCities": [
+    "Barcelona",
+    "Sevilla",
+    "Granada",
+    "Madrid"
+  ],
+  "sideRouteCities": [
+    [
+      "Barcelona",
+      "Sitges"
+    ],
+    [
+      "Sevilla",
+      "Cordoba"
+    ],
+    [
+      "Madrid",
+      "Segovia"
+    ]
+  ]
+}

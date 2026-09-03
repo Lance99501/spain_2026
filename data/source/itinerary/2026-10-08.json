@@ -1,0 +1,80 @@
+{
+  "id": "day-2026-10-08",
+  "date": "2026-10-08",
+  "dateLabel": "10/08",
+  "dow": "Thu",
+  "city": "Barcelona",
+  "title": "台灣出發｜前往 Barcelona",
+  "sub": "Emirates 夜班機 · TPE → DXB → BCN",
+  "categories": [
+    "confirmed",
+    "rest"
+  ],
+  "mapUrl": "https://www.google.com/maps/search/?api=1&query=Taiwan%20Taoyuan%20International%20Airport",
+  "items": [
+    {
+      "id": "item-2026-10-08-01",
+      "time": "23:50",
+      "segments": [
+        {
+          "text": "TPE → DXB｜EK367"
+        }
+      ],
+      "ticketId": "tkt-emirates-outbound",
+      "noteSegments": [
+        {
+          "text": "Emirates · 已確認"
+        }
+      ],
+      "startTime": "23:50",
+      "transport": {
+        "role": "flight",
+        "kind": "flight",
+        "service": "EK367",
+        "status": "confirmed",
+        "originPlaceId": "tpe-taoyuan-airport",
+        "destinationPlaceId": "dxb-dubai-airport",
+        "departureTime": "23:50"
+      }
+    },
+    {
+      "id": "item-2026-10-08-02",
+      "time": "轉機",
+      "segments": [
+        {
+          "text": "DXB → Barcelona BCN｜EK185"
+        }
+      ],
+      "ticketId": "tkt-emirates-outbound",
+      "noteSegments": [
+        {
+          "text": "接續航段 · 10/09 13:25 抵達"
+        }
+      ],
+      "transport": {
+        "role": "flight",
+        "kind": "flight",
+        "service": "EK185",
+        "status": "confirmed",
+        "originPlaceId": "dxb-dubai-airport",
+        "destinationPlaceId": "bcn-barcelona-airport",
+        "arrivalTime": "13:25",
+        "arrivalDayOffset": 1
+      }
+    }
+  ],
+  "tags": [
+    {
+      "text": "航班已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "出發日",
+      "tone": "flex"
+    },
+    {
+      "text": "夜班機",
+      "tone": "flex"
+    }
+  ]
+}

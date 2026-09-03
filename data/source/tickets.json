@@ -1,0 +1,131 @@
+[
+  {
+    "id": "tkt-emirates-outbound",
+    "label": "Emirates｜TPE → DXB → BCN",
+    "kind": "flight",
+    "type": "drive",
+    "status": "confirmed",
+    "placeIds": [
+      "tpe-taoyuan-airport",
+      "dxb-dubai-airport",
+      "bcn-barcelona-airport"
+    ]
+  },
+  {
+    "id": "tkt-sagrada",
+    "label": "聖家堂｜Sagrada Família",
+    "kind": "attraction",
+    "placeIds": [
+      "bcn-basilica-de-la-sagrada-familia"
+    ],
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
+    "id": "tkt-park-guell",
+    "label": "Park Güell",
+    "kind": "attraction",
+    "placeIds": [
+      "bcn-park-guell"
+    ],
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
+    "id": "tkt-casa-batllo",
+    "label": "Casa Batlló",
+    "kind": "attraction",
+    "placeIds": [
+      "bcn-casa-batllo"
+    ],
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
+    "id": "tkt-ave-bcn-sevilla",
+    "label": "AVE｜Barcelona → Sevilla",
+    "kind": "train",
+    "placeIds": [
+      "bcn-barcelona-sants",
+      "sev-sevilla-santa-justa"
+    ],
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
+    "id": "tkt-sevilla-alcazar",
+    "label": "塞維亞王宮｜Real Alcázar",
+    "kind": "attraction",
+    "placeIds": [
+      "sev-real-alcazar-de-sevilla"
+    ],
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
+    "id": "tkt-sevilla-catedral",
+    "label": "塞維亞主教座堂＋吉拉達塔",
+    "kind": "attraction",
+    "placeIds": [
+      "sev-catedral-de-sevilla-giralda"
+    ],
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
+    "id": "tkt-iryo-cordoba",
+    "label": "iryo｜Sevilla → Córdoba",
+    "kind": "train",
+    "placeIds": [
+      "sev-sevilla-santa-justa",
+      "cor-cordoba-central"
+    ],
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
+    "id": "tkt-alsa-granada",
+    "label": "ALSA｜Sevilla → Granada",
+    "kind": "bus",
+    "placeIds": [
+      "sev-sevilla-plaza-de-armas-bus-station",
+      "grx-granada-bus-station"
+    ],
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
+    "id": "tkt-alhambra",
+    "label": "阿爾罕布拉宮｜Alhambra",
+    "kind": "attraction",
+    "placeIds": [
+      "grx-alhambra",
+      "grx-palacios-nazaries"
+    ],
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
+    "id": "tkt-alvia-madrid",
+    "label": "ALVIA｜Granada → Madrid",
+    "kind": "train",
+    "placeIds": [
+      "grx-granada-railway-station",
+      "mad-madrid-puerta-de-atocha"
+    ],
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
+    "id": "tkt-emirates-return",
+    "label": "Emirates｜Madrid → Dubai → Taipei",
+    "kind": "flight",
+    "type": "drive",
+    "status": "confirmed",
+    "placeIds": [
+      "mad-madrid-barajas-airport",
+      "dxb-dubai-airport",
+      "tpe-taoyuan-airport"
+    ]
+  }
+]

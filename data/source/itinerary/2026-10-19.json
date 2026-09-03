@@ -1,0 +1,91 @@
+{
+  "id": "day-2026-10-19",
+  "date": "2026-10-19",
+  "dateLabel": "10/19",
+  "dow": "Mon",
+  "city": "Granada",
+  "title": "Alhambra 日",
+  "sub": "這天唯一的大型景點",
+  "categories": [
+    "confirmed",
+    "rest"
+  ],
+  "mapUrl": "https://www.google.com/maps/search/?api=1&query=Alhambra%20Granada",
+  "items": [
+    {
+      "id": "item-2026-10-19-01",
+      "time": "09:00",
+      "segments": [
+        {
+          "text": "抵達 Alhambra 周邊"
+        }
+      ],
+      "startTime": "09:00"
+    },
+    {
+      "id": "item-2026-10-19-02",
+      "time": "09:30",
+      "segments": [
+        {
+          "text": "Alhambra",
+          "placeId": "grx-alhambra"
+        },
+        {
+          "text": " 行程開始"
+        }
+      ],
+      "ticketId": "tkt-alhambra",
+      "ticketAnchorPlaceId": "grx-alhambra",
+      "noteSegments": [
+        {
+          "text": "已確認"
+        }
+      ],
+      "startTime": "09:30"
+    },
+    {
+      "id": "item-2026-10-19-03",
+      "time": "11:30",
+      "segments": [
+        {
+          "text": "Palacios Nazaríes",
+          "placeId": "grx-palacios-nazaries"
+        },
+        {
+          "text": " 指定入場"
+        }
+      ],
+      "ticketId": "tkt-alhambra",
+      "ticketAnchorPlaceId": "grx-palacios-nazaries",
+      "noteSegments": [
+        {
+          "text": "票面固定時間"
+        }
+      ],
+      "startTime": "11:30"
+    },
+    {
+      "id": "item-2026-10-19-04",
+      "time": "傍晚",
+      "segments": [
+        {
+          "text": "Calle Navas · Tapas + 輕鬆晚餐"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "text": "Alhambra 已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "11:30 不可移動",
+      "tone": "confirmed"
+    },
+    {
+      "text": "參觀後休息",
+      "tone": "rest"
+    }
+  ]
+}

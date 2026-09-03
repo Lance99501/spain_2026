@@ -1,0 +1,77 @@
+{
+  "id": "day-2026-10-23",
+  "date": "2026-10-23",
+  "dateLabel": "10/23",
+  "dow": "Fri",
+  "city": "Madrid",
+  "title": "Segovia 一日遊",
+  "sub": "水道橋 → 舊城 → 城堡",
+  "categories": [
+    "pending",
+    "flex"
+  ],
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Acueducto%20de%20Segovia&destination=Alc%C3%A1zar%20de%20Segovia&travelmode=walking&waypoints=Catedral%20de%20Segovia",
+  "items": [
+    {
+      "id": "item-2026-10-23-01",
+      "time": "上午",
+      "segments": [
+        {
+          "text": "Madrid ↔ Segovia"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "交通待確認"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-23-02",
+      "time": "白天",
+      "segments": [
+        {
+          "text": "Acueducto",
+          "placeId": "seg-acueducto-de-segovia"
+        },
+        {
+          "text": " → "
+        },
+        {
+          "text": "Catedral",
+          "placeId": "seg-catedral-de-segovia"
+        },
+        {
+          "text": " → 午餐 → "
+        },
+        {
+          "text": "Alcázar",
+          "placeId": "seg-alcazar-de-segovia"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-23-03",
+      "time": "傍晚",
+      "segments": [
+        {
+          "text": "目標晚餐前回 Madrid"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "text": "交通待確認",
+      "tone": "pending"
+    },
+    {
+      "text": "Alcázar 待確認",
+      "tone": "pending"
+    },
+    {
+      "text": "不趕回程",
+      "tone": "flex"
+    }
+  ]
+}

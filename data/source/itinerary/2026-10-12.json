@@ -1,0 +1,60 @@
+{
+  "id": "day-2026-10-12",
+  "date": "2026-10-12",
+  "dateLabel": "10/12",
+  "dow": "Mon",
+  "city": "Barcelona",
+  "title": "Sitges 一日遊",
+  "sub": "舊城、海濱、海灘，度假模式",
+  "categories": [
+    "flex",
+    "rest"
+  ],
+  "mapUrl": "https://www.google.com/maps/search/?api=1&query=Sitges%20Old%20Town%20Spain",
+  "items": [
+    {
+      "id": "item-2026-10-12-01",
+      "time": "08:30",
+      "segments": [
+        {
+          "text": "Barcelona → Sitges"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "火車班次接近出發再確認"
+        }
+      ],
+      "startTime": "08:30"
+    },
+    {
+      "id": "item-2026-10-12-02",
+      "time": "白天",
+      "segments": [
+        {
+          "text": "Old Town · 海濱步道 · 海灘 · 午餐 · 咖啡"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-12-03",
+      "time": "17:30",
+      "segments": [
+        {
+          "text": "約回到 Barcelona"
+        }
+      ],
+      "startTime": "17:30"
+    }
+  ],
+  "tags": [
+    {
+      "text": "慢旅行",
+      "tone": "flex"
+    },
+    {
+      "text": "不塞景點",
+      "tone": "flex"
+    }
+  ]
+}

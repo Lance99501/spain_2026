@@ -2,7 +2,12 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {test} from 'node:test';
 
-import {api} from '../assets/js/api.js';
+import {validateBootstrapData} from '../assets/js/data/validate.js';
+
+async function loadBootstrap(){
+  const raw=await readFile(new URL('../data/generated/bootstrap.json',import.meta.url),'utf8');
+  return validateBootstrapData(JSON.parse(raw));
+}
 
 const uniqueIds=(items,label)=>{
   const ids=items.map(item=>item.id);
@@ -11,16 +16,17 @@ const uniqueIds=(items,label)=>{
   return new Set(ids);
 };
 
-test('bootstrap data passes the production relation validator',async()=>{
-  const data=await api.getBootstrapData();
+test('generated bootstrap passes the production relation validator',async()=>{
+  const data=await loadBootstrap();
 
+  assert.equal(data.schemaVersion,1);
   assert.ok(data.places.length>0);
   assert.ok(data.itinerary.length>0);
   assert.ok(data.tickets.length>0);
 });
 
 test('all itinerary, hotel, ticket, and map relationships resolve',async()=>{
-  const data=await api.getBootstrapData();
+  const data=await loadBootstrap();
   const placeIds=uniqueIds(data.places,'place');
   const ticketIds=uniqueIds(data.tickets,'ticket');
   const mappedTicketIds=new Set(Object.keys(data.ticketDriveFileIds));
@@ -62,7 +68,7 @@ test('all itinerary, hotel, ticket, and map relationships resolve',async()=>{
       assert.ok(!itemIds.has(item.id),`duplicate itinerary item ID ${item.id}`);
       itemIds.add(item.id);
 
-      const segments=[...item.segments,...(item.noteSegments||[])];
+      const segments=[...(item.segments||[]),...(item.noteSegments||[])];
       for(const segment of segments){
         if(segment.placeId){
           assert.ok(placeIds.has(segment.placeId),`item ${item.id} references unknown place ${segment.placeId}`);
@@ -99,7 +105,7 @@ test('all itinerary, hotel, ticket, and map relationships resolve',async()=>{
 });
 
 test('itinerary dates are unique, chronological, and within the configured trip',async()=>{
-  const {config,itinerary}=await api.getBootstrapData();
+  const {config,itinerary}=await loadBootstrap();
   const dates=itinerary.map(day=>day.date);
 
   assert.equal(new Set(dates).size,dates.length,'itinerary dates must be unique');
@@ -108,7 +114,13 @@ test('itinerary dates are unique, chronological, and within the configured trip'
   assert.equal(dates.at(-1),config.endDate);
 });
 
-test('the service worker does not pre-cache private Google Drive ticket content',async()=>{
+test('all currently locked tickets remain confirmed after the data refactor',async()=>{
+  const {tickets}=await loadBootstrap();
+  assert.equal(tickets.length,12);
+  assert.ok(tickets.every(ticket=>ticket.status==='confirmed'));
+});
+
+test('the service worker caches generated public data, not source modules or private Drive content',async()=>{
   const source=await readFile(new URL('../service-worker.js',import.meta.url),'utf8');
   const cacheLists=['APP_SHELL','OPTIONAL_EXTERNAL'].map(name=>{
     const match=source.match(new RegExp(`const ${name}=\\[(.*?)\\];`,'s'));
@@ -117,6 +129,8 @@ test('the service worker does not pre-cache private Google Drive ticket content'
   }).join('\n');
 
   assert.match(source,/const CACHE_VERSION='spain2026-\d{8}-v\d+';/);
+  assert.match(cacheLists,/data\/generated\/bootstrap\.json/);
+  assert.doesNotMatch(cacheLists,/data\/source\//);
   assert.doesNotMatch(cacheLists,/(?:drive|docs)\.google\.com|googleusercontent\.com/);
   assert.doesNotMatch(cacheLists,/qrcodejs/i);
 });

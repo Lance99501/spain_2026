@@ -1,0 +1,60 @@
+{
+  "id": "day-2026-10-09",
+  "date": "2026-10-09",
+  "dateLabel": "10/09",
+  "dow": "Fri",
+  "city": "Barcelona",
+  "title": "抵達巴塞隆納",
+  "sub": "先入住、散步、吃飯，適應節奏",
+  "categories": [
+    "rest"
+  ],
+  "mapUrl": "https://www.google.com/maps/search/?api=1&query=Hotel%20Royal%20Passeig%20de%20Gracia%20Barcelona",
+  "items": [
+    {
+      "id": "item-2026-10-09-01",
+      "time": "13:25",
+      "segments": [
+        {
+          "text": "抵達 Barcelona Airport"
+        }
+      ],
+      "startTime": "13:25"
+    },
+    {
+      "id": "item-2026-10-09-02",
+      "time": "15:00+",
+      "segments": [
+        {
+          "text": "Hotel Royal Passeig de Gracia 入住"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "Passeig de Gràcia / Eixample"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-09-03",
+      "time": "17:00",
+      "segments": [
+        {
+          "text": "格拉西亞大道散步＋晚餐"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "第一天不排主要景點"
+        }
+      ],
+      "startTime": "17:00"
+    }
+  ],
+  "tags": [
+    {
+      "text": "休息優先",
+      "tone": "rest"
+    }
+  ]
+}

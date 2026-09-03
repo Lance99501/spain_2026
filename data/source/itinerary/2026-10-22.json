@@ -1,0 +1,55 @@
+{
+  "id": "day-2026-10-22",
+  "date": "2026-10-22",
+  "dateLabel": "10/22",
+  "dow": "Thu",
+  "city": "Madrid",
+  "title": "Prado＋Retiro",
+  "sub": "上午美術館，下午重新回到戶外",
+  "categories": [
+    "pending",
+    "flex"
+  ],
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Museo%20del%20Prado%2C%20Madrid&destination=Parque%20del%20Retiro%2C%20Madrid&travelmode=walking&waypoints=Puerta%20de%20Alcal%C3%A1%2C%20Madrid",
+  "items": [
+    {
+      "id": "item-2026-10-22-01",
+      "time": "10:00",
+      "segments": [
+        {
+          "text": "Museo del Prado",
+          "placeId": "mad-museo-del-prado"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "目前待購票"
+        }
+      ],
+      "startTime": "10:00"
+    },
+    {
+      "id": "item-2026-10-22-02",
+      "time": "下午",
+      "segments": [
+        {
+          "text": "Parque del Retiro",
+          "placeId": "mad-parque-del-retiro"
+        },
+        {
+          "text": " → Puerta de Alcalá → Plaza de Cibeles"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "text": "Prado 待購",
+      "tone": "pending"
+    },
+    {
+      "text": "戶外散步",
+      "tone": "flex"
+    }
+  ]
+}

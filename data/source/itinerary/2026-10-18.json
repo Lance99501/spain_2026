@@ -1,0 +1,120 @@
+{
+  "id": "day-2026-10-18",
+  "date": "2026-10-18",
+  "dateLabel": "10/18",
+  "dow": "Sun",
+  "city": "Granada",
+  "title": "Sevilla → Granada",
+  "sub": "ALSA 直達已確認 · 抵達山城後放慢",
+  "categories": [
+    "confirmed",
+    "flex",
+    "rest"
+  ],
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Estaci%C3%B3n%20de%20Autobuses%20Plaza%20de%20Armas%2C%20Sevilla&destination=Estaci%C3%B3n%20de%20Autobuses%20de%20Granada&travelmode=transit",
+  "items": [
+    {
+      "id": "item-2026-10-18-01",
+      "time": "上午",
+      "segments": [
+        {
+          "text": "Sevilla 市中心自由散步＋退房"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-18-02",
+      "time": "11:45",
+      "segments": [
+        {
+          "text": "Sevilla Plaza de Armas",
+          "placeId": "sev-sevilla-plaza-de-armas-bus-station"
+        },
+        {
+          "text": " → "
+        },
+        {
+          "text": "Granada Bus Station",
+          "placeId": "grx-granada-bus-station"
+        }
+      ],
+      "ticketId": "tkt-alsa-granada",
+      "noteSegments": [
+        {
+          "text": "ALSA 直達 · 14:45 抵達 · 已確認"
+        }
+      ],
+      "startTime": "11:45",
+      "transport": {
+        "role": "transfer",
+        "kind": "bus",
+        "service": "ALSA",
+        "status": "confirmed",
+        "originPlaceId": "sev-sevilla-plaza-de-armas-bus-station",
+        "destinationPlaceId": "grx-granada-bus-station",
+        "departureTime": "11:45",
+        "arrivalTime": "14:45"
+      }
+    },
+    {
+      "id": "item-2026-10-18-03",
+      "time": "14:00+",
+      "segments": [
+        {
+          "text": "Hotel Navas 入住"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "抵達後前往市中心"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-18-04",
+      "time": "午後",
+      "segments": [
+        {
+          "text": "Centro → Carrera del Darro"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-18-05",
+      "time": "17:30",
+      "segments": [
+        {
+          "text": "Albaicín",
+          "placeId": "grx-albaicin"
+        },
+        {
+          "text": " + "
+        },
+        {
+          "text": "Mirador de San Nicolás",
+          "placeId": "grx-mirador-de-san-nicolas"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "視抵達時間與體力決定"
+        }
+      ],
+      "startTime": "17:30"
+    }
+  ],
+  "tags": [
+    {
+      "text": "ALSA 已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "夕陽彈性",
+      "tone": "flex"
+    },
+    {
+      "text": "累就取消",
+      "tone": "rest"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "id": "day-2026-10-20",
+  "date": "2026-10-20",
+  "dateLabel": "10/20",
+  "dow": "Tue",
+  "city": "Madrid",
+  "title": "Granada → Madrid",
+  "sub": "ALVIA 2087 Confort · 最新已購票狀態",
+  "categories": [
+    "confirmed",
+    "flex"
+  ],
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Granada%20Railway%20Station&destination=Madrid%20Puerta%20de%20Atocha&travelmode=transit",
+  "items": [
+    {
+      "id": "item-2026-10-20-01",
+      "time": "上午",
+      "segments": [
+        {
+          "text": "Granada Cathedral / Capilla Real / Alcaicería"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "視出發時間縮短"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-20-02",
+      "time": "11:04",
+      "segments": [
+        {
+          "text": "Granada",
+          "placeId": "grx-granada-railway-station"
+        },
+        {
+          "text": " → "
+        },
+        {
+          "text": "Madrid-Puerta de Atocha",
+          "placeId": "mad-madrid-puerta-de-atocha"
+        }
+      ],
+      "ticketId": "tkt-alvia-madrid",
+      "noteSegments": [
+        {
+          "text": "Renfe ALVIA 2087 Confort · 14:38 抵達 · 已購票"
+        }
+      ],
+      "startTime": "11:04",
+      "transport": {
+        "role": "transfer",
+        "kind": "train",
+        "service": "ALVIA 2087 · Confort",
+        "status": "confirmed",
+        "originPlaceId": "grx-granada-railway-station",
+        "destinationPlaceId": "mad-madrid-puerta-de-atocha",
+        "departureTime": "11:04",
+        "arrivalTime": "14:38"
+      }
+    },
+    {
+      "id": "item-2026-10-20-03",
+      "time": "之後",
+      "segments": [
+        {
+          "text": "Hotel Acta Madfor Check-in"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-20-04",
+      "time": "傍晚",
+      "segments": [
+        {
+          "text": "Puerta del Sol → Plaza Mayor → Gran Vía"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "初次散步"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "text": "ALVIA 已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "住宿已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "傍晚散步",
+      "tone": "flex"
+    }
+  ],
+  "note": "採最新 Reservation／Task 狀態，不沿用城市頁較舊的「待確認」。"
+}

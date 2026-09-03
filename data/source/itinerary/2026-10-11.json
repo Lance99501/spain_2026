@@ -1,0 +1,113 @@
+{
+  "id": "day-2026-10-11",
+  "date": "2026-10-11",
+  "dateLabel": "10/11",
+  "dow": "Sun",
+  "city": "Barcelona",
+  "title": "Park Güell → Gràcia → Casa Batlló",
+  "sub": "上山靠車、下山靠腳",
+  "categories": [
+    "confirmed",
+    "flex"
+  ],
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Park%20G%C3%BCell%2C%20Barcelona&destination=Casa%20Batll%C3%B3%2C%20Barcelona&travelmode=walking&waypoints=Casa%20Vicens%2C%20Barcelona%7CCasa%20Mil%C3%A0%2C%20Barcelona",
+  "items": [
+    {
+      "id": "item-2026-10-11-01",
+      "time": "09:30",
+      "segments": [
+        {
+          "text": "Park Güell",
+          "placeId": "bcn-park-guell"
+        }
+      ],
+      "ticketId": "tkt-park-guell",
+      "ticketAnchorPlaceId": "bcn-park-guell",
+      "noteSegments": [
+        {
+          "text": "已確認"
+        }
+      ],
+      "startTime": "09:30"
+    },
+    {
+      "id": "item-2026-10-11-02",
+      "time": "11:30",
+      "segments": [
+        {
+          "text": "Gràcia 午餐、咖啡、散步"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "Casa Vicens",
+          "placeId": "bcn-casa-vicens"
+        },
+        {
+          "text": " 外觀順路看"
+        }
+      ],
+      "startTime": "11:30"
+    },
+    {
+      "id": "item-2026-10-11-03",
+      "time": "15:45",
+      "segments": [
+        {
+          "text": "Casa Batlló",
+          "placeId": "bcn-casa-batllo"
+        },
+        {
+          "text": " · Blue APP + Dragon Rooftop"
+        }
+      ],
+      "ticketId": "tkt-casa-batllo",
+      "ticketAnchorPlaceId": "bcn-casa-batllo",
+      "noteSegments": [
+        {
+          "text": "已確認"
+        }
+      ],
+      "startTime": "15:45"
+    },
+    {
+      "id": "item-2026-10-11-04",
+      "time": "順路",
+      "segments": [
+        {
+          "text": "Casa Milà",
+          "placeId": "bcn-casa-mila"
+        },
+        {
+          "text": " / "
+        },
+        {
+          "text": "Casa Amatller",
+          "placeId": "bcn-casa-amatller"
+        },
+        {
+          "text": " 外觀"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "彈性"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "text": "Park Güell 已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "Casa Batlló 已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "外觀彈性",
+      "tone": "flex"
+    }
+  ]
+}

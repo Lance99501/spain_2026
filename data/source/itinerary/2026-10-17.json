@@ -1,0 +1,48 @@
+{
+  "id": "day-2026-10-17",
+  "date": "2026-10-17",
+  "dateLabel": "10/17",
+  "dow": "Sat",
+  "city": "Sevilla",
+  "title": "西班牙廣場、河岸與 Triana",
+  "sub": "用一整天感受塞維亞",
+  "categories": [
+    "flex"
+  ],
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Plaza%20de%20Espa%C3%B1a%2C%20Sevilla&destination=Mercado%20de%20Triana%2C%20Sevilla&travelmode=walking&waypoints=Torre%20del%20Oro%2C%20Sevilla",
+  "items": [
+    {
+      "id": "item-2026-10-17-01",
+      "time": "上午",
+      "segments": [
+        {
+          "text": "Plaza de España + Parque de María Luisa"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-17-02",
+      "time": "中午",
+      "segments": [
+        {
+          "text": "Río Guadalquivir + Torre del Oro"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-17-03",
+      "time": "下午",
+      "segments": [
+        {
+          "text": "Triana 市場、陶瓷、Calle Betis、晚餐"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "text": "散步主題日",
+      "tone": "flex"
+    }
+  ]
+}

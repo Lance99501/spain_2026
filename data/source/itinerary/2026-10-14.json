@@ -1,0 +1,83 @@
+{
+  "id": "day-2026-10-14",
+  "date": "2026-10-14",
+  "dateLabel": "10/14",
+  "dow": "Wed",
+  "city": "Sevilla",
+  "title": "Barcelona → Sevilla",
+  "sub": "AVE 03940 直達 · 抵達後只散步",
+  "categories": [
+    "confirmed",
+    "rest"
+  ],
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Barcelona%20Sants&destination=Sevilla%20Santa%20Justa&travelmode=transit",
+  "items": [
+    {
+      "id": "item-2026-10-14-01",
+      "time": "08:30",
+      "segments": [
+        {
+          "text": "Barcelona-Sants",
+          "placeId": "bcn-barcelona-sants"
+        },
+        {
+          "text": " → "
+        },
+        {
+          "text": "Sevilla-Santa Justa",
+          "placeId": "sev-sevilla-santa-justa"
+        }
+      ],
+      "ticketId": "tkt-ave-bcn-sevilla",
+      "noteSegments": [
+        {
+          "text": "Renfe AVE 03940 · 14:47 抵達 · 已固定"
+        }
+      ],
+      "startTime": "08:30",
+      "transport": {
+        "role": "transfer",
+        "kind": "train",
+        "service": "AVE 03940",
+        "status": "confirmed",
+        "originPlaceId": "bcn-barcelona-sants",
+        "destinationPlaceId": "sev-sevilla-santa-justa",
+        "departureTime": "08:30",
+        "arrivalTime": "14:47"
+      }
+    },
+    {
+      "id": "item-2026-10-14-02",
+      "time": "15:00+",
+      "segments": [
+        {
+          "text": "abba Sevilla 入住"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "Plaza de la Encarnación"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-14-03",
+      "time": "傍晚",
+      "segments": [
+        {
+          "text": "Setas de Sevilla + Centro 初次散步"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "text": "AVE 已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "抵達日",
+      "tone": "flex"
+    }
+  ]
+}
