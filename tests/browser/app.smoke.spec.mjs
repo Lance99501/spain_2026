@@ -1,6 +1,10 @@
+import {readFile} from 'node:fs/promises';
 import {expect,test} from '@playwright/test';
 
-import {ticketDriveFileIds} from '../../data/trip-data.js';
+const bootstrap=JSON.parse(
+  await readFile(new URL('../../data/generated/bootstrap.json',import.meta.url),'utf8')
+);
+const {ticketDriveFileIds}=bootstrap;
 
 test('the itinerary renders and its primary controls work',async({page})=>{
   const pageErrors=[];
