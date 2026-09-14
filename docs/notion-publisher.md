@@ -15,11 +15,27 @@ The publisher is enabled in phases so Confirmed / Fixed travel data cannot be si
 
 The data-source IDs live in `config/notion-publisher.json`; they are not secrets.
 
+## Conservative automatic Preview
+
+The workflow automatically runs a read-only `Scope = All` Preview once per hour at minute `:17` (GitHub schedules can be delayed a little).
+
+Automatic Preview never publishes. It only checks Notion against the deterministic GitHub mappings and applies an alert gate:
+
+- flexible / planning-only differences stay advisory and do not notify,
+- a Confirmed / Fixed downgrade conflict triggers action required,
+- a new locked itinerary row without deterministic mapping triggers action required,
+- a Confirmed Reservation without a deterministic ticket mapping triggers action required,
+- protected date/time/hotel conflicts trigger action required.
+
+When a scheduled Preview has an action-required finding, the scheduled workflow is intentionally marked **failed** after the artifact and Summary are saved. GitHub can then surface its normal Actions failure notification according to the account's notification settings.
+
+**Publish remains manual.** A scheduled event can never execute the Publish job.
+
+For an immediate check, manual Preview is still available from **Actions** → **Publish Spain 2026 from Notion** → **Run workflow** with `Mode = Preview`.
+
 ## Preview
 
-Open **Actions** → **Publish Spain 2026 from Notion** → **Run workflow**.
-
-Choose:
+For a manual Preview choose:
 
 - `Mode = Preview`
 - `Scope = All`, `Itinerary`, or `Reservations`
@@ -31,11 +47,12 @@ The Summary separates:
 - deterministic mappings,
 - ignored private records,
 - unmapped / heuristic candidates,
-- safety-review findings.
+- safety-review findings,
+- the automatic Preview gate result.
 
 ## Guarded Publish
 
-Choose `Mode = Publish`.
+Choose `Mode = Publish` manually.
 
 Publish is deterministic: **only rows listed in `config/notion-links.json` are allowed to control GitHub data**. Unmapped Notion rows are skipped and reported. Publish never guesses a target.
 
@@ -84,11 +101,10 @@ The workflow writes a Summary and keeps `notion-publisher-report` as an artifact
 For a real booking / ticket change:
 
 1. Update the private Notion Reservation / Itinerary first.
-2. Run `Mode = Preview`.
-3. Review any `BLOCK`, unmapped, or heuristic findings.
-4. If it is a genuinely new record, add a deterministic entry in `config/notion-links.json`.
-5. Run `Mode = Publish`.
-6. Confirm the Publish job and GitHub Pages deployment are green.
+2. Wait for the next automatic Preview (normally within about an hour), or run a manual Preview if you want an immediate check.
+3. If GitHub reports an automatic Preview failure, open that run's Summary and resolve the protected / mapping issue before publishing.
+4. If Preview is clean, manually run `Mode = Publish`, usually with `Scope = All`.
+5. Confirm the Publish job and GitHub Pages deployment are green.
 
 For ordinary flexible route / note edits, Pages CMS can still be used later. Do not use Pages CMS to originate a Confirmed / cancelled / changed-ticket state.
 

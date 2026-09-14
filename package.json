@@ -14,7 +14,7 @@
     "test:smoke:headed": "playwright test --headed",
     "build:data": "node scripts/build-data.mjs",
     "check:data": "node scripts/build-data.mjs --check",
-    "check:publisher": "node --check scripts/notion-preview.mjs && node --check scripts/notion-publish.mjs && node --test tests/notion-publisher-links.test.mjs",
+    "check:publisher": "node --check scripts/notion-preview.mjs && node --check scripts/notion-preview-gate.mjs && node --check scripts/notion-publish.mjs && node --test tests/notion-publisher-links.test.mjs tests/notion-preview-gate.test.mjs",
     "preview:notion": "node scripts/notion-preview.mjs",
     "publish:notion": "node scripts/notion-publish.mjs"
   },

@@ -20,13 +20,19 @@ on:
           - All
           - Itinerary
           - Reservations
+  schedule:
+    - cron: '17 * * * *'
 
 permissions:
   contents: read
 
+concurrency:
+  group: spain-2026-notion-publisher
+  cancel-in-progress: false
+
 jobs:
   preview:
-    if: ${{ inputs.mode == 'Preview' }}
+    if: ${{ github.event_name == 'schedule' || inputs.mode == 'Preview' }}
     name: Preview Notion → GitHub
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -58,16 +64,27 @@ jobs:
             exit 1
           fi
 
-      - name: Check preview script
-        run: node --check scripts/notion-preview.mjs
+      - name: Check preview scripts
+        run: |
+          node --check scripts/notion-preview.mjs
+          node --check scripts/notion-preview-gate.mjs
 
       - name: Run read-only preview
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          PREVIEW_SCOPE: ${{ github.event_name == 'schedule' && 'All' || inputs.scope }}
         run: |
           node scripts/notion-preview.mjs \
-            --scope "${{ inputs.scope }}" \
+            --scope "$PREVIEW_SCOPE" \
             --json artifacts/notion-preview.json \
+            --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Evaluate automatic Preview gate
+        id: preview_gate
+        run: |
+          node scripts/notion-preview-gate.mjs \
+            --report artifacts/notion-preview.json \
+            --github-output "$GITHUB_OUTPUT" \
             --summary "$GITHUB_STEP_SUMMARY"
 
       - name: Upload preview artifact
@@ -79,8 +96,14 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
+      - name: Notify when scheduled Preview needs review
+        if: ${{ github.event_name == 'schedule' && steps.preview_gate.outputs.action_required == 'true' }}
+        run: |
+          echo "::error::Automatic Notion Preview found ${{ steps.preview_gate.outputs.action_required_count }} protected/confirmed issue(s). Open the workflow Summary before publishing."
+          exit 1
+
   publish:
-    if: ${{ inputs.mode == 'Publish' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'Publish' }}
     name: Publish Notion → GitHub
     runs-on: ubuntu-latest
     timeout-minutes: 15
