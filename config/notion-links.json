@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "itinerary": {
+    "3b891e9f-a395-811f-88ce-ed6f747522dc": {
+      "sourceId": "ITN-45",
+      "targetType": "item",
+      "targetId": "item-2026-10-16-02",
+      "note": "Mezquita-Catedral｜Córdoba 核心"
+    },
+    "3b891e9f-a395-810d-a8ee-d175d0165570": {
+      "sourceId": "ITN-12",
+      "targetType": "day",
+      "targetId": "day-2026-10-16",
+      "note": "Córdoba 一日遊"
+    }
+  },
+  "reservations": {
+    "3db91e9f-a395-8105-8094-cc7cf8abd64d": {
+      "ticketId": "tkt-mezquita-cordoba",
+      "note": "Mezquita-Catedral de Córdoba｜General ×3"
+    },
+    "3db91e9f-a395-81f5-8576-ca42d8c71c00": {
+      "ticketId": "tkt-renfe-cordoba-sevilla",
+      "note": "Córdoba → Sevilla｜Renfe AVANT 08764"
+    }
+  }
+}
