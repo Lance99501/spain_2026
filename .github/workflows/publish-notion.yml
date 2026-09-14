@@ -83,7 +83,7 @@ jobs:
     if: ${{ inputs.mode == 'Publish' }}
     name: Publish Notion → GitHub
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     permissions:
       contents: write
 
@@ -140,8 +140,11 @@ jobs:
       - name: Rebuild public bootstrap
         run: npm run build:data
 
-      - name: Validate generated data
-        run: npm run test:data
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run full test suite
+        run: npm test
 
       - name: Commit and push published data
         run: |

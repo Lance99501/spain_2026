@@ -112,8 +112,10 @@ function scoreRow(row,entry,placeById){
 
 function matchItinerary(row,current,placeById){
   const sourceId=row['Itinerary ID'];
-  const linked=sourceId?current.items.find(entry=>entry.item.sourceItineraryId===sourceId):null;
-  if(linked) return {kind:'linked',candidate:linked,score:100,reasons:['sourceItineraryId']};
+  const linkedItem=sourceId?current.items.find(entry=>entry.item.sourceItineraryId===sourceId):null;
+  if(linkedItem) return {kind:'linked',candidate:linkedItem,score:100,reasons:['sourceItineraryId']};
+  const linkedDay=sourceId?current.days.find(day=>day.sourceItineraryId===sourceId):null;
+  if(linkedDay) return {kind:'linked-day',candidate:{day:linkedDay},score:100,reasons:['sourceItineraryId']};
   if(row.Type==='Day trip'){
     const day=current.days.find(day=>day.date===row.Date);
     if(day) return {kind:'day',candidate:{day},score:90,reasons:['date','day-trip']};
@@ -126,6 +128,7 @@ function matchItinerary(row,current,placeById){
 }
 
 function ticketKind(type){const v=normalize(type);return ['attraction','train','flight'].includes(v)?v:null;}
+function ticketIdsFor(link){if(Array.isArray(link.ticketIds)) return link.ticketIds;return link.ticketId?[link.ticketId]:[];}
 
 function matchReservation(row,{tickets,currentItems,placeById}){
   const kind=ticketKind(row.Type);
@@ -156,44 +159,98 @@ function summary(report){
   const lines=['# Spain 2026 · Notion Publisher Preview','', '> Read-only preview. No GitHub/Notion data is modified.','',`Scope: **${report.scope}**`,`Generated: ${report.generatedAt}`,''];
   if(report.itinerary){
     const x=report.itinerary;
-    lines.push('## Itinerary','',`- Notion rows in trip window: **${x.total}**`,`- Locked (Confirmed / Fixed): **${x.locked}**`,`- Explicit links: **${x.matched.linked}**`,`- Heuristic candidates: **${x.matched.heuristic}**`,`- Day-level matches: **${x.matched.day}**`,`- Ambiguous / unmatched: **${x.matched.ambiguous+x.matched.unmatched}**`,`- Review findings: **${x.reviews.length}**`,'');
+    lines.push('## Itinerary','',`- Notion rows in trip window: **${x.total}**`,`- Locked (Confirmed / Fixed): **${x.locked}**`,`- Deterministic mappings: **${x.matched.explicit}**`,`- Existing source links: **${x.matched.linked}**`,`- Heuristic candidates: **${x.matched.heuristic}**`,`- Day-level candidates: **${x.matched.day}**`,`- Ambiguous / unmatched: **${x.matched.ambiguous+x.matched.unmatched}**`,`- Review findings: **${x.reviews.length}**`,'');
     if(x.reviews.length){table(lines,['Notion','ID','Date','Match','Review'],x.reviews.slice(0,40).map(r=>[r.name,r.sourceId||'—',r.date,r.match,r.message]));lines.push('');}
     if(x.suggestedLinks.length){
-      lines.push('### Suggested source links','','Suggestions only; nothing is written yet. Publish will require deterministic links.','');
+      lines.push('### Suggested source links','','Suggestions only; nothing is written yet. Publish still requires a deterministic mapping.','');
       table(lines,['Notion ID','GitHub item','Confidence'],x.suggestedLinks.slice(0,40).map(r=>[r.sourceId,r.itemId,`${r.score} (${r.reasons.join(', ')})`]));lines.push('');
     }
   }
   if(report.reservations){
     const x=report.reservations;
-    lines.push('## Reservations & Tickets','',`- Notion reservations in trip window: **${x.total}**`,`- Confirmed reservations: **${x.confirmed}**`,`- Ticket-like reservations checked: **${x.ticketLike}**`,`- Review findings: **${x.reviews.length}**`,'');
+    lines.push('## Reservations & Tickets','',`- Notion reservations in trip window: **${x.total}**`,`- Confirmed reservations: **${x.confirmed}**`,`- Deterministic mappings: **${x.explicit}**`,`- Ignored by policy: **${x.ignored}**`,`- Ticket-like unmapped rows checked heuristically: **${x.ticketLike}**`,`- Review findings: **${x.reviews.length}**`,'');
     if(x.reviews.length){table(lines,['Reservation','ID','Date','Match','Review'],x.reviews.slice(0,40).map(r=>[r.name,r.sourceId||'—',r.date,r.match,r.message]));lines.push('');}
   }
-  lines.push('## Safety gates','','- Confirmed / Fixed rows are locked.','- Preview never downgrades Confirmed data.','- Booking refs, amounts, currency, traveler names and internal reservation notes are not requested.','- Heuristic matches are review-only; the Publish phase will require explicit source links.','');
+  lines.push('## Safety gates','','- Confirmed / Fixed rows are locked.','- Preview resolves `config/notion-links.json` before any heuristic matching.','- Preview never downgrades Confirmed data.','- Hotel check-in/check-out dates are compared against the locked stay windows.','- One Reservation may explicitly map to multiple flight tickets.','- Private records such as insurance can be explicitly ignored.','- Booking refs, amounts, currency, traveler names and internal reservation notes are not requested.','- Heuristic matches are review-only; Publish never guesses a target.','');
   return lines.join('\n');
+}
+
+function reviewExplicitItinerary({row,link,itemById,dayById,hotelByPlaceId,ticketById}){
+  const reviews=[];
+  if(link.sourceId&&row['Itinerary ID']&&link.sourceId!==row['Itinerary ID']){
+    reviews.push({match:link.targetId,message:`BLOCK: mapping source mismatch config=${link.sourceId}, Notion=${row['Itinerary ID']}.`});
+    return reviews;
+  }
+  if(link.targetType==='hotel'){
+    const hotel=hotelByPlaceId.get(link.targetId);
+    if(!hotel){reviews.push({match:link.targetId,message:'BLOCK: mapped hotel stay does not exist.'});return reviews;}
+    const expected=link.stayRole==='checkIn'?hotel.checkIn:link.stayRole==='checkOut'?hotel.checkOut:null;
+    if(!expected) reviews.push({match:link.targetId,message:'BLOCK: hotel mapping needs stayRole=checkIn or checkOut.'});
+    else if(row.Date!==expected) reviews.push({match:`hotel:${link.targetId}:${link.stayRole}`,message:`BLOCK: hotel date Notion=${row.Date}, GitHub=${expected}.`});
+    return reviews;
+  }
+  if(link.targetType==='day'){
+    const day=dayById.get(link.targetId);
+    if(!day){reviews.push({match:link.targetId,message:'BLOCK: mapped day does not exist.'});return reviews;}
+    if(row.Date!==day.date) reviews.push({match:link.targetId,message:`BLOCK: date Notion=${row.Date}, GitHub=${day.date}.`});
+    if(day.categories?.includes('confirmed')&&status(row.Status)!=='confirmed') reviews.push({match:link.targetId,message:`BLOCK: Notion ${status(row.Status)||'unknown'} would downgrade a confirmed day.`});
+    return reviews;
+  }
+  if(link.targetType!=='item'){reviews.push({match:link.targetId,message:`BLOCK: unsupported targetType ${link.targetType}.`});return reviews;}
+  const entry=itemById.get(link.targetId);
+  if(!entry){reviews.push({match:link.targetId,message:'BLOCK: mapped item does not exist.'});return reviews;}
+  if(row.Date!==entry.date) reviews.push({match:link.targetId,message:`BLOCK: date Notion=${row.Date}, GitHub=${entry.date}.`});
+  const notionStatus=status(row.Status),githubStatus=itemStatus(entry.item,ticketById);
+  if(githubStatus==='confirmed'&&notionStatus!=='confirmed') reviews.push({match:link.targetId,message:`BLOCK: Notion ${notionStatus||'unknown'} would downgrade GitHub confirmed.`});
+  else if(notionStatus&&githubStatus&&notionStatus!==githubStatus) reviews.push({match:link.targetId,message:`Status: Notion=${notionStatus}, GitHub=${githubStatus}`});
+  const nt=row['Start Time'],gt=itemStart(entry.item);
+  if(/^\d{2}:\d{2}$/.test(nt||'')&&gt&&nt!==gt){
+    const protectedTime=githubStatus==='confirmed'||row.Fixed===true||Boolean(entry.item.ticketId);
+    reviews.push({match:link.targetId,message:`${protectedTime?'BLOCK: protected ':' '}Start Time Notion=${nt}, GitHub=${gt}`.trim()});
+  }
+  return reviews;
 }
 
 async function main(){
   const args=parseArgs(process.argv.slice(2));
   const token=process.env.NOTION_TOKEN?.trim();
   if(!token) throw new Error('NOTION_TOKEN is missing. Add it in GitHub Settings → Secrets and variables → Actions.');
+
   const cfg=await readJson(resolve(root,'config/notion-publisher.json'));
+  const links=await readJson(resolve(root,'config/notion-links.json'));
   const trip=await readJson(resolve(root,'data/source/config.json'));
   const places=await readJson(resolve(root,'data/source/places.json'));
   const tickets=await readJson(resolve(root,'data/source/tickets.json'));
+  const hotels=await readJson(resolve(root,'data/source/hotels.json'));
   const files=(await readdir(resolve(root,'data/source/itinerary'))).filter(name=>name.endsWith('.json')).sort();
   const days=await Promise.all(files.map(name=>readJson(resolve(root,'data/source/itinerary',name))));
+
   const placeById=new Map(places.map(place=>[place.id,place]));
   const ticketById=new Map(tickets.map(ticket=>[ticket.id,ticket]));
+  const hotelByPlaceId=new Map(hotels.map(hotel=>[hotel.placeId,hotel]));
   const currentItems=days.flatMap(day=>day.items.map(item=>({date:day.date,dayId:day.id,item})));
+  const itemById=new Map(currentItems.map(entry=>[entry.item.id,entry]));
+  const dayById=new Map(days.map(day=>[day.id,day]));
   const current={days,items:currentItems};
   const inside=date=>typeof date==='string'&&date>=trip.departDate&&date<=trip.endDate;
   const report={generatedAt:new Date().toISOString(),scope:args.scope,mode:'preview',notionApiVersion:cfg.apiVersion,tripWindow:{start:trip.departDate,end:trip.endDate}};
 
   if(args.scope==='all'||args.scope==='itinerary'){
     const rows=(await notionQuery({token,apiVersion:cfg.apiVersion,dataSourceId:cfg.dataSources.itinerary,propertyNames:cfg.properties.itinerary})).map(row=>({...row,Date:row.Date?.start||null})).filter(row=>inside(row.Date));
-    const result={total:rows.length,locked:rows.filter(row=>status(row.Status)==='confirmed'||row.Fixed===true).length,matched:{linked:0,heuristic:0,day:0,ambiguous:0,unmatched:0},reviews:[],suggestedLinks:[]};
+    const result={total:rows.length,locked:rows.filter(row=>status(row.Status)==='confirmed'||row.Fixed===true).length,matched:{explicit:0,linked:0,heuristic:0,day:0,ambiguous:0,unmatched:0},reviews:[],suggestedLinks:[]};
+
     for(const row of rows){
+      const explicit=links.itinerary?.[row.pageId];
+      if(explicit){
+        result.matched.explicit+=1;
+        for(const review of reviewExplicitItinerary({row,link:explicit,itemById,dayById,hotelByPlaceId,ticketById})){
+          result.reviews.push({name:row.Name,sourceId:row['Itinerary ID'],date:row.Date,match:review.match,message:review.message});
+        }
+        continue;
+      }
+
       const match=matchItinerary(row,current,placeById);
+      if(match.kind==='linked-day'){result.matched.linked+=1;continue;}
       if(result.matched[match.kind]!=null) result.matched[match.kind]+=1;
       const locked=status(row.Status)==='confirmed'||row.Fixed===true;
       if(match.kind==='unmatched'||match.kind==='ambiguous'){
@@ -215,8 +272,40 @@ async function main(){
 
   if(args.scope==='all'||args.scope==='reservations'){
     const rows=(await notionQuery({token,apiVersion:cfg.apiVersion,dataSourceId:cfg.dataSources.reservations,propertyNames:cfg.properties.reservations})).map(row=>({...row,Date:row.Date?.start||null})).filter(row=>inside(row.Date));
-    const result={total:rows.length,confirmed:rows.filter(row=>status(row.Status)==='confirmed').length,ticketLike:0,reviews:[]};
+    const result={total:rows.length,confirmed:rows.filter(row=>status(row.Status)==='confirmed').length,explicit:0,ignored:0,ticketLike:0,reviews:[]};
+
     for(const row of rows){
+      const explicit=links.reservations?.[row.pageId];
+      if(explicit){
+        result.explicit+=1;
+        if(explicit.ignore){result.ignored+=1;continue;}
+
+        const notionStatus=status(row.Status);
+        if(explicit.hotelPlaceId){
+          const hotel=hotelByPlaceId.get(explicit.hotelPlaceId);
+          if(!hotel) result.reviews.push({name:row.Name,sourceId:row['Reservation ID'],date:row.Date,match:explicit.hotelPlaceId,message:'BLOCK: mapped hotel stay does not exist.'});
+          else{
+            if(notionStatus!=='confirmed') result.reviews.push({name:row.Name,sourceId:row['Reservation ID'],date:row.Date,match:explicit.hotelPlaceId,message:`BLOCK: Notion=${notionStatus||'unknown'} conflicts with locked hotel stay.`});
+            if(row.Date&&row.Date!==hotel.checkIn) result.reviews.push({name:row.Name,sourceId:row['Reservation ID'],date:row.Date,match:explicit.hotelPlaceId,message:`BLOCK: hotel reservation date Notion=${row.Date}, GitHub=${hotel.checkIn}.`});
+          }
+          continue;
+        }
+
+        const ticketIds=ticketIdsFor(explicit);
+        if(!ticketIds.length){
+          result.reviews.push({name:row.Name,sourceId:row['Reservation ID'],date:row.Date,match:'—',message:'BLOCK: deterministic reservation mapping has no ticket/hotel target.'});
+          continue;
+        }
+        for(const ticketId of ticketIds){
+          const ticket=ticketById.get(ticketId);
+          if(!ticket){result.reviews.push({name:row.Name,sourceId:row['Reservation ID'],date:row.Date,match:ticketId,message:'BLOCK: mapped ticket does not exist.'});continue;}
+          const githubStatus=status(ticket.status);
+          if(notionStatus==='confirmed'&&githubStatus!=='confirmed') result.reviews.push({name:row.Name,sourceId:row['Reservation ID'],date:row.Date,match:ticketId,message:`Status: Notion=confirmed, GitHub=${githubStatus||'unknown'}`});
+          else if(notionStatus!=='confirmed'&&githubStatus==='confirmed') result.reviews.push({name:row.Name,sourceId:row['Reservation ID'],date:row.Date,match:ticketId,message:`BLOCK: Notion=${notionStatus||'unknown'} conflicts with GitHub confirmed; no downgrade allowed.`});
+        }
+        continue;
+      }
+
       if(!ticketKind(row.Type)) continue;
       result.ticketLike+=1;
       const match=matchReservation(row,{tickets,currentItems,placeById});

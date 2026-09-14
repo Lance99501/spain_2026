@@ -15,7 +15,7 @@ The publisher is enabled in phases so Confirmed / Fixed travel data cannot be si
 
 The data-source IDs live in `config/notion-publisher.json`; they are not secrets.
 
-## Phase 1 — Preview
+## Preview
 
 Open **Actions** → **Publish Spain 2026 from Notion** → **Run workflow**.
 
@@ -24,22 +24,33 @@ Choose:
 - `Mode = Preview`
 - `Scope = All`, `Itinerary`, or `Reservations`
 
-Preview is read-only. It compares Notion with the current GitHub source data and writes a Summary + `notion-publisher-preview` artifact. It never commits data.
+Preview is read-only. It resolves `config/notion-links.json` first, then uses heuristic matching only for still-unmapped rows. Heuristic matches are suggestions and are never written.
 
-Preview checks Confirmed / Fixed rows, status/time conflicts, reservation ticket matches, and heuristic candidates. Heuristic matches are suggestions only.
+The Summary separates:
 
-## Phase 2 — Guarded Publish
+- deterministic mappings,
+- ignored private records,
+- unmapped / heuristic candidates,
+- safety-review findings.
 
-The same workflow now also exposes `Mode = Publish`.
+## Guarded Publish
 
-Publish is intentionally deterministic: **only rows listed in `config/notion-links.json` are allowed to write to GitHub**. Unmapped Notion rows are skipped and reported. Publish never guesses a target.
+Choose `Mode = Publish`.
 
-Current initial links cover the verified Córdoba examples:
+Publish is deterministic: **only rows listed in `config/notion-links.json` are allowed to control GitHub data**. Unmapped Notion rows are skipped and reported. Publish never guesses a target.
 
-- `ITN-45` → `item-2026-10-16-02` (Mezquita)
-- `ITN-12` → `day-2026-10-16` (Córdoba day trip)
-- Mezquita Reservation → `tkt-mezquita-cordoba`
-- Córdoba → Sevilla AVANT Reservation → `tkt-renfe-cordoba-sevilla`
+The mapping model supports:
+
+- Itinerary → item
+- Itinerary → day
+- Itinerary hotel Check-in / Check-out → existing `hotels.json` stay window
+- Reservation → one ticket
+- Reservation → multiple tickets, e.g. one Emirates booking controlling outbound + return tickets
+- Multiple Reservations → one shared ticket, e.g. separate Alhambra passenger bookings
+- Reservation → confirmed hotel stay
+- `ignore: true` for private records that must never publish, e.g. personal travel insurance
+
+Current deterministic coverage includes all **21 Confirmed / Fixed itinerary rows** and all **19 Confirmed reservations** in the Spain trip window. Personal insurance is explicitly ignored rather than published.
 
 ### Publish safety gates
 
@@ -47,23 +58,24 @@ A Publish run stops before writing source JSON if any mapped row hits one of the
 
 - GitHub is `confirmed` but Notion is no longer `Confirmed`.
 - A linked Notion date differs from the GitHub day/item date.
+- A linked hotel Check-in / Check-out date differs from the locked stay window.
 - A Confirmed / Fixed / ticketed item has a different start time.
+- A hotel Reservation is no longer Confirmed or its start date differs from the confirmed hotel check-in.
 - The explicit target in `config/notion-links.json` no longer exists.
+- The Notion `Itinerary ID` no longer matches the deterministic mapping.
 
 A mapped Reservation may promote a non-confirmed GitHub ticket to `confirmed`, but it can never downgrade a confirmed ticket.
-
-A mapped itinerary transport may be promoted to `confirmed`. For non-protected items, an exact `HH:MM` start time may be updated. Confirmed ticket times are never changed automatically.
 
 ### What a successful Publish does
 
 1. Reads only the whitelisted Notion fields.
 2. Applies deterministic mapped changes in `data/source/`.
-3. Adds `sourceItineraryId` links when applicable.
-4. Bumps the PWA service-worker cache if public data changed.
+3. Adds `sourceItineraryId` links to mapped itinerary items/days and hotel stay anchors when applicable.
+4. Bumps the PWA service-worker cache only when public data changed.
 5. Runs `npm run build:data` to regenerate `data/generated/bootstrap.json`.
-6. Runs data validation.
+6. Installs Chromium and runs the **full `npm test` suite**, including Playwright smoke tests, before committing.
 7. Commits and pushes only when there is an actual diff.
-8. Normal GitHub Tests / Pages deployment then run from that commit.
+8. GitHub Pages deploys from the resulting commit.
 
 The workflow writes a Summary and keeps `notion-publisher-report` as an artifact for 14 days.
 
@@ -73,12 +85,12 @@ For a real booking / ticket change:
 
 1. Update the private Notion Reservation / Itinerary first.
 2. Run `Mode = Preview`.
-3. Review any BLOCK / ambiguous / unmapped findings.
-4. Add or verify the deterministic entry in `config/notion-links.json` when a new row should control an existing GitHub item/ticket.
+3. Review any `BLOCK`, unmapped, or heuristic findings.
+4. If it is a genuinely new record, add a deterministic entry in `config/notion-links.json`.
 5. Run `Mode = Publish`.
-6. Confirm the generated commit passes GitHub Tests and Pages deployment.
+6. Confirm the Publish job and GitHub Pages deployment are green.
 
-Do not use Pages CMS to originate a Confirmed / cancelled / changed-ticket state. Pages CMS remains for low-risk public itinerary text and flexible planning.
+For ordinary flexible route / note edits, Pages CMS can still be used later. Do not use Pages CMS to originate a Confirmed / cancelled / changed-ticket state.
 
 ## Data boundary
 
