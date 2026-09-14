@@ -1,0 +1,76 @@
+name: Publish Spain 2026 from Notion
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Safety mode — Publish will be added only after Preview is verified'
+        required: true
+        default: Preview
+        type: choice
+        options:
+          - Preview
+      scope:
+        description: 'Which Notion source to compare'
+        required: true
+        default: All
+        type: choice
+        options:
+          - All
+          - Itinerary
+          - Reservations
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    name: Preview Notion → GitHub
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Verify NOTION_TOKEN
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          if [ -z "$NOTION_TOKEN" ]; then
+            {
+              echo '# Spain 2026 · Notion Publisher'
+              echo
+              echo '❌ `NOTION_TOKEN` is not configured.'
+              echo
+              echo 'Add it at **Repository → Settings → Secrets and variables → Actions → New repository secret**.'
+              echo 'The secret must belong to a Notion internal connection with read access to only the Spain 2026 Itinerary and Reservations databases.'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+      - name: Check publisher script
+        run: node --check scripts/notion-preview.mjs
+
+      - name: Run read-only preview
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          node scripts/notion-preview.mjs \
+            --scope "${{ inputs.scope }}" \
+            --json artifacts/notion-preview.json \
+            --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload preview artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: notion-publisher-preview
+          path: artifacts/notion-preview.json
+          if-no-files-found: ignore
+          retention-days: 7
