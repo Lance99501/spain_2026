@@ -44,7 +44,8 @@
         "destinationPlaceId": "sev-sevilla-santa-justa",
         "departureTime": "08:30",
         "arrivalTime": "14:47"
-      }
+      },
+      "sourceItineraryId": "ITN-11"
     },
     {
       "id": "item-2026-10-14-02",

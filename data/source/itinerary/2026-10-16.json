@@ -62,7 +62,8 @@
       ],
       "ticketId": "tkt-mezquita-cordoba",
       "ticketAnchorPlaceId": "cor-mezquita-catedral-de-cordoba",
-      "startTime": "10:00"
+      "startTime": "10:00",
+      "sourceItineraryId": "ITN-45"
     },
     {
       "id": "item-2026-10-16-03",
@@ -132,5 +133,6 @@
       "text": "Judería＋羅馬橋彈性",
       "tone": "flex"
     }
-  ]
+  ],
+  "sourceItineraryId": "ITN-12"
 }

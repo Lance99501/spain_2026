@@ -54,7 +54,8 @@
         "destinationPlaceId": "grx-granada-bus-station",
         "departureTime": "11:45",
         "arrivalTime": "14:45"
-      }
+      },
+      "sourceItineraryId": "ITN-13"
     },
     {
       "id": "item-2026-10-18-03",

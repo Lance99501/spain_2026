@@ -988,7 +988,8 @@
               "text": "已確認"
             }
           ],
-          "startTime": "09:15"
+          "startTime": "09:15",
+          "sourceItineraryId": "ITN-3"
         },
         {
           "id": "item-2026-10-10-02",
@@ -1080,7 +1081,8 @@
               "text": "已確認"
             }
           ],
-          "startTime": "09:30"
+          "startTime": "09:30",
+          "sourceItineraryId": "ITN-19"
         },
         {
           "id": "item-2026-10-11-02",
@@ -1120,7 +1122,8 @@
               "text": "已確認"
             }
           ],
-          "startTime": "15:45"
+          "startTime": "15:45",
+          "sourceItineraryId": "ITN-26"
         },
         {
           "id": "item-2026-10-11-04",
@@ -1391,7 +1394,8 @@
             "destinationPlaceId": "sev-sevilla-santa-justa",
             "departureTime": "08:30",
             "arrivalTime": "14:47"
-          }
+          },
+          "sourceItineraryId": "ITN-11"
         },
         {
           "id": "item-2026-10-14-02",
@@ -1458,7 +1462,8 @@
               "text": "已確認 · 約至 12:00"
             }
           ],
-          "startTime": "09:30"
+          "startTime": "09:30",
+          "sourceItineraryId": "ITN-38"
         },
         {
           "id": "item-2026-10-15-02",
@@ -1486,7 +1491,8 @@
               "text": "已確認 · 約至 16:45"
             }
           ],
-          "startTime": "15:00"
+          "startTime": "15:00",
+          "sourceItineraryId": "ITN-40"
         }
       ],
       "tags": [
@@ -1568,7 +1574,8 @@
           ],
           "ticketId": "tkt-mezquita-cordoba",
           "ticketAnchorPlaceId": "cor-mezquita-catedral-de-cordoba",
-          "startTime": "10:00"
+          "startTime": "10:00",
+          "sourceItineraryId": "ITN-45"
         },
         {
           "id": "item-2026-10-16-03",
@@ -1638,7 +1645,8 @@
           "text": "Judería＋羅馬橋彈性",
           "tone": "flex"
         }
-      ]
+      ],
+      "sourceItineraryId": "ITN-12"
     },
     {
       "id": "day-2026-10-17",
@@ -1744,7 +1752,8 @@
             "destinationPlaceId": "grx-granada-bus-station",
             "departureTime": "11:45",
             "arrivalTime": "14:45"
-          }
+          },
+          "sourceItineraryId": "ITN-13"
         },
         {
           "id": "item-2026-10-18-03",
@@ -1897,7 +1906,8 @@
           "text": "參觀後休息",
           "tone": "rest"
         }
-      ]
+      ],
+      "sourceItineraryId": "ITN-8"
     },
     {
       "id": "day-2026-10-20",
@@ -1959,7 +1969,8 @@
             "destinationPlaceId": "mad-madrid-puerta-de-atocha",
             "departureTime": "11:04",
             "arrivalTime": "14:38"
-          }
+          },
+          "sourceItineraryId": "ITN-14"
         },
         {
           "id": "item-2026-10-20-03",

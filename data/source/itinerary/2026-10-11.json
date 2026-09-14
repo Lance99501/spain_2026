@@ -28,7 +28,8 @@
           "text": "已確認"
         }
       ],
-      "startTime": "09:30"
+      "startTime": "09:30",
+      "sourceItineraryId": "ITN-19"
     },
     {
       "id": "item-2026-10-11-02",
@@ -68,7 +69,8 @@
           "text": "已確認"
         }
       ],
-      "startTime": "15:45"
+      "startTime": "15:45",
+      "sourceItineraryId": "ITN-26"
     },
     {
       "id": "item-2026-10-11-04",
