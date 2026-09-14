@@ -1,0 +1,51 @@
+{
+  "apiVersion": "2026-03-11",
+  "dataSources": {
+    "itinerary": "f8389512-5fcc-4c96-b640-ccf03e8920d4",
+    "reservations": "4c1199de-dda7-4e96-beb6-dd365fae5dd1"
+  },
+  "properties": {
+    "itinerary": [
+      "Name",
+      "Date",
+      "Start Time",
+      "End Time",
+      "City",
+      "Type",
+      "Status",
+      "Fixed",
+      "Area",
+      "Location",
+      "Itinerary ID"
+    ],
+    "reservations": [
+      "Name",
+      "Date",
+      "Local Time",
+      "City",
+      "Type",
+      "Status",
+      "Reservation ID"
+    ]
+  },
+  "publicItineraryWhitelist": [
+    "Name",
+    "Date",
+    "Start Time",
+    "End Time",
+    "City",
+    "Type",
+    "Status",
+    "Fixed",
+    "Area",
+    "Location"
+  ],
+  "neverRequestFromReservations": [
+    "Booking Ref",
+    "Amount",
+    "Currency",
+    "Covered Travelers",
+    "Notes",
+    "Source URL"
+  ]
+}
