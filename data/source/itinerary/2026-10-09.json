@@ -19,7 +19,8 @@
           "text": "抵達 Barcelona Airport"
         }
       ],
-      "startTime": "13:25"
+      "startTime": "13:25",
+      "sourceItineraryId": "ITN-1"
     },
     {
       "id": "item-2026-10-09-02",

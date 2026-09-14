@@ -640,25 +640,33 @@
       "placeId": "bcn-hotel-royal-passeig-de-gracia",
       "room": "Superior Double or Twin Room",
       "checkIn": "2026-10-09",
-      "checkOut": "2026-10-14"
+      "checkOut": "2026-10-14",
+      "sourceCheckInItineraryId": "ITN-2",
+      "sourceCheckOutItineraryId": "ITN-4"
     },
     {
       "placeId": "sev-abba-sevilla",
       "room": "Junior Suite",
       "checkIn": "2026-10-14",
-      "checkOut": "2026-10-18"
+      "checkOut": "2026-10-18",
+      "sourceCheckInItineraryId": "ITN-5",
+      "sourceCheckOutItineraryId": "ITN-6"
     },
     {
       "placeId": "grx-hotel-navas",
       "room": "Standard Triple Room",
       "checkIn": "2026-10-18",
-      "checkOut": "2026-10-20"
+      "checkOut": "2026-10-20",
+      "sourceCheckInItineraryId": "ITN-7",
+      "sourceCheckOutItineraryId": "ITN-9"
     },
     {
       "placeId": "mad-hotel-acta-madfor",
       "room": "Standard Triple Room",
       "checkIn": "2026-10-20",
-      "checkOut": "2026-10-25"
+      "checkOut": "2026-10-25",
+      "sourceCheckInItineraryId": "ITN-59",
+      "sourceCheckOutItineraryId": "ITN-60"
     }
   ],
   "tickets": [
@@ -915,7 +923,8 @@
               "text": "抵達 Barcelona Airport"
             }
           ],
-          "startTime": "13:25"
+          "startTime": "13:25",
+          "sourceItineraryId": "ITN-1"
         },
         {
           "id": "item-2026-10-09-02",
@@ -2309,7 +2318,8 @@
             "originPlaceId": "mad-madrid-barajas-airport",
             "destinationPlaceId": "dxb-dubai-airport",
             "departureTime": "21:45"
-          }
+          },
+          "sourceItineraryId": "ITN-10"
         }
       ],
       "tags": [

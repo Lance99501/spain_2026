@@ -69,7 +69,8 @@
         "originPlaceId": "mad-madrid-barajas-airport",
         "destinationPlaceId": "dxb-dubai-airport",
         "departureTime": "21:45"
-      }
+      },
+      "sourceItineraryId": "ITN-10"
     }
   ],
   "tags": [
