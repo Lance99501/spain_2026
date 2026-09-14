@@ -4,14 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Safety mode — Publish will be added only after Preview is verified'
+        description: 'Preview compares only; Publish writes only deterministic mapped changes'
         required: true
         default: Preview
         type: choice
         options:
           - Preview
+          - Publish
       scope:
-        description: 'Which Notion source to compare'
+        description: 'Which Notion source to compare / publish'
         required: true
         default: All
         type: choice
@@ -25,9 +26,12 @@ permissions:
 
 jobs:
   preview:
+    if: ${{ inputs.mode == 'Preview' }}
     name: Preview Notion → GitHub
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      contents: read
 
     steps:
       - name: Check out repository
@@ -54,7 +58,7 @@ jobs:
             exit 1
           fi
 
-      - name: Check publisher script
+      - name: Check preview script
         run: node --check scripts/notion-preview.mjs
 
       - name: Run read-only preview
@@ -74,3 +78,80 @@ jobs:
           path: artifacts/notion-preview.json
           if-no-files-found: ignore
           retention-days: 7
+
+  publish:
+    if: ${{ inputs.mode == 'Publish' }}
+    name: Publish Notion → GitHub
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Verify NOTION_TOKEN
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          if [ -z "$NOTION_TOKEN" ]; then
+            {
+              echo '# Spain 2026 · Notion Publisher'
+              echo
+              echo '❌ `NOTION_TOKEN` is not configured.'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate publisher configuration
+        run: npm run check:publisher
+
+      - name: Apply guarded mapped changes
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          node scripts/notion-publish.mjs \
+            --scope "${{ inputs.scope }}" \
+            --json artifacts/notion-publish.json \
+            --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload publish report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: notion-publisher-report
+          path: artifacts/notion-publish.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Rebuild public bootstrap
+        run: npm run build:data
+
+      - name: Validate generated data
+        run: npm run test:data
+
+      - name: Commit and push published data
+        run: |
+          git add data/source data/generated/bootstrap.json service-worker.js
+          if git diff --cached --quiet; then
+            echo 'No GitHub data changes were required.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Publish Spain 2026 from Notion'
+          git push origin HEAD:main
