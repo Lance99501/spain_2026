@@ -254,7 +254,7 @@
     "lat": 37.3923,
     "lng": -5.975,
     "address": "Sevilla",
-    "dates": "10/14 14:47",
+    "dates": "10/14 14:47 · 10/16 08:11 / 18:30",
     "unesco": false
   },
   {
@@ -276,11 +276,11 @@
     "name": "Mezquita-Catedral de Córdoba",
     "displayName": "科爾多瓦清真寺主教座堂",
     "type": "attraction",
-    "status": "pending",
+    "status": "confirmed",
     "lat": 37.8789,
     "lng": -4.7794,
     "address": "Calle Cardenal Herrero 1, Córdoba",
-    "dates": "10/16 約 10:00",
+    "dates": "10/16 10:00",
     "unesco": true
   },
   {
@@ -306,7 +306,7 @@
     "lat": 37.88855,
     "lng": -4.78905,
     "address": "Glorieta de las Tres Culturas, Córdoba",
-    "dates": "10/16 08:52",
+    "dates": "10/16 08:52 / 17:36",
     "unesco": false
   },
   {

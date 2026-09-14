@@ -8,7 +8,6 @@
   "sub": "以 Mezquita-Catedral 為核心",
   "categories": [
     "confirmed",
-    "pending",
     "flex"
   ],
   "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Mezquita-Catedral%20de%20C%C3%B3rdoba&destination=Puente%20Romano%20de%20C%C3%B3rdoba&travelmode=walking",
@@ -49,7 +48,7 @@
     },
     {
       "id": "item-2026-10-16-02",
-      "time": "約10:00",
+      "time": "10:00",
       "segments": [
         {
           "text": "Mezquita-Catedral de Córdoba",
@@ -58,9 +57,12 @@
       ],
       "noteSegments": [
         {
-          "text": "待購票"
+          "text": "General ×3 · 已確認"
         }
-      ]
+      ],
+      "ticketId": "tkt-mezquita-cordoba",
+      "ticketAnchorPlaceId": "cor-mezquita-catedral-de-cordoba",
+      "startTime": "10:00"
     },
     {
       "id": "item-2026-10-16-03",
@@ -80,25 +82,37 @@
     },
     {
       "id": "item-2026-10-16-04",
-      "time": "傍晚",
+      "time": "17:36",
       "segments": [
         {
-          "text": "Córdoba → Sevilla"
+          "text": "Córdoba Central",
+          "placeId": "cor-cordoba-central"
+        },
+        {
+          "text": " → "
+        },
+        {
+          "text": "Sevilla-Santa Justa",
+          "placeId": "sev-sevilla-santa-justa"
         }
       ],
       "noteSegments": [
         {
-          "text": "回程交通待確認"
+          "text": "Renfe AVANT 08764 · 18:30 抵達 · 已確認"
         }
       ],
       "transport": {
         "role": "daytrip",
         "kind": "train",
-        "service": "回程",
-        "status": "pending",
+        "service": "Renfe AVANT 08764",
+        "status": "confirmed",
         "originPlaceId": "cor-cordoba-central",
-        "destinationPlaceId": "sev-sevilla-santa-justa"
-      }
+        "destinationPlaceId": "sev-sevilla-santa-justa",
+        "departureTime": "17:36",
+        "arrivalTime": "18:30"
+      },
+      "ticketId": "tkt-renfe-cordoba-sevilla",
+      "startTime": "17:36"
     }
   ],
   "tags": [
@@ -107,12 +121,16 @@
       "tone": "confirmed"
     },
     {
-      "text": "回程交通待確認",
-      "tone": "pending"
+      "text": "Mezquita 已確認",
+      "tone": "confirmed"
     },
     {
-      "text": "Mezquita 待購票",
-      "tone": "pending"
+      "text": "回程 Renfe 已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "Judería＋羅馬橋彈性",
+      "tone": "flex"
     }
   ]
 }

@@ -261,7 +261,7 @@
       "lat": 37.3923,
       "lng": -5.975,
       "address": "Sevilla",
-      "dates": "10/14 14:47",
+      "dates": "10/14 14:47 · 10/16 08:11 / 18:30",
       "unesco": false
     },
     {
@@ -283,11 +283,11 @@
       "name": "Mezquita-Catedral de Córdoba",
       "displayName": "科爾多瓦清真寺主教座堂",
       "type": "attraction",
-      "status": "pending",
+      "status": "confirmed",
       "lat": 37.8789,
       "lng": -4.7794,
       "address": "Calle Cardenal Herrero 1, Córdoba",
-      "dates": "10/16 約 10:00",
+      "dates": "10/16 10:00",
       "unesco": true
     },
     {
@@ -313,7 +313,7 @@
       "lat": 37.88855,
       "lng": -4.78905,
       "address": "Glorieta de las Tres Culturas, Córdoba",
-      "dates": "10/16 08:52",
+      "dates": "10/16 08:52 / 17:36",
       "unesco": false
     },
     {
@@ -742,6 +742,27 @@
       "placeIds": [
         "sev-sevilla-santa-justa",
         "cor-cordoba-central"
+      ],
+      "type": "drive",
+      "status": "confirmed"
+    },
+    {
+      "id": "tkt-mezquita-cordoba",
+      "label": "科爾多瓦清真寺主教座堂｜Mezquita-Catedral de Córdoba",
+      "kind": "attraction",
+      "placeIds": [
+        "cor-mezquita-catedral-de-cordoba"
+      ],
+      "type": "drive",
+      "status": "confirmed"
+    },
+    {
+      "id": "tkt-renfe-cordoba-sevilla",
+      "label": "Renfe AVANT 08764｜Córdoba → Sevilla",
+      "kind": "train",
+      "placeIds": [
+        "cor-cordoba-central",
+        "sev-sevilla-santa-justa"
       ],
       "type": "drive",
       "status": "confirmed"
@@ -1493,7 +1514,6 @@
       "sub": "以 Mezquita-Catedral 為核心",
       "categories": [
         "confirmed",
-        "pending",
         "flex"
       ],
       "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Mezquita-Catedral%20de%20C%C3%B3rdoba&destination=Puente%20Romano%20de%20C%C3%B3rdoba&travelmode=walking",
@@ -1534,7 +1554,7 @@
         },
         {
           "id": "item-2026-10-16-02",
-          "time": "約10:00",
+          "time": "10:00",
           "segments": [
             {
               "text": "Mezquita-Catedral de Córdoba",
@@ -1543,9 +1563,12 @@
           ],
           "noteSegments": [
             {
-              "text": "待購票"
+              "text": "General ×3 · 已確認"
             }
-          ]
+          ],
+          "ticketId": "tkt-mezquita-cordoba",
+          "ticketAnchorPlaceId": "cor-mezquita-catedral-de-cordoba",
+          "startTime": "10:00"
         },
         {
           "id": "item-2026-10-16-03",
@@ -1565,25 +1588,37 @@
         },
         {
           "id": "item-2026-10-16-04",
-          "time": "傍晚",
+          "time": "17:36",
           "segments": [
             {
-              "text": "Córdoba → Sevilla"
+              "text": "Córdoba Central",
+              "placeId": "cor-cordoba-central"
+            },
+            {
+              "text": " → "
+            },
+            {
+              "text": "Sevilla-Santa Justa",
+              "placeId": "sev-sevilla-santa-justa"
             }
           ],
           "noteSegments": [
             {
-              "text": "回程交通待確認"
+              "text": "Renfe AVANT 08764 · 18:30 抵達 · 已確認"
             }
           ],
           "transport": {
             "role": "daytrip",
             "kind": "train",
-            "service": "回程",
-            "status": "pending",
+            "service": "Renfe AVANT 08764",
+            "status": "confirmed",
             "originPlaceId": "cor-cordoba-central",
-            "destinationPlaceId": "sev-sevilla-santa-justa"
-          }
+            "destinationPlaceId": "sev-sevilla-santa-justa",
+            "departureTime": "17:36",
+            "arrivalTime": "18:30"
+          },
+          "ticketId": "tkt-renfe-cordoba-sevilla",
+          "startTime": "17:36"
         }
       ],
       "tags": [
@@ -1592,12 +1627,16 @@
           "tone": "confirmed"
         },
         {
-          "text": "回程交通待確認",
-          "tone": "pending"
+          "text": "Mezquita 已確認",
+          "tone": "confirmed"
         },
         {
-          "text": "Mezquita 待購票",
-          "tone": "pending"
+          "text": "回程 Renfe 已確認",
+          "tone": "confirmed"
+        },
+        {
+          "text": "Judería＋羅馬橋彈性",
+          "tone": "flex"
         }
       ]
     },
@@ -2314,6 +2353,12 @@
     "tkt-emirates-return": [
       "1gykqXZ5BFQHzEn0pr9s6ZRu9krhsC4-D",
       "1XQsHdIYT2dqZOO5KrTNhIfXKpHYFlT3C"
+    ],
+    "tkt-mezquita-cordoba": [
+      "1mOHwpU3P8W7FccMTQXOogSLSKTUChX0z"
+    ],
+    "tkt-renfe-cordoba-sevilla": [
+      "1HUq1veLCwQpFawY0QKKJPP4FKAInlLSt"
     ]
   },
   "mapConfig": {

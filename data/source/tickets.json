@@ -84,6 +84,27 @@
     "status": "confirmed"
   },
   {
+    "id": "tkt-mezquita-cordoba",
+    "label": "科爾多瓦清真寺主教座堂｜Mezquita-Catedral de Córdoba",
+    "kind": "attraction",
+    "placeIds": [
+      "cor-mezquita-catedral-de-cordoba"
+    ],
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
+    "id": "tkt-renfe-cordoba-sevilla",
+    "label": "Renfe AVANT 08764｜Córdoba → Sevilla",
+    "kind": "train",
+    "placeIds": [
+      "cor-cordoba-central",
+      "sev-sevilla-santa-justa"
+    ],
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
     "id": "tkt-alsa-granada",
     "label": "ALSA｜Sevilla → Granada",
     "kind": "bus",
