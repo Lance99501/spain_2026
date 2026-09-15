@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "overrides": [
+    {
+      "targetPlaceId": "sev-abba-sevilla",
+      "expectedCurrentNames": ["abba Sevilla", "Arroyo 3 Apartments"],
+      "expectedStay": {"checkIn": "2026-10-14", "checkOut": "2026-10-18"},
+      "publicPlace": {
+        "name": "Arroyo 3 Apartments",
+        "address": "3 Calle Arroyo Planta baja, 41003 Sevilla, Spain",
+        "lat": 37.39104,
+        "lng": -5.98425
+      },
+      "hotel": {
+        "room": "Two-Bedroom Apartment"
+      },
+      "itineraryUpdates": [
+        {
+          "itemId": "item-2026-10-14-02",
+          "time": "15:00–23:30",
+          "segments": [{"text": "Arroyo 3 Apartments 入住"}],
+          "noteSegments": [{"text": "Santa Justa → 官方 Taxi；步行作 Backup"}]
+        },
+        {
+          "itemId": "item-2026-10-18-01",
+          "time": "11:00 前",
+          "segments": [{"text": "Arroyo 3 Apartments 退房"}],
+          "noteSegments": [{"text": "10:45–10:55 叫 Taxi 前往 Plaza de Armas · 11:45 ALSA · 不排晨間景點"}]
+        }
+      ]
+    }
+  ]
+}

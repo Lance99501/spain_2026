@@ -1,160 +1,48 @@
 {
   "schemaVersion": 2,
   "itinerary": {
-    "3b891e9f-a395-8109-9573-dbbade8c77be": {
-      "sourceId": "ITN-1",
-      "targetType": "item",
-      "targetId": "item-2026-10-09-01",
-      "note": "抵達 Barcelona｜EK185"
-    },
-    "3b891e9f-a395-81de-ac45-e44e4aa422ff": {
-      "sourceId": "ITN-2",
-      "targetType": "hotel",
-      "targetId": "bcn-hotel-royal-passeig-de-gracia",
-      "stayRole": "checkIn",
-      "note": "Hotel Royal Passeig de Gracia｜Check-in"
-    },
-    "3b891e9f-a395-81e3-a59b-f36cf4da74ab": {
-      "sourceId": "ITN-3",
-      "targetType": "item",
-      "targetId": "item-2026-10-10-01",
-      "note": "Sagrada Família + Nativity Tower"
-    },
-    "3b891e9f-a395-8107-b258-e517f81f2b82": {
-      "sourceId": "ITN-4",
-      "targetType": "hotel",
-      "targetId": "bcn-hotel-royal-passeig-de-gracia",
-      "stayRole": "checkOut",
-      "note": "Hotel Royal Passeig de Gracia｜Check-out"
-    },
-    "3b891e9f-a395-8138-922d-c2b16c0155b3": {
-      "sourceId": "ITN-5",
-      "targetType": "hotel",
-      "targetId": "sev-abba-sevilla",
-      "stayRole": "checkIn",
-      "note": "abba Sevilla｜Check-in"
-    },
-    "3b891e9f-a395-8176-a172-c3ef30071a7d": {
-      "sourceId": "ITN-6",
-      "targetType": "hotel",
-      "targetId": "sev-abba-sevilla",
-      "stayRole": "checkOut",
-      "note": "abba Sevilla｜Check-out"
-    },
-    "3b891e9f-a395-8158-8b4d-ea189c8906f4": {
-      "sourceId": "ITN-7",
-      "targetType": "hotel",
-      "targetId": "grx-hotel-navas",
-      "stayRole": "checkIn",
-      "note": "Hotel Navas｜Check-in"
-    },
-    "3b891e9f-a395-8178-9c36-d91cb39ec5b2": {
-      "sourceId": "ITN-8",
-      "targetType": "day",
-      "targetId": "day-2026-10-19",
-      "note": "阿爾罕布拉宮｜Alhambra｜09:30 行程＋11:30 納斯里德宮"
-    },
-    "3b891e9f-a395-8120-81b6-f39887bf2127": {
-      "sourceId": "ITN-9",
-      "targetType": "hotel",
-      "targetId": "grx-hotel-navas",
-      "stayRole": "checkOut",
-      "note": "Hotel Navas｜Check-out"
-    },
-    "3b891e9f-a395-81f5-8b00-d9c8575d2208": {
-      "sourceId": "ITN-10",
-      "targetType": "item",
-      "targetId": "item-2026-10-25-04",
-      "note": "離開 Madrid｜EK144"
-    },
-    "3b891e9f-a395-81f9-a93d-d72a3fabf54b": {
-      "sourceId": "ITN-11",
-      "targetType": "item",
-      "targetId": "item-2026-10-14-01",
-      "note": "Barcelona → Sevilla｜城市移動"
-    },
-    "3b891e9f-a395-810d-a8ee-d175d0165570": {
-      "sourceId": "ITN-12",
-      "targetType": "day",
-      "targetId": "day-2026-10-16",
-      "note": "Córdoba 一日遊"
-    },
-    "3b891e9f-a395-8157-b215-e31cc0af210f": {
-      "sourceId": "ITN-13",
-      "targetType": "item",
-      "targetId": "item-2026-10-18-02",
-      "note": "Sevilla → Granada｜城市移動"
-    },
-    "3b891e9f-a395-8189-8332-c9401f7f90dd": {
-      "sourceId": "ITN-14",
-      "targetType": "item",
-      "targetId": "item-2026-10-20-02",
-      "note": "Granada → Madrid｜城市移動"
-    },
-    "3b891e9f-a395-81a7-a798-fb4d3e33e8aa": {
-      "sourceId": "ITN-19",
-      "targetType": "item",
-      "targetId": "item-2026-10-11-01",
-      "note": "Park Güell｜09:30"
-    },
-    "3b891e9f-a395-81d7-be9b-c3de6d706064": {
-      "sourceId": "ITN-26",
-      "targetType": "item",
-      "targetId": "item-2026-10-11-03",
-      "note": "巴特婁之家｜Casa Batlló｜深度參觀"
-    },
-    "3b891e9f-a395-81dd-9277-f94015b712d1": {
-      "sourceId": "ITN-38",
-      "targetType": "item",
-      "targetId": "item-2026-10-15-01",
-      "note": "塞維亞王宮｜Real Alcázar de Sevilla｜宮殿＋花園"
-    },
-    "3b891e9f-a395-8146-b69b-d83384d9e3a2": {
-      "sourceId": "ITN-40",
-      "targetType": "item",
-      "targetId": "item-2026-10-15-03",
-      "note": "塞維亞主教座堂＋吉拉達塔｜Catedral de Sevilla + Giralda"
-    },
-    "3b891e9f-a395-811f-88ce-ed6f747522dc": {
-      "sourceId": "ITN-45",
-      "targetType": "item",
-      "targetId": "item-2026-10-16-02",
-      "note": "Mezquita-Catedral｜Córdoba 核心"
-    },
-    "3c191e9f-a395-8107-bdee-d7c4afd44549": {
-      "sourceId": "ITN-59",
-      "targetType": "hotel",
-      "targetId": "mad-hotel-acta-madfor",
-      "stayRole": "checkIn",
-      "note": "Hotel Acta Madfor｜Check-in"
-    },
-    "3c191e9f-a395-81c1-9b45-d9b90e1bc389": {
-      "sourceId": "ITN-60",
-      "targetType": "hotel",
-      "targetId": "mad-hotel-acta-madfor",
-      "stayRole": "checkOut",
-      "note": "Hotel Acta Madfor｜Check-out"
-    }
+    "3b891e9f-a395-8109-9573-dbbade8c77be": {"sourceId":"ITN-1","targetType":"item","targetId":"item-2026-10-09-01","note":"抵達 Barcelona｜EK185"},
+    "3b891e9f-a395-81de-ac45-e44e4aa422ff": {"sourceId":"ITN-2","targetType":"hotel","targetId":"bcn-hotel-royal-passeig-de-gracia","stayRole":"checkIn","note":"Hotel Royal Passeig de Gracia｜Check-in"},
+    "3b891e9f-a395-81e3-a59b-f36cf4da74ab": {"sourceId":"ITN-3","targetType":"item","targetId":"item-2026-10-10-01","note":"Sagrada Família + Nativity Tower"},
+    "3b891e9f-a395-8107-b258-e517f81f2b82": {"sourceId":"ITN-4","targetType":"hotel","targetId":"bcn-hotel-royal-passeig-de-gracia","stayRole":"checkOut","note":"Hotel Royal Passeig de Gracia｜Check-out"},
+    "3b891e9f-a395-8138-922d-c2b16c0155b3": {"sourceId":"ITN-5","targetType":"hotel","targetId":"sev-abba-sevilla","stayRole":"checkIn","note":"Arroyo 3 Apartments｜Check-in"},
+    "3b891e9f-a395-8176-a172-c3ef30071a7d": {"sourceId":"ITN-6","targetType":"hotel","targetId":"sev-abba-sevilla","stayRole":"checkOut","note":"Arroyo 3 Apartments｜Check-out"},
+    "3b891e9f-a395-8158-8b4d-ea189c8906f4": {"sourceId":"ITN-7","targetType":"hotel","targetId":"grx-hotel-navas","stayRole":"checkIn","note":"Hotel Navas｜Check-in"},
+    "3b891e9f-a395-8178-9c36-d91cb39ec5b2": {"sourceId":"ITN-8","targetType":"day","targetId":"day-2026-10-19","note":"阿爾罕布拉宮｜Alhambra｜09:30 行程＋11:30 納斯里德宮"},
+    "3b891e9f-a395-8120-81b6-f39887bf2127": {"sourceId":"ITN-9","targetType":"hotel","targetId":"grx-hotel-navas","stayRole":"checkOut","note":"Hotel Navas｜Check-out"},
+    "3b891e9f-a395-81f5-8b00-d9c8575d2208": {"sourceId":"ITN-10","targetType":"item","targetId":"item-2026-10-25-04","note":"離開 Madrid｜EK144"},
+    "3b891e9f-a395-81f9-a93d-d72a3fabf54b": {"sourceId":"ITN-11","targetType":"item","targetId":"item-2026-10-14-01","note":"Barcelona → Sevilla｜城市移動"},
+    "3b891e9f-a395-810d-a8ee-d175d0165570": {"sourceId":"ITN-12","targetType":"day","targetId":"day-2026-10-16","note":"Córdoba 一日遊"},
+    "3b891e9f-a395-8157-b215-e31cc0af210f": {"sourceId":"ITN-13","targetType":"item","targetId":"item-2026-10-18-02","note":"Sevilla → Granada｜城市移動"},
+    "3b891e9f-a395-8189-8332-c9401f7f90dd": {"sourceId":"ITN-14","targetType":"item","targetId":"item-2026-10-20-02","note":"Granada → Madrid｜城市移動"},
+    "3b891e9f-a395-81a7-a798-fb4d3e33e8aa": {"sourceId":"ITN-19","targetType":"item","targetId":"item-2026-10-11-01","note":"Park Güell｜09:30"},
+    "3b891e9f-a395-81d7-be9b-c3de6d706064": {"sourceId":"ITN-26","targetType":"item","targetId":"item-2026-10-11-03","note":"巴特婁之家｜Casa Batlló｜深度參觀"},
+    "3b891e9f-a395-81dd-9277-f94015b712d1": {"sourceId":"ITN-38","targetType":"item","targetId":"item-2026-10-15-01","note":"塞維亞王宮｜Real Alcázar de Sevilla｜宮殿＋花園"},
+    "3b891e9f-a395-8146-b69b-d83384d9e3a2": {"sourceId":"ITN-40","targetType":"item","targetId":"item-2026-10-15-03","note":"塞維亞主教座堂＋吉拉達塔｜Catedral de Sevilla + Giralda"},
+    "3b891e9f-a395-811f-88ce-ed6f747522dc": {"sourceId":"ITN-45","targetType":"item","targetId":"item-2026-10-16-02","note":"Mezquita-Catedral｜Córdoba 核心"},
+    "3c191e9f-a395-8107-bdee-d7c4afd44549": {"sourceId":"ITN-59","targetType":"hotel","targetId":"mad-hotel-acta-madfor","stayRole":"checkIn","note":"Hotel Acta Madfor｜Check-in"},
+    "3c191e9f-a395-81c1-9b45-d9b90e1bc389": {"sourceId":"ITN-60","targetType":"hotel","targetId":"mad-hotel-acta-madfor","stayRole":"checkOut","note":"Hotel Acta Madfor｜Check-out"}
   },
   "reservations": {
-    "3b891e9f-a395-812e-9d50-d68f1611f81b": {"ticketId": "tkt-sagrada", "note": "Sagrada Família with Towers"},
-    "3bc91e9f-a395-81d8-9a45-c308e7be9fef": {"ticketId": "tkt-park-guell", "note": "Park Güell｜General ticket ×3"},
-    "3c291e9f-a395-8181-8825-f7c535daa435": {"ticketId": "tkt-casa-batllo", "note": "Casa Batlló｜Blue＋Dragon Rooftop｜3人"},
-    "3c691e9f-a395-810f-8200-f202def8511d": {"ticketId": "tkt-ave-bcn-sevilla", "note": "Barcelona Sants → Sevilla Santa Justa｜AVE Estándar ×3"},
-    "3bf91e9f-a395-8136-9f86-e596246b9803": {"ticketId": "tkt-sevilla-alcazar", "note": "塞維亞王宮｜Real Alcázar de Sevilla｜General Admission ×3"},
-    "3c091e9f-a395-81e4-a19d-d467990579c7": {"ticketId": "tkt-sevilla-catedral", "note": "塞維亞主教座堂＋吉拉達塔｜Individual ×3"},
-    "3c991e9f-a395-8147-8a33-d146e7cbf506": {"ticketId": "tkt-iryo-cordoba", "note": "Sevilla Santa Justa → Córdoba｜iryo 06097 Inicial ×3"},
-    "3db91e9f-a395-8105-8094-cc7cf8abd64d": {"ticketId": "tkt-mezquita-cordoba", "note": "Mezquita-Catedral de Córdoba｜General ×3"},
-    "3db91e9f-a395-81f5-8576-ca42d8c71c00": {"ticketId": "tkt-renfe-cordoba-sevilla", "note": "Córdoba → Sevilla｜Renfe AVANT 08764"},
-    "3c891e9f-a395-815d-9eb1-fcc0eb2b7110": {"ticketId": "tkt-alsa-granada", "note": "Sevilla → Granada｜ALSA Bus ×3"},
-    "3b891e9f-a395-8136-86da-cd749adefe4e": {"ticketId": "tkt-alhambra", "note": "阿爾罕布拉宮｜Alhambra＋Palacios Nazaríes＋Generalife＋Audioguía"},
-    "3bf91e9f-a395-816f-9f10-cc2d1327764a": {"ticketId": "tkt-alhambra", "note": "結哥｜阿爾罕布拉宮｜同一場次獨立 Reservation"},
-    "3c591e9f-a395-81c8-afd7-e96e4bff864c": {"ticketId": "tkt-alvia-madrid", "note": "Granada → Madrid Atocha｜ALVIA 2087 Confort ×3"},
-    "3b891e9f-a395-81ac-a9ce-e6a93afac79a": {"ticketIds": ["tkt-emirates-outbound", "tkt-emirates-return"], "note": "Emirates｜一筆 Reservation 同時涵蓋去程＋回程"},
-    "3b891e9f-a395-8162-bf8c-effccc4008e3": {"hotelPlaceId": "bcn-hotel-royal-passeig-de-gracia", "note": "Hotel Royal Passeig de Gracia"},
-    "3b891e9f-a395-8142-9f58-c50ddc4cb872": {"hotelPlaceId": "sev-abba-sevilla", "note": "abba Sevilla"},
-    "3b891e9f-a395-81d4-a7e6-fd433536500d": {"hotelPlaceId": "grx-hotel-navas", "note": "Hotel Navas"},
-    "3c191e9f-a395-8157-ab07-d8d88c7f7474": {"hotelPlaceId": "mad-hotel-acta-madfor", "note": "Madrid｜Hotel Acta Madfor"},
-    "3cf91e9f-a395-8100-ae2c-c58a585ac333": {"ignore": true, "reason": "Private insurance reservation; never publish to the public companion app.", "note": "旅平險＋旅遊不便險｜富邦產險個人保單"}
+    "3b891e9f-a395-812e-9d50-d68f1611f81b": {"ticketId":"tkt-sagrada","note":"Sagrada Família with Towers"},
+    "3bc91e9f-a395-81d8-9a45-c308e7be9fef": {"ticketId":"tkt-park-guell","note":"Park Güell｜General ticket ×3"},
+    "3c291e9f-a395-8181-8825-f7c535daa435": {"ticketId":"tkt-casa-batllo","note":"Casa Batlló｜Blue＋Dragon Rooftop｜3人"},
+    "3c691e9f-a395-810f-8200-f202def8511d": {"ticketId":"tkt-ave-bcn-sevilla","note":"Barcelona Sants → Sevilla Santa Justa｜AVE Estándar ×3"},
+    "3bf91e9f-a395-8136-9f86-e596246b9803": {"ticketId":"tkt-sevilla-alcazar","note":"塞維亞王宮｜Real Alcázar de Sevilla｜General Admission ×3"},
+    "3c091e9f-a395-81e4-a19d-d467990579c7": {"ticketId":"tkt-sevilla-catedral","note":"塞維亞主教座堂＋吉拉達塔｜Individual ×3"},
+    "3c991e9f-a395-8147-8a33-d146e7cbf506": {"ticketId":"tkt-iryo-cordoba","note":"Sevilla Santa Justa → Córdoba｜iryo 06097 Inicial ×3"},
+    "3db91e9f-a395-8105-8094-cc7cf8abd64d": {"ticketId":"tkt-mezquita-cordoba","note":"Mezquita-Catedral de Córdoba｜General ×3"},
+    "3db91e9f-a395-81f5-8576-ca42d8c71c00": {"ticketId":"tkt-renfe-cordoba-sevilla","note":"Córdoba → Sevilla｜Renfe AVANT 08764"},
+    "3c891e9f-a395-815d-9eb1-fcc0eb2b7110": {"ticketId":"tkt-alsa-granada","note":"Sevilla → Granada｜ALSA Bus ×3"},
+    "3b891e9f-a395-8136-86da-cd749adefe4e": {"ticketId":"tkt-alhambra","note":"阿爾罕布拉宮｜Alhambra＋Palacios Nazaríes＋Generalife＋Audioguía"},
+    "3bf91e9f-a395-816f-9f10-cc2d1327764a": {"ticketId":"tkt-alhambra","note":"結哥｜阿爾罕布拉宮｜同一場次獨立 Reservation"},
+    "3c591e9f-a395-81c8-afd7-e96e4bff864c": {"ticketId":"tkt-alvia-madrid","note":"Granada → Madrid Atocha｜ALVIA 2087 Confort ×3"},
+    "3b891e9f-a395-81ac-a9ce-e6a93afac79a": {"ticketIds":["tkt-emirates-outbound","tkt-emirates-return"],"note":"Emirates｜一筆 Reservation 同時涵蓋去程＋回程"},
+    "3b891e9f-a395-8162-bf8c-effccc4008e3": {"hotelPlaceId":"bcn-hotel-royal-passeig-de-gracia","note":"Hotel Royal Passeig de Gracia"},
+    "3b891e9f-a395-8142-9f58-c50ddc4cb872": {"ignore":true,"reason":"Cancelled accommodation retained only as private history after the confirmed replacement booking.","note":"abba Sevilla｜Cancelled history"},
+    "3db91e9f-a395-81a2-83b2-cacdb93119a2": {"hotelPlaceId":"sev-abba-sevilla","note":"Arroyo 3 Apartments｜confirmed replacement for Sevilla stay"},
+    "3b891e9f-a395-81d4-a7e6-fd433536500d": {"hotelPlaceId":"grx-hotel-navas","note":"Hotel Navas"},
+    "3c191e9f-a395-8157-ab07-d8d88c7f7474": {"hotelPlaceId":"mad-hotel-acta-madfor","note":"Madrid｜Hotel Acta Madfor"},
+    "3cf91e9f-a395-8100-ae2c-c58a585ac333": {"ignore":true,"reason":"Private insurance reservation; never publish to the public companion app.","note":"旅平險＋旅遊不便險｜富邦產險個人保單"}
   }
 }

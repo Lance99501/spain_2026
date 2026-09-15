@@ -67,6 +67,8 @@ jobs:
       - name: Check preview scripts
         run: |
           node --check scripts/notion-preview.mjs
+          node --check scripts/notion-preview-runner.mjs
+          node --check scripts/notion-preview-normalize.mjs
           node --check scripts/notion-preview-gate.mjs
 
       - name: Run read-only preview
@@ -74,7 +76,7 @@ jobs:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           PREVIEW_SCOPE: ${{ github.event_name == 'schedule' && 'All' || inputs.scope }}
         run: |
-          node scripts/notion-preview.mjs \
+          node scripts/notion-preview-runner.mjs \
             --scope "$PREVIEW_SCOPE" \
             --json artifacts/notion-preview.json \
             --summary "$GITHUB_STEP_SUMMARY"
@@ -150,6 +152,11 @@ jobs:
             --scope "${{ inputs.scope }}" \
             --json artifacts/notion-publish.json \
             --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Apply confirmed hotel replacement
+        env:
+          PUBLISH_SCOPE: ${{ inputs.scope }}
+        run: node scripts/apply-hotel-overrides.mjs
 
       - name: Upload publish report
         if: always()
