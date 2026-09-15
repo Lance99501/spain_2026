@@ -2,11 +2,12 @@ export function initAppShell({itineraryController,hotelsController,mapController
   const nav=document.getElementById('appBottomNav');
   if(!nav) return;
 
+  const todaySection=document.getElementById('todaySection');
   const buttons=[...nav.querySelectorAll('[data-nav-target]')];
   const targets={
-    today:document.querySelector('.hero'),
+    today:todaySection&&!todaySection.hidden?todaySection:document.querySelector('.hero'),
     map:document.getElementById('mapSection'),
-    trip:document.getElementById('citySwitchSection'),
+    trip:document.getElementById('itinerary'),
     stay:document.getElementById('hotelsSection')
   };
 
