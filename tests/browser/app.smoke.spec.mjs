@@ -16,6 +16,7 @@ test('the itinerary renders and its primary controls work',async({page})=>{
   await expect(page.locator('#countdown')).not.toHaveText('—');
   await expect(page.locator('#days .day')).toHaveCount(18);
   await expect(page.locator('#hotels .hotel')).toHaveCount(4);
+  await expect(page.locator('#filters')).toHaveCount(0);
 
   const firstDay=page.locator('#days .day').first();
   await firstDay.locator('.day-main').click();
@@ -37,6 +38,7 @@ test('preview Today Mode can open the full itinerary',async({page})=>{
   const todaySection=page.locator('#todaySection');
   await expect(todaySection).toBeVisible();
   await expect(todaySection.locator('.today-kicker')).toContainText('PREVIEW');
+  await expect(todaySection.locator('.next-panel > span')).toHaveText('下一個固定時間');
 
   await page.getByRole('button',{name:/完整今日行程|全部行程/}).click();
   await expect(page.locator('#itinerary')).toBeInViewport();
@@ -75,7 +77,7 @@ test('a mapped ticket opens its real Google Drive files without the demo QR flow
   await expect(trigger).toBeFocused();
 });
 
-test('an unmapped ticket reports that Drive has not synced it yet',async({page})=>{
+test('Casa Batllo ticket is marked as an official-app ticket',async({page})=>{
   const pageErrors=[];
   page.on('pageerror',error=>pageErrors.push(error.message));
 
@@ -86,7 +88,21 @@ test('an unmapped ticket reports that Drive has not synced it yet',async({page})
 
   await expect(modal).toHaveClass(/\bopen\b/);
   await expect(modal).toContainText('Casa Batlló');
-  await expect(modal).toContainText('尚未同步');
+  await expect(modal).toContainText('官方 APP');
+  await expect(modal).toContainText('已確認');
+  await expect(modal).not.toContainText('尚未同步');
   await expect(modal.locator('a[href*="drive.google.com"]')).toHaveCount(0);
   expect(pageErrors).toEqual([]);
+});
+
+test('transport days keep a complete Today ticket tray',async({page})=>{
+  await page.goto('/?previewDate=2026-10-16');
+
+  const action=page.locator('#todaySection [data-action="tickets"]');
+  await expect(action).toContainText('今日票券 3');
+  await action.click();
+
+  const tray=page.locator('#todayTicketTray');
+  await expect(tray).toBeVisible();
+  await expect(tray.locator('[data-ticket-id]')).toHaveCount(3);
 });
