@@ -109,14 +109,7 @@
 
     <section class="section" id="itinerary">
       <div class="section-head">
-        <div class="itinerary-title-row">
-          <h2>每日行程｜Daily Itinerary</h2>
-          <button type="button" class="place-language-toggle place-language-inline" id="placeLanguageToggle" aria-pressed="false">
-            <span class="place-language-inline-choice" data-lang-choice="zh">中</span>
-            <span class="place-language-inline-divider" aria-hidden="true">/</span>
-            <span class="place-language-inline-choice" data-lang-choice="original">原</span>
-          </button>
-        </div>
+        <h2>每日行程｜Daily Itinerary</h2>
         <p>每日標題旁的「Maps」會直接開核心景點或當日步行路線。</p>
       </div>
       <div class="tools">
@@ -136,6 +129,15 @@
       資料來源：Spain 2026 Notion 行程＋已確認 Reservation。公開頁僅顯示旅途中需要的行程、住宿與票券入口，不包含訂單號、付款與其他私人資訊。
     </footer>
   </main>
+
+  <button type="button" class="quick-search-toggle" id="quickSearchBtn" aria-label="快速搜尋行程">
+    <span aria-hidden="true">⌕</span><b>搜尋</b>
+  </button>
+
+  <button type="button" class="place-language-toggle place-language-float" id="placeLanguageToggle" aria-pressed="false">
+    <span class="place-language-float-choice" data-lang-choice="zh">中</span>
+    <span class="place-language-float-choice" data-lang-choice="original">原</span>
+  </button>
 
   <nav class="app-bottom-nav" id="appBottomNav" aria-label="主要導覽">
     <div class="app-bottom-nav-inner">
