@@ -3,6 +3,8 @@ export function initAppShell({itineraryController,hotelsController,mapController
   if(!nav) return;
 
   const todaySection=document.getElementById('todaySection');
+  const quickSearchBtn=document.getElementById('quickSearchBtn');
+  const search=document.getElementById('search');
   const buttons=[...nav.querySelectorAll('[data-nav-target]')];
   const targets={
     today:todaySection&&!todaySection.hidden?todaySection:document.querySelector('.hero'),
@@ -19,6 +21,15 @@ export function initAppShell({itineraryController,hotelsController,mapController
       button.setAttribute('aria-pressed',String(active));
     });
   }
+
+  quickSearchBtn?.addEventListener('click',()=>{
+    itineraryController?.ensureCity?.();
+    targets.trip?.scrollIntoView({behavior:'smooth',block:'start'});
+    window.setTimeout(()=>{
+      search?.focus({preventScroll:true});
+      search?.select?.();
+    },320);
+  });
 
   let manualTarget=null;
   let manualTimer=0;
