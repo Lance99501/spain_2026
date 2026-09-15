@@ -36,16 +36,35 @@
 .app-nav-btn.active{background:var(--sage-soft);color:var(--ink)}
 .app-nav-btn.active span{color:var(--sage)}
 
-body{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
-.city-return{
-  bottom:max(92px,calc(env(safe-area-inset-bottom) + 92px))!important;
+.quick-search-toggle{
+  position:fixed;
+  right:max(14px,env(safe-area-inset-right));
+  bottom:max(142px,calc(env(safe-area-inset-bottom) + 142px));
+  z-index:2270;
+  min-height:40px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border:1px solid rgba(120,146,129,.5);
+  border-radius:999px;
+  background:rgba(255,254,251,.96);
+  color:var(--ink);
+  padding:7px 11px;
+  box-shadow:0 8px 22px rgba(58,72,62,.14);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
 }
-#mapSection,#citySwitchSection,#hotelsSection,.hero{
+.quick-search-toggle span{color:var(--sage);font-size:1rem;line-height:1}
+.quick-search-toggle b{font-size:.68rem;line-height:1}
+
+body{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+#mapSection,#citySwitchSection,#itinerary,#hotelsSection,.hero{
   scroll-margin-top:calc(env(safe-area-inset-top) + 12px);
 }
 
 @media (hover:hover) and (pointer:fine){
   .app-nav-btn:hover{background:rgba(230,238,231,.5);color:var(--ink)}
+  .quick-search-toggle:hover{border-color:var(--sage);transform:translateY(-1px)}
 }
 @media (max-width:480px){
   .app-bottom-nav{
@@ -56,4 +75,10 @@ body{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
   }
   .app-nav-btn{min-height:50px;border-radius:15px}
   .app-nav-btn b{font-size:.64rem}
+  .quick-search-toggle{
+    right:max(10px,env(safe-area-inset-right));
+    bottom:max(132px,calc(env(safe-area-inset-bottom) + 132px));
+    min-height:38px;
+    padding:6px 10px;
+  }
 }
