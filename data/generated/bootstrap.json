@@ -936,7 +936,7 @@
           ],
           "noteSegments": [
             {
-              "text": "Passeig de Gràcia / Eixample"
+              "text": "BCN T1 → 官方 Taxi 為主（約 €35–45）；備案 Aerobús A1 → Plaça Catalunya → L3 → Passeig de Gràcia，再步行約 200 m"
             }
           ]
         },
@@ -1147,7 +1147,7 @@
           "ticketAnchorPlaceId": "bcn-casa-batllo",
           "noteSegments": [
             {
-              "text": "已確認"
+              "text": "已確認 · 票券於 Casa Batlló 官方 App 開啟／出示"
             }
           ],
           "startTime": "15:45",
@@ -1805,7 +1805,7 @@
           ],
           "noteSegments": [
             {
-              "text": "抵達後前往市中心"
+              "text": "Granada Bus Station → Taxi 到最近可下車處；備案 Bus 33 → Acera del Darro 40，再步行進 Calle Navas"
             }
           ]
         },
@@ -2032,6 +2032,11 @@
           "segments": [
             {
               "text": "Hotel Acta Madfor Check-in"
+            }
+          ],
+          "noteSegments": [
+            {
+              "text": "Atocha → 使用車票附的 CombinadoCercanías 搭 C10 到 Príncipe Pío（約 11–12 分）；Taxi €12–18 備案"
             }
           ]
         },
