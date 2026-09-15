@@ -3,6 +3,7 @@ import {initTodayWeather} from './weather.js';
 import {renderPlaceName} from './place-language.js';
 import {dateInDeviceTimeZone,timeInDeviceTimeZone} from './device-time.js';
 
+const OFFICIAL_APP_TICKETS=new Set(['tkt-casa-batllo']);
 const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 
 function parseClock(value){
@@ -41,6 +42,12 @@ function statusLabel(status){
 
 function placeMapsUrl(place){
   return googleSearch([place.name,place.address||place.city].filter(Boolean).join(' '));
+}
+
+function ticketActionText(ticket,{compact=false}={}){
+  if(OFFICIAL_APP_TICKETS.has(ticket?.id)) return compact?'📱 官方 APP':'📱 官方 APP 票券';
+  if(compact) return `🎫 ${ticket?.kind==='flight'?'航班票券':'交通票券'}`;
+  return '🎫 今日票券';
 }
 
 function resolveHotel(day,hotels,placeById){
@@ -134,20 +141,24 @@ function renderTransport(day,placeById,ticketById){
       ${uniqueTicketIds.map(ticketId=>{
         const ticket=ticketById.get(ticketId);
         if(!ticket) return '';
-        return `<button type="button" class="today-mini-action" data-ticket-id="${escapeHtml(ticket.id)}">🎫 ${escapeHtml(ticket.kind==='flight'?'航班票券':'交通票券')}</button>`;
+        return `<button type="button" class="today-mini-action" data-ticket-id="${escapeHtml(ticket.id)}">${escapeHtml(ticketActionText(ticket,{compact:true}))}</button>`;
       }).join('')}
     </div>`:''}
   </section>`;
 }
 
-function renderQuickActions(day,hotelEntry,uniqueTickets,hasTransport){
+function renderQuickActions(day,hotelEntry,uniqueTickets){
   const hotel=hotelEntry?.place;
+  const singleTicket=uniqueTickets.length===1?uniqueTickets[0]:null;
+  const ticketLabel=singleTicket
+    ?ticketActionText(singleTicket)
+    :`🎫 今日票券 ${uniqueTickets.length}`;
 
   return `<div class="today-actions" aria-label="今日快速操作">
     <a class="today-action primary" href="${day.mapUrl}" target="_blank" rel="noopener">⌖ 今日 Maps</a>
 
-    ${!hasTransport&&uniqueTickets.length
-      ?`<button type="button" class="today-action" data-action="tickets">🎫 今日票券${uniqueTickets.length>1?` ${uniqueTickets.length}`:''}</button>`
+    ${uniqueTickets.length
+      ?`<button type="button" class="today-action" data-action="tickets">${escapeHtml(ticketLabel)}</button>`
       :''}
 
     ${hotel
@@ -195,8 +206,6 @@ export function initTodayMode({
     ?previewTime
     :validPreview?'12:00':null;
 
-  const transportItems=day.items.filter(item=>item.transport);
-  const hasTransport=transportItems.length>0;
   const uniqueTickets=[...new Set(day.items.map(item=>item.ticketId).filter(Boolean))]
     .map(id=>ticketById.get(id))
     .filter(Boolean);
@@ -220,7 +229,7 @@ export function initTodayMode({
         <small>${effectivePreviewTime?'預覽時間':'裝置時間'}</small>
       </div>
       <div class="next-panel">
-        <span>NEXT</span>
+        <span>下一個固定時間</span>
         <div id="todayNextContent"><b>—</b></div>
       </div>
     </div>
@@ -244,10 +253,10 @@ export function initTodayMode({
       </li>`).join('')}
     </ul>
 
-    ${renderQuickActions(day,hotelEntry,uniqueTickets,hasTransport)}
+    ${renderQuickActions(day,hotelEntry,uniqueTickets)}
 
-    ${!hasTransport&&uniqueTickets.length>1?`<div class="today-ticket-tray" id="todayTicketTray" hidden>
-      ${uniqueTickets.map(ticket=>`<button type="button" class="today-ticket-choice" data-ticket-id="${escapeHtml(ticket.id)}">🎫 ${escapeHtml(ticket.label)}</button>`).join('')}
+    ${uniqueTickets.length>1?`<div class="today-ticket-tray" id="todayTicketTray" hidden>
+      ${uniqueTickets.map(ticket=>`<button type="button" class="today-ticket-choice" data-ticket-id="${escapeHtml(ticket.id)}">${escapeHtml(OFFICIAL_APP_TICKETS.has(ticket.id)?'📱 ':'🎫 ')}${escapeHtml(ticket.label)}</button>`).join('')}
     </div>`:''}
   </article>`;
 
