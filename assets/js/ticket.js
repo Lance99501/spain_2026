@@ -1,4 +1,5 @@
 const DRIVE_FILE_ID_PATTERN=/^[A-Za-z0-9_-]{10,}$/;
+const OFFICIAL_APP_TICKETS=new Set(['tkt-casa-batllo']);
 
 export function driveFileUrl(fileId){
   if(!DRIVE_FILE_ID_PATTERN.test(fileId||'')){
@@ -53,6 +54,7 @@ export function createTicketController({tickets,ticketDriveFileIds={}}){
   const ticketResultTitle=document.getElementById('ticketResultTitle');
   const ticketDriveStatus=document.getElementById('ticketDriveStatus');
   const ticketDriveList=document.getElementById('ticketDriveList');
+  const ticketSourceBadge=document.querySelector('.ticket-drive-badge');
 
   let activeTicket=null;
   let returnFocusElement=null;
@@ -63,16 +65,26 @@ export function createTicketController({tickets,ticketDriveFileIds={}}){
       ticketDriveStatus.className='ticket-drive-status';
       ticketDriveStatus.textContent='';
     }
+    if(ticketSourceBadge) ticketSourceBadge.textContent='GOOGLE DRIVE';
   }
 
   function render(){
     reset();
     if(!activeTicket) return;
 
+    const usesOfficialApp=OFFICIAL_APP_TICKETS.has(activeTicket.id);
     const fileIds=ticketDriveFileIds[activeTicket.id]||[];
-    if(ticketModalTitle) ticketModalTitle.textContent='Google Drive 票券';
+    if(ticketModalTitle) ticketModalTitle.textContent=usesOfficialApp?'官方 APP 票券':'Google Drive 票券';
     if(ticketModalSub) ticketModalSub.textContent=activeTicket.label;
     if(ticketResultTitle) ticketResultTitle.textContent=activeTicket.label;
+
+    if(usesOfficialApp){
+      if(ticketSourceBadge) ticketSourceBadge.textContent='官方 APP';
+      if(ticketDriveStatus){
+        ticketDriveStatus.textContent='此票券已確認，請在 Casa Batlló 官方 App 內開啟／出示。';
+      }
+      return;
+    }
 
     if(!fileIds.length){
       if(ticketDriveStatus){
