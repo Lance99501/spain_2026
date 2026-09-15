@@ -22,13 +22,46 @@ export function initAppShell({itineraryController,hotelsController,mapController
     });
   }
 
+  const panel=document.getElementById('quickSearchPanel');
+  const query=document.getElementById('quickSearchInput');
+  const city=document.getElementById('quickSearchCity');
+  const category=document.getElementById('quickSearchCategory');
+  const chips=[...document.querySelectorAll('[data-keyword]')];
+  function syncKeywords(){
+    chips.forEach(button=>button.setAttribute('aria-pressed',String(query.value===button.dataset.keyword)));
+  }
   quickSearchBtn?.addEventListener('click',()=>{
-    itineraryController?.ensureCity?.();
+    const state=itineraryController?.getSearchState?.();
+    query.value=search?.value||'';
+    city.value=state?.city||'all';
+    category.value=state?.category||'all';
+    syncKeywords();
+    panel.showModal();
+    quickSearchBtn.setAttribute('aria-expanded','true');
+    query.focus();
+  });
+  panel?.addEventListener('close',()=>{
+    quickSearchBtn.setAttribute('aria-expanded','false');
+    quickSearchBtn.focus({preventScroll:true});
+  });
+  document.getElementById('quickSearchClose')?.addEventListener('click',()=>panel.close());
+  panel?.addEventListener('click',event=>{
+    const box=panel.getBoundingClientRect();
+    if(event.target===panel&&(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)) panel.close();
+  });
+  chips.forEach(button=>button.addEventListener('click',()=>{
+    query.value=query.value===button.dataset.keyword?'':button.dataset.keyword;
+    syncKeywords();
+  }));
+  query?.addEventListener('input',syncKeywords);
+  document.getElementById('quickSearchReset')?.addEventListener('click',()=>{
+    query.value='';city.value='all';category.value='all';syncKeywords();
+  });
+  document.getElementById('quickSearchForm')?.addEventListener('submit',event=>{
+    event.preventDefault();
+    itineraryController?.applySearch?.({term:query.value,city:city.value,category:category.value});
+    panel.close();
     targets.trip?.scrollIntoView({behavior:'smooth',block:'start'});
-    window.setTimeout(()=>{
-      search?.focus({preventScroll:true});
-      search?.select?.();
-    },320);
   });
 
   let manualTarget=null;

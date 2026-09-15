@@ -126,7 +126,8 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
 
     return itinerary.filter(day=>{
       const matchesFilter=activeFilter==='all'||day.categories.includes(activeFilter);
-      const matchesSearch=!term||searchableText(day).includes(term);
+      const aliases={'火車':['火車','列車','高鐵','renfe','alvia','ave','iryo'],'機場':['機場','航班','airport'],'咖啡':['咖啡','café','cafe']};
+      const matchesSearch=!term||(aliases[term]||[term]).some(word=>searchableText(day).includes(word));
       return matchesCity(day,city)&&matchesFilter&&matchesSearch;
     });
   }
@@ -501,6 +502,14 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
     showAll,
     setCity:(city,options={})=>scrollToCity(city,{behavior:options.behavior||'smooth',syncOnly:options.syncOnly||false}),
     ensureCity,
+    getSearchState:()=>({city:activeCity,category:activeFilter}),
+    applySearch:({term='',city='all',category='all'}={})=>{
+      if(search) search.value=term;
+      activeFilter=category;
+      setFilterState(filterButtons.find(button=>button.dataset.filter===category));
+      scrollToCity(city,{behavior:'auto'});
+      render();
+    },
     getActiveCity:()=>activeCity
   };
 }

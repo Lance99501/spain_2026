@@ -140,3 +140,6 @@
   .place-language-fab.is-switching{animation:none}
   .poi-name-swap{will-change:auto}
 }
+
+.place-language-float{width:44px;height:44px;color:var(--sage)}
+.place-language-float.original-mode{background:var(--sage-soft);border-color:var(--sage)}

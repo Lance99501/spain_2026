@@ -40,18 +40,19 @@
 
   <main class="shell">
     <header class="hero">
-      <div>
+      <div class="hero-heading">
+        <div class="hero-flag" aria-label="西班牙">🇪🇸</div>
         <div class="eyebrow">SPAIN · 17 DAYS · 2026 AUTUMN</div>
         <h1>西班牙，<br>新的職涯</h1>
-        <p></p>
-        <div class="route-strip" aria-label="旅程路線">
-          <strong>Barcelona</strong><i>→</i><strong>Sevilla</strong><i>↔</i>Córdoba<i>→</i><strong>Granada</strong><i>→</i><strong>Madrid</strong><i>↔</i>Segovia
-        </div>
+
       </div>
       <aside class="hero-card" aria-live="polite">
         <b id="countdown">—</b>
         <span id="countdownText">距離 2026/10/08 出發</span>
       </aside>
+        <div class="route-strip" aria-label="旅程路線">
+          <strong>Barcelona</strong><i>→</i><strong>Sevilla</strong><i>↔</i>Córdoba<i>→</i><strong>Granada</strong><i>→</i><strong>Madrid</strong><i>↔</i>Segovia
+        </div>
     </header>
 
     <section class="section today-section" id="todaySection" aria-labelledby="todayHeading" hidden>
@@ -130,14 +131,34 @@
     </footer>
   </main>
 
-  <button type="button" class="quick-search-toggle" id="quickSearchBtn" aria-label="快速搜尋行程">
-    <span aria-hidden="true">⌕</span><b>搜尋</b>
+  <button type="button" class="quick-search-toggle" id="quickSearchBtn" aria-label="開啟搜尋條件" aria-haspopup="dialog" aria-controls="quickSearchPanel" aria-expanded="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
   </button>
 
   <button type="button" class="place-language-toggle place-language-float" id="placeLanguageToggle" aria-pressed="false">
-    <span class="place-language-float-choice" data-lang-choice="zh">中</span>
-    <span class="place-language-float-choice" data-lang-choice="original">原</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h12M9 3v2M5 5c1 5 4 8 8 10M13 5c-1 5-4 8-9 11M14 21l4-10 4 10M15.5 17h5"/></svg>
   </button>
+
+  <dialog id="quickSearchPanel" class="quick-search-panel" aria-labelledby="quickSearchTitle">
+    <form id="quickSearchForm">
+      <div class="quick-search-head"><h2 id="quickSearchTitle">搜尋行程</h2><button type="button" id="quickSearchClose" aria-label="關閉搜尋">×</button></div>
+      <label for="quickSearchInput">關鍵字</label>
+      <input id="quickSearchInput" type="search" placeholder="景點、餐廳、日期…">
+      <div class="quick-keywords" aria-label="常用關鍵字">
+        <button type="button" data-keyword="咖啡" aria-pressed="false">咖啡</button>
+        <button type="button" data-keyword="午餐" aria-pressed="false">午餐</button>
+        <button type="button" data-keyword="晚餐" aria-pressed="false">晚餐</button>
+        <button type="button" data-keyword="火車" aria-pressed="false">火車</button>
+        <button type="button" data-keyword="機場" aria-pressed="false">機場</button>
+        <button type="button" data-keyword="休息" aria-pressed="false">休息</button>
+      </div>
+      <label for="quickSearchCity">城市</label>
+      <select id="quickSearchCity"><option value="all">全部城市</option><option value="Barcelona">巴塞隆納＋錫切斯</option><option value="Sevilla">塞維亞＋哥多華</option><option value="Granada">格拉納達</option><option value="Madrid">馬德里＋塞哥維亞</option></select>
+      <label for="quickSearchCategory">日期標記</label>
+      <select id="quickSearchCategory"><option value="all">全部標記</option><option value="confirmed">已確認</option><option value="pending">待確認／待購票</option><option value="rest">休息</option></select>
+      <div class="quick-search-actions"><button type="button" id="quickSearchReset">清除條件</button><button type="submit">查看結果</button></div>
+    </form>
+  </dialog>
 
   <nav class="app-bottom-nav" id="appBottomNav" aria-label="主要導覽">
     <div class="app-bottom-nav-inner">
