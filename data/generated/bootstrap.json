@@ -164,12 +164,12 @@
     {
       "id": "sev-abba-sevilla",
       "city": "Sevilla",
-      "name": "abba Sevilla",
+      "name": "Arroyo 3 Apartments",
       "type": "hotel",
       "status": "hotel",
-      "lat": 37.3931,
-      "lng": -5.9913,
-      "address": "Plaza de la Encarnación 19, Sevilla",
+      "lat": 37.39104,
+      "lng": -5.98425,
+      "address": "3 Calle Arroyo Planta baja, 41003 Sevilla, Spain",
       "dates": "10/14–10/18",
       "unesco": false
     },
@@ -646,7 +646,7 @@
     },
     {
       "placeId": "sev-abba-sevilla",
-      "room": "Junior Suite",
+      "room": "Two-Bedroom Apartment",
       "checkIn": "2026-10-14",
       "checkOut": "2026-10-18",
       "sourceCheckInItineraryId": "ITN-5",
@@ -1408,15 +1408,15 @@
         },
         {
           "id": "item-2026-10-14-02",
-          "time": "15:00+",
+          "time": "15:00–23:30",
           "segments": [
             {
-              "text": "abba Sevilla 入住"
+              "text": "Arroyo 3 Apartments 入住"
             }
           ],
           "noteSegments": [
             {
-              "text": "Plaza de la Encarnación"
+              "text": "Santa Justa → 官方 Taxi；步行作 Backup"
             }
           ]
         },
@@ -1722,10 +1722,15 @@
       "items": [
         {
           "id": "item-2026-10-18-01",
-          "time": "上午",
+          "time": "11:00 前",
           "segments": [
             {
-              "text": "Sevilla 市中心自由散步＋退房"
+              "text": "Arroyo 3 Apartments 退房"
+            }
+          ],
+          "noteSegments": [
+            {
+              "text": "10:45–10:55 叫 Taxi 前往 Plaza de Armas · 11:45 ALSA · 不排晨間景點"
             }
           ]
         },

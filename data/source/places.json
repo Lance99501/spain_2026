@@ -157,12 +157,12 @@
   {
     "id": "sev-abba-sevilla",
     "city": "Sevilla",
-    "name": "abba Sevilla",
+    "name": "Arroyo 3 Apartments",
     "type": "hotel",
     "status": "hotel",
-    "lat": 37.3931,
-    "lng": -5.9913,
-    "address": "Plaza de la Encarnación 19, Sevilla",
+    "lat": 37.39104,
+    "lng": -5.98425,
+    "address": "3 Calle Arroyo Planta baja, 41003 Sevilla, Spain",
     "dates": "10/14–10/18",
     "unesco": false
   },

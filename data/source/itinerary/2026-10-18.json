@@ -15,10 +15,15 @@
   "items": [
     {
       "id": "item-2026-10-18-01",
-      "time": "上午",
+      "time": "11:00 前",
       "segments": [
         {
-          "text": "Sevilla 市中心自由散步＋退房"
+          "text": "Arroyo 3 Apartments 退房"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "10:45–10:55 叫 Taxi 前往 Plaza de Armas · 11:45 ALSA · 不排晨間景點"
         }
       ]
     },
