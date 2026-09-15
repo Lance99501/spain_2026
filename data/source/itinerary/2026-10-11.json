@@ -5,7 +5,7 @@
   "dow": "Sun",
   "city": "Barcelona",
   "title": "Park Güell → Gràcia → Casa Batlló",
-  "sub": "上山靠車、下山靠腳",
+  "sub": "上山靠車、下山一路往 Passeig de Gràcia",
   "categories": [
     "confirmed",
     "flex"
@@ -33,7 +33,7 @@
     },
     {
       "id": "item-2026-10-11-02",
-      "time": "11:30",
+      "time": "12:00",
       "segments": [
         {
           "text": "Gràcia 午餐、咖啡、散步"
@@ -45,10 +45,29 @@
           "placeId": "bcn-casa-vicens"
         },
         {
-          "text": " 外觀順路看"
+          "text": " 約 13:25 外觀順路看"
         }
       ],
-      "startTime": "11:30"
+      "startTime": "12:00"
+    },
+    {
+      "id": "item-2026-10-11-04",
+      "time": "14:45",
+      "segments": [
+        {
+          "text": "Casa Milà",
+          "placeId": "bcn-casa-mila"
+        },
+        {
+          "text": " 外觀"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "約 15:10 離開；最晚 15:20 前往 Casa Batlló"
+        }
+      ],
+      "startTime": "14:45"
     },
     {
       "id": "item-2026-10-11-03",
@@ -73,16 +92,9 @@
       "sourceItineraryId": "ITN-26"
     },
     {
-      "id": "item-2026-10-11-04",
-      "time": "順路",
+      "id": "item-2026-10-11-05",
+      "time": "17:05 後",
       "segments": [
-        {
-          "text": "Casa Milà",
-          "placeId": "bcn-casa-mila"
-        },
-        {
-          "text": " / "
-        },
         {
           "text": "Casa Amatller",
           "placeId": "bcn-casa-amatller"
@@ -93,7 +105,7 @@
       ],
       "noteSegments": [
         {
-          "text": "彈性"
+          "text": "Casa Batlló 隔壁，參觀結束後順路拍照"
         }
       ]
     }
@@ -108,7 +120,7 @@
       "tone": "confirmed"
     },
     {
-      "text": "外觀彈性",
+      "text": "外觀順路",
       "tone": "flex"
     }
   ]

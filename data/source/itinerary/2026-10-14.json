@@ -13,6 +13,20 @@
   "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Barcelona%20Sants&destination=Sevilla%20Santa%20Justa&travelmode=transit",
   "items": [
     {
+      "id": "item-2026-10-14-04",
+      "time": "出發前",
+      "segments": [
+        {
+          "text": "Hotel Royal Passeig de Gracia 退房"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "飯店最晚 12:00；本日因 08:30 AVE 提前退房後前往 Barcelona-Sants"
+        }
+      ]
+    },
+    {
       "id": "item-2026-10-14-01",
       "time": "08:30",
       "segments": [

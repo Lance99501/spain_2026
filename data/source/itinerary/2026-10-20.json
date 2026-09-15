@@ -14,7 +14,7 @@
   "items": [
     {
       "id": "item-2026-10-20-01",
-      "time": "上午",
+      "time": "上午（可選）",
       "segments": [
         {
           "text": "Granada Cathedral / Capilla Real / Alcaicería"
@@ -22,7 +22,21 @@
       ],
       "noteSegments": [
         {
-          "text": "視出發時間縮短"
+          "text": "有餘裕才去；不影響退房與 11:04 車次"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-20-05",
+      "time": "出發前",
+      "segments": [
+        {
+          "text": "Hotel Navas 退房"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "飯店最晚 12:00；本日因 11:04 ALVIA 提前退房後前往 Granada Railway Station"
         }
       ]
     },
@@ -91,7 +105,7 @@
       "tone": "confirmed"
     },
     {
-      "text": "住宿已確認",
+      "text": "Hotel Navas 退房",
       "tone": "confirmed"
     },
     {
@@ -99,5 +113,5 @@
       "tone": "flex"
     }
   ],
-  "note": "採最新 Reservation／Task 狀態，不沿用城市頁較舊的「待確認」。"
+  "note": "Granada 上午景點僅保留為可選；退房與 11:04 ALVIA 優先。"
 }
