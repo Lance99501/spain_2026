@@ -26,7 +26,6 @@
   <link rel="stylesheet" href="assets/css/itinerary.css">
   <link rel="stylesheet" href="assets/css/ticket.css">
   <link rel="stylesheet" href="assets/css/pwa.css">
-  
 </head>
 <body>
   <a class="skip-link" href="#itinerary">跳到每日行程</a>
@@ -109,17 +108,20 @@
     </section>
 
     <section class="section" id="itinerary">
-      <div class="section-head"><h2>每日行程｜Daily Itinerary</h2><p>每日標題旁的「Maps」會直接開核心景點或當日步行路線。</p></div>
+      <div class="section-head">
+        <div class="itinerary-title-row">
+          <h2>每日行程｜Daily Itinerary</h2>
+          <button type="button" class="place-language-toggle place-language-inline" id="placeLanguageToggle" aria-pressed="false">
+            <span class="place-language-inline-choice" data-lang-choice="zh">中</span>
+            <span class="place-language-inline-divider" aria-hidden="true">/</span>
+            <span class="place-language-inline-choice" data-lang-choice="original">原</span>
+          </button>
+        </div>
+        <p>每日標題旁的「Maps」會直接開核心景點或當日步行路線。</p>
+      </div>
       <div class="tools">
         <input id="search" class="search" type="search" placeholder="找日期、景點、城市…" aria-label="搜尋行程">
         <button type="button" class="expand-all" id="expandAll" aria-pressed="false">展開全部</button>
-      </div>
-      <div class="filter-row" id="filters" role="group" aria-label="行程狀態篩選">
-        <button type="button" class="filter active" data-filter="all" aria-pressed="true">全部</button>
-        <button type="button" class="filter" aria-pressed="false" data-filter="confirmed">✓ 已確認</button>
-        <button type="button" class="filter" aria-pressed="false" data-filter="pending">待確認</button>
-        <button type="button" class="filter" aria-pressed="false" data-filter="flex">彈性</button>
-        <button type="button" class="filter" aria-pressed="false" data-filter="rest">休息／緩衝</button>
       </div>
       <div class="days" id="days"></div>
       <div class="empty" id="empty" hidden>找不到符合條件的行程。</div>
@@ -133,15 +135,7 @@
     <footer>
       資料來源：Spain 2026 Notion 行程＋已確認 Reservation。公開頁僅顯示旅途中需要的行程、住宿與票券入口，不包含訂單號、付款與其他私人資訊。
     </footer>
-    <button type="button" class="city-return" id="cityReturnBtn" aria-label="回到城市快速切換" title="回到城市快速切換"><span aria-hidden="true">↑</span></button>
   </main>
-
-  <button type="button" class="place-language-toggle place-language-fab" id="placeLanguageToggle" aria-pressed="false">
-    <span class="place-language-fab-mark" aria-hidden="true">文A</span>
-    <span class="place-language-fab-face" data-lang-choice="zh">中</span>
-    <span class="place-language-fab-face" data-lang-choice="original">原</span>
-    <span class="place-language-fab-ring" aria-hidden="true">↻</span>
-  </button>
 
   <nav class="app-bottom-nav" id="appBottomNav" aria-label="主要導覽">
     <div class="app-bottom-nav-inner">
@@ -170,7 +164,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
-  
   <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>
