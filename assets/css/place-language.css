@@ -77,35 +77,33 @@
 .place-language-fab.is-switching{
   animation:place-language-fab-pop .26s cubic-bezier(.2,.8,.2,1);
 }
-.itinerary-title-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-width:0;
-}
-.place-language-inline{
-  display:inline-flex;
-  align-items:center;
-  gap:4px;
-  flex:0 0 auto;
-  min-height:30px;
-  padding:4px 9px;
-  border:1px solid var(--line);
-  border-radius:9px;
-  background:var(--card);
-  color:var(--muted);
-  font:700 .72rem/1 system-ui,sans-serif;
-}
-.place-language-inline-choice{
-  opacity:.48;
-  transition:opacity .15s ease,color .15s ease;
-}
-.place-language-inline-choice.active{
-  opacity:1;
+.place-language-float{
+  position:fixed;
+  right:max(14px,env(safe-area-inset-right));
+  bottom:max(92px,calc(env(safe-area-inset-bottom) + 92px));
+  z-index:2280;
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(102,131,111,.5);
+  border-radius:50%;
+  background:rgba(255,254,251,.96);
   color:var(--ink);
+  padding:0;
+  box-shadow:0 8px 22px rgba(58,72,62,.14);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
 }
-.place-language-inline-divider{opacity:.38}
-.place-language-inline.is-switching{transform:scale(.97)}
+.place-language-float-choice{
+  grid-area:1/1;
+  display:none;
+  font:800 .82rem/1 system-ui,sans-serif;
+  color:var(--sage);
+  pointer-events:none;
+}
+.place-language-float-choice.active{display:block}
+.place-language-float.is-switching{transform:scale(.94)}
 .poi-name-swap{
   display:inline-block;
   transform:translateY(0);
@@ -117,11 +115,11 @@
   100%{transform:scale(1) rotate(0)}
 }
 @media (hover:hover) and (pointer:fine){
-  .place-language-fab:hover{
+  .place-language-fab:hover,
+  .place-language-float:hover{
     border-color:var(--sage);
-    transform:translateY(-2px);
+    transform:translateY(-1px);
   }
-  .place-language-inline:hover{border-color:var(--sage)}
 }
 @media (max-width:480px){
   .place-language-fab{
@@ -130,11 +128,15 @@
     width:54px;
     height:54px;
   }
-  .itinerary-title-row{width:100%;justify-content:space-between}
+  .place-language-float{
+    right:max(10px,env(safe-area-inset-right));
+    bottom:max(84px,calc(env(safe-area-inset-bottom) + 84px));
+    width:40px;
+    height:40px;
+  }
 }
 @media (prefers-reduced-motion:reduce){
   .place-language-fab-face{transition:none}
   .place-language-fab.is-switching{animation:none}
-  .place-language-inline-choice{transition:none}
   .poi-name-swap{will-change:auto}
 }
