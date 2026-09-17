@@ -54,7 +54,7 @@ export function initAppShell({itineraryController,hotelsController,mapController
 
     const dock=document.getElementById('cityDock');
     const topInset=dock?.classList.contains('show')?dock.getBoundingClientRect().bottom:0;
-    const marker=window.scrollY+Math.max(24,topInset+24);
+    const marker=window.scrollY+Math.max(96,topInset+24);
     const ordered=['today','trip','stay','map'];
     let active='today';
 
