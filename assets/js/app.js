@@ -32,6 +32,17 @@ function initCountdown(config,demoContext){
   const ct=document.getElementById('countdownText');
   if(!c||!ct) return;
 
+  const totalDays=Math.floor((end-spainStart)/oneDay)+1;
+  const beforeDeparture=today<depart;
+  const progress=beforeDeparture
+    ?Math.max(0,Math.min(1,1-(depart-today)/(30*oneDay)))
+    :Math.max(0,Math.min(1,(today-spainStart+oneDay)/(totalDays*oneDay)));
+  const progressText=beforeDeparture?'出發前 30 天倒數':today===depart?'今天出發':today>end?'旅程完成':`旅程第 ${Math.floor((today-spainStart)/oneDay)+1} / ${totalDays} 天`;
+  const card=c.closest('.hero-card');
+  card.classList.toggle('trip-complete',today>end);
+  card.style.setProperty('--trip-progress',`${progress*100}%`);
+  card.insertAdjacentHTML('beforeend',`<div class="trip-progress" role="progressbar" aria-label="${progressText}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(progress*100)}" aria-valuetext="${progressText}"><div class="trip-track"><div class="trip-fill"></div><div class="trip-runner" aria-hidden="true"><svg viewBox="0 0 32 36"><circle cx="19" cy="6" r="3"/><path class="runner-body" d="M17 12l-3 10"/><path class="runner-arm runner-arm-back" d="M17 13l-7 4-5-3"/><path class="runner-leg runner-leg-back" d="M14 22l-6 5-5-1"/><path class="runner-arm runner-arm-front" d="M17 13l5 6 5-2"/><path class="runner-leg runner-leg-front" d="M14 22l6 5 2 6"/></svg></div><div class="trip-finish" aria-hidden="true">⚑</div></div></div>`);
+
   if(today<depart){
     c.textContent=Math.ceil((depart-today)/oneDay)+' DAYS';
   }else if(today===depart){

@@ -184,3 +184,14 @@ test('mobile Demo control stays in the header and opens usable settings',async({
   const toolsBottom=await page.locator('.tools').evaluate(n=>n.getBoundingClientRect().bottom);
   expect(top).toBeGreaterThanOrEqual(toolsBottom);
 });
+
+test('trip runner follows the demo day and respects reduced motion',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/?demo=1&previewDate=2026-10-19');
+  await expect(page.locator('#countdown')).toHaveText('DAY 11');
+  await expect(page.locator('.trip-progress')).toHaveAttribute('aria-valuenow','65');
+  await expect(page.locator('.trip-progress')).toHaveAttribute('aria-valuetext','旅程第 11 / 17 天');
+  await expect(page.locator('.trip-runner')).toBeVisible();
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await expect(page.locator('.trip-runner svg')).toHaveCSS('animation-name','none');
+});

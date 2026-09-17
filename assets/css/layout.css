@@ -76,3 +76,20 @@ h1{font:600 clamp(2rem,5vw,4.2rem)/1.08 Georgia,"Times New Roman",serif;margin:.
   .hero{grid-template-areas:"eyebrow" "title" "countdown" "route";grid-template-columns:1fr}
   .hero-card{border:0;border-left:2px solid var(--line);border-radius:0;background:transparent;padding:4px 12px;max-width:none}
 }
+
+/* A small runner follows the real countdown or trip-day progress. */
+.hero-card{min-width:126px}
+.trip-progress{padding:32px 10px 5px 4px;margin-top:3px}
+.trip-track{position:relative;height:4px;border-radius:4px;background:var(--line)}
+.trip-fill{height:100%;width:var(--trip-progress);border-radius:inherit;background:var(--sage);transition:width .8s ease}
+.trip-runner{position:absolute;left:var(--trip-progress);bottom:3px;width:26px;height:30px;transform:translateX(-50%);transition:left .8s ease}
+.trip-runner svg{width:26px;height:30px;overflow:visible;fill:var(--ink);animation:runner-bob .4s ease-in-out infinite alternate}
+.trip-runner path{fill:none;stroke:var(--ink);stroke-width:2.7;stroke-linecap:round;stroke-linejoin:round}
+.runner-arm{transform-origin:17px 13px;animation:runner-swing .6s ease-in-out infinite alternate}
+.runner-leg{transform-origin:14px 22px;animation:runner-swing .6s ease-in-out infinite alternate}
+.runner-arm-back,.runner-leg-front{animation-delay:-.6s}
+.trip-finish{position:absolute;right:-6px;bottom:4px;font-size:15px;color:var(--sage)}
+.trip-complete .trip-runner svg,.trip-complete .runner-arm,.trip-complete .runner-leg{animation:none}
+@keyframes runner-bob{to{transform:translateY(-2px)}}
+@keyframes runner-swing{from{transform:rotate(-24deg)}to{transform:rotate(24deg)}}
+@media(prefers-reduced-motion:reduce){.trip-runner svg,.runner-arm,.runner-leg{animation:none}.trip-fill,.trip-runner{transition:none}}
