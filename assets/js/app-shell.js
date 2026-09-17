@@ -52,7 +52,9 @@ export function initAppShell({itineraryController,hotelsController,mapController
       return;
     }
 
-    const marker=window.scrollY+window.innerHeight*.38;
+    const dock=document.getElementById('cityDock');
+    const topInset=dock?.classList.contains('show')?dock.getBoundingClientRect().bottom:0;
+    const marker=window.scrollY+Math.max(24,topInset+24);
     const ordered=['today','trip','stay','map'];
     let active='today';
 
