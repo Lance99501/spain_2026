@@ -70,7 +70,9 @@
         {
           "text": "已確認｜Audio-Guided Full Experience，含手機語音導覽；依票面準時入場"
         }
-      ]
+      ],
+      "ticketId": "tkt-segovia-alcazar",
+      "ticketAnchorPlaceId": "seg-alcazar-de-segovia"
     },
     {
       "id": "item-2026-10-22-05",

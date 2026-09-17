@@ -148,5 +148,15 @@
       "dxb-dubai-airport",
       "tpe-taoyuan-airport"
     ]
+  },
+  {
+    "id": "tkt-segovia-alcazar",
+    "label": "塞哥維亞城堡＋胡安二世塔｜Alcázar de Segovia",
+    "kind": "attraction",
+    "placeIds": [
+      "seg-alcazar-de-segovia"
+    ],
+    "type": "drive",
+    "status": "confirmed"
   }
 ]

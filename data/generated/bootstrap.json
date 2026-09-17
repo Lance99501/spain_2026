@@ -819,6 +819,16 @@
         "dxb-dubai-airport",
         "tpe-taoyuan-airport"
       ]
+    },
+    {
+      "id": "tkt-segovia-alcazar",
+      "label": "塞哥維亞城堡＋胡安二世塔｜Alcázar de Segovia",
+      "kind": "attraction",
+      "placeIds": [
+        "seg-alcazar-de-segovia"
+      ],
+      "type": "drive",
+      "status": "confirmed"
     }
   ],
   "itinerary": [
@@ -2194,7 +2204,9 @@
             {
               "text": "已確認｜Audio-Guided Full Experience，含手機語音導覽；依票面準時入場"
             }
-          ]
+          ],
+          "ticketId": "tkt-segovia-alcazar",
+          "ticketAnchorPlaceId": "seg-alcazar-de-segovia"
         },
         {
           "id": "item-2026-10-22-05",
@@ -2503,6 +2515,9 @@
     ],
     "tkt-renfe-cordoba-sevilla": [
       "1HUq1veLCwQpFawY0QKKJPP4FKAInlLSt"
+    ],
+    "tkt-segovia-alcazar": [
+      "17kxxSKW4mWAS8yth65NV3UYZ9wF9fJhF"
     ]
   },
   "mapConfig": {
