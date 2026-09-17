@@ -51,26 +51,28 @@ h1{font:600 clamp(2rem,5vw,4.2rem)/1.08 Georgia,"Times New Roman",serif;margin:.
   .shell{padding-left:10px;padding-right:10px}
 }
 
-/* Keep the title, flag and countdown together on small screens. */
-.hero-title-row{display:flex;align-items:center;gap:14px}
-.hero-flag{width:34px;height:23px;flex:none;box-shadow:0 2px 6px rgba(58,72,62,.1)}
-.hero>.route-strip{grid-column:1/-1;padding-top:0}
+/* Align the countdown with the title, below the shared eyebrow. */
+.hero{grid-template-areas:"eyebrow eyebrow" "title countdown" "route route";align-items:center;row-gap:10px}
+.hero-heading{display:contents}
+.hero-heading .eyebrow{grid-area:eyebrow}
+.hero-title-row{grid-area:title;display:flex;align-items:center;gap:14px}
+.hero-title-row h1{margin:0;display:flex;align-items:center;flex-wrap:wrap;gap:8px}.hero-title-row h1 span{white-space:nowrap}
+.hero-flag{width:30px;height:20px;flex:none}
+.hero-card{grid-area:countdown;box-shadow:none;border-radius:10px;width:auto;justify-self:start;margin:0}
+.hero>.route-strip{grid-area:route;padding-top:4px}
+.section-head h2{letter-spacing:.02em;font-weight:600}
 @media(max-width:760px){
-  .hero{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px}
-  .hero-heading h1{font-size:clamp(1.55rem,5.8vw,2.3rem);margin:.4rem 0 0}
-  .hero-heading .eyebrow{font-size:.5rem;letter-spacing:.08em}
-  .hero-title-row{gap:10px}
-  .hero-flag{width:28px;height:19px;margin-top:6px}
-  .hero-card{width:auto;max-width:150px;margin:0;padding:10px 12px;border-radius:14px;box-shadow:none}
-  .hero-card b{font-size:clamp(1.25rem,4.8vw,1.65rem);white-space:nowrap}
-  .hero-card span{font-size:.58rem}
-  .hero>.route-strip{font-size:.65rem;gap:6px;padding-top:2px}
-}
-@media(max-width:360px){
-  .hero{gap:10px 8px}
-  .hero-heading h1{font-size:1.45rem}
-  .hero-heading .eyebrow{font-size:.43rem}
-  .hero-title-row{gap:6px}
+  .hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px}
+  .hero-heading .eyebrow{font-size:.6rem;letter-spacing:.1em}
+  .hero-title-row{gap:9px}
+  .hero-title-row h1{font-size:clamp(1.45rem,5.8vw,2.3rem);line-height:1.2}
   .hero-flag{width:24px;height:16px}
-  .hero-card{max-width:122px;padding:10px}
+  .hero-card{max-width:140px;padding:10px 12px}
+  .hero-card b{font-size:clamp(1.25rem,4.8vw,1.65rem);white-space:nowrap}
+  .hero-card span{font-size:.62rem}
+  .hero>.route-strip{font-size:.68rem;gap:6px}
+}
+@media(max-width:340px){
+  .hero{grid-template-areas:"eyebrow" "title" "countdown" "route";grid-template-columns:1fr}
+  .hero-card{border:0;border-left:2px solid var(--line);border-radius:0;background:transparent;padding:4px 12px;max-width:none}
 }

@@ -10,8 +10,8 @@
   --sand:#eee2d1;
   --blue-soft:#e7eef0;
   --rose-soft:#f0e2dc;
-  --shadow:0 14px 40px rgba(58,72,62,.08);
-  --radius:22px;
+  --shadow:0 3px 12px rgba(58,72,62,.04);
+  --radius:12px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;max-width:100%;overflow-x:hidden}

@@ -294,12 +294,24 @@ footer{margin-top:26px;padding:18px 0 8px;border-top:1px solid var(--line);font-
   .hotel-pager{scroll-behavior:auto}
 }
 
+/* Quiet journal surfaces, with one compact city bar on phones. */
+.city-card{border-radius:12px;box-shadow:none}
+.day{border-radius:10px}
+.hotel{border-radius:12px;box-shadow:none}
+.day-note{border-left-width:2px;border-radius:0;background:transparent}
+.tag{border-radius:4px}
+.city-dock-inner{border-radius:14px;box-shadow:0 3px 14px rgba(58,72,62,.09)}
+body.city-dock-visible #hotelsSection,body.city-dock-visible #mapSection{scroll-margin-top:calc(env(safe-area-inset-top) + 80px)}
 @media(max-width:760px){
-  .city-card img{display:none}
-  .city-grid{gap:8px}
-  .city-card{border:1px solid var(--line);border-radius:14px;box-shadow:none}
-  .city-card.active{border-color:var(--sage);background:var(--sage-soft)}
-  .city-card .city-copy{padding:10px 12px}
-  .city-card b{font-size:.88rem}
-  .city-card small{font-size:.66rem}
+  #citySwitchSection .section-head{display:none}
+  .city-card img,.city-side-trip{display:none}
+  .city-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;padding:4px;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:0 3px 14px rgba(58,72,62,.06)}
+  .city-card{border:0;border-radius:10px;background:transparent;text-align:center;min-height:48px}
+  .city-card.active{background:var(--sage-soft)}
+  .city-card .city-copy{padding:7px 2px}
+  .city-card b{font-size:clamp(.62rem,2.9vw,.78rem);white-space:nowrap}
+  .city-card small{font-size:.59rem;margin-top:3px}
+  .tools{grid-template-columns:minmax(0,1fr) auto}
+  .search{min-width:0}
+  .expand-all{width:auto;font-size:.76rem;padding:8px}
 }

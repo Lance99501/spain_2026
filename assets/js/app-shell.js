@@ -11,11 +11,14 @@ export function initAppShell({itineraryController,hotelsController,mapController
     stay:document.getElementById('hotelsSection')
   };
 
+  const todayButton=buttons.find(button=>button.dataset.navTarget==='today');
+  if(todayButton) todayButton.querySelector('b').textContent=todaySection&&!todaySection.hidden?'今日':'首頁';
+
   function setActive(name){
     buttons.forEach(button=>{
       const active=button.dataset.navTarget===name;
       button.classList.toggle('active',active);
-      button.setAttribute('aria-current',active?'page':'false');
+      button.setAttribute('aria-current',active?'location':'false');
       button.setAttribute('aria-pressed',String(active));
     });
   }

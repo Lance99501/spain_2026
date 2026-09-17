@@ -132,3 +132,29 @@ test('compact mobile layout keeps city switching and map navigation usable',asyn
   await expect(page.locator('#hotelsSection')).toBeInViewport();
   await expect(page.locator('#placeLanguageToggle')).toBeVisible();
 });
+
+test('mobile city bar, title alignment and bottom links match the page',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/');
+  await expect(page.locator('[data-nav-target="today"] b')).toHaveText('首頁');
+  expect(await page.locator('.app-nav-btn').evaluateAll(nodes=>nodes.map(n=>n.dataset.navTarget))).toEqual(['today','trip','stay','map']);
+  const layout=await page.evaluate(()=>{
+    const title=document.querySelector('.hero-title-row').getBoundingClientRect();
+    const count=document.querySelector('.hero-card').getBoundingClientRect();
+    return {centers:Math.abs((title.top+title.bottom-count.top-count.bottom)/2),cityTops:[...document.querySelectorAll('.city-card')].map(n=>n.getBoundingClientRect().top)};
+  });
+  expect(layout.centers).toBeLessThan(2);
+  expect(new Set(layout.cityTops).size).toBe(1);
+  for(const [name,id] of [['trip','itinerary'],['stay','hotelsSection'],['map','mapSection']]){
+    await page.locator(`[data-nav-target="${name}"]`).click();
+    await page.waitForTimeout(1400);
+    await expect(page.locator(`[data-nav-target="${name}"]`)).toHaveAttribute('aria-pressed','true');
+    const top=await page.locator(`#${id}`).evaluate(n=>n.getBoundingClientRect().top);
+    const dockBottom=await page.locator('#cityDock').evaluate(n=>n.getBoundingClientRect().bottom);
+    expect(top).toBeGreaterThanOrEqual(dockBottom);
+  }
+  await page.locator('[data-nav-target="today"]').click();
+  await expect(page.locator('.hero')).toBeInViewport();
+  await page.goto('/?previewDate=2026-10-19');
+  await expect(page.locator('[data-nav-target="today"] b')).toHaveText('今日');
+});
