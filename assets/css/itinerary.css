@@ -293,3 +293,13 @@ footer{margin-top:26px;padding:18px 0 8px;border-top:1px solid var(--line);font-
   .days{scroll-behavior:auto;transition:none}
   .hotel-pager{scroll-behavior:auto}
 }
+
+@media(max-width:760px){
+  .city-card img{display:none}
+  .city-grid{gap:8px}
+  .city-card{border:1px solid var(--line);border-radius:14px;box-shadow:none}
+  .city-card.active{border-color:var(--sage);background:var(--sage-soft)}
+  .city-card .city-copy{padding:10px 12px}
+  .city-card b{font-size:.88rem}
+  .city-card small{font-size:.66rem}
+}

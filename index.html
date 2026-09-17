@@ -41,9 +41,8 @@
   <main class="shell">
     <header class="hero">
       <div class="hero-heading">
-        <div class="hero-flag" aria-label="西班牙">🇪🇸</div>
         <div class="eyebrow">SPAIN · 17 DAYS · 2026 AUTUMN</div>
-        <h1>西班牙，<br>新的職涯</h1>
+        <div class="hero-title-row"><h1>西班牙，<br>新的職涯</h1><svg class="hero-flag" viewBox="0 0 30 20" role="img" aria-label="西班牙國旗"><rect width="30" height="20" rx="2" fill="#aa151b"/><path fill="#f1bf00" d="M0 5h30v10H0z"/><path fill="#aa151b" d="M9 8h4v4a2 2 0 0 1-4 0z"/><path stroke="#f1bf00" d="M11 8v5M9 10h4"/></svg></div>
 
       </div>
       <aside class="hero-card" aria-live="polite">
@@ -57,6 +56,34 @@
 
     <section class="section today-section" id="todaySection" aria-labelledby="todayHeading" hidden>
       <div id="todayRoot"></div>
+    </section>
+
+    <section class="section" id="citySwitchSection">
+      <div class="section-head"><h2>城市快速切換</h2><p>點城市或直接左右滑動下方行程切換；旅程地圖與住宿會同步目前城市。</p></div>
+      <div class="city-grid" id="cityGrid" role="group" aria-label="城市快速切換">
+        <button type="button" class="city-card" aria-pressed="false" data-city="Barcelona"><img src="assets/images/barcelona.jpg" alt="Barcelona · Park Güell 城市景觀"><span class="city-copy"><b>Barcelona</b><small>10/09–10/14 · + Sitges</small></span></button>
+        <button type="button" class="city-card" aria-pressed="false" data-city="Sevilla"><img src="assets/images/sevilla.jpg" alt="Sevilla · Plaza de España 城市景觀"><span class="city-copy"><b>Sevilla</b><small>10/14–10/18 · + Córdoba</small></span></button>
+        <button type="button" class="city-card" aria-pressed="false" data-city="Granada"><img src="assets/images/granada.jpg" alt="Granada · Alhambra 城市景觀"><span class="city-copy"><b>Granada</b><small>10/18–10/20</small></span></button>
+        <button type="button" class="city-card" aria-pressed="false" data-city="Madrid"><img src="assets/images/madrid.jpg" alt="Madrid · Gran Vía 城市景觀"><span class="city-copy"><b>Madrid</b><small>10/20–10/25 · + Segovia</small></span></button>
+      </div>
+    </section>
+
+    <section class="section" id="itinerary">
+      <div class="section-head">
+        <h2>每日行程｜Daily Itinerary</h2>
+        <p>每日標題旁的「Maps」會直接開核心景點或當日步行路線。</p>
+      </div>
+      <div class="tools">
+        <input id="search" class="search" type="search" placeholder="找日期、景點、城市…" aria-label="搜尋行程">
+        <button type="button" class="expand-all" id="expandAll" aria-pressed="false">展開全部</button>
+      </div>
+      <div class="days" id="days"></div>
+      <div class="empty" id="empty" hidden>找不到符合條件的行程。</div>
+    </section>
+
+    <section class="section" id="hotelsSection">
+      <div class="section-head"><h2>住宿｜Hotels</h2><p>跟著上方城市切換；可左右滑動換城市。取消城市篩選時會顯示全部住宿。</p></div>
+      <div class="hotel-pager" id="hotels" aria-label="住宿，可左右滑動切換城市"></div>
     </section>
 
     <section class="section" id="mapSection">
@@ -98,67 +125,14 @@
       </div>
     </section>
 
-    <section class="section" id="citySwitchSection">
-      <div class="section-head"><h2>城市快速切換</h2><p>點城市或直接左右滑動下方行程切換；旅程地圖與住宿會同步目前城市。</p></div>
-      <div class="city-grid" id="cityGrid" role="group" aria-label="城市快速切換">
-        <button type="button" class="city-card" aria-pressed="false" data-city="Barcelona"><img src="assets/images/barcelona.jpg" alt="Barcelona · Park Güell 城市景觀"><span class="city-copy"><b>Barcelona</b><small>10/09–10/14 · + Sitges</small></span></button>
-        <button type="button" class="city-card" aria-pressed="false" data-city="Sevilla"><img src="assets/images/sevilla.jpg" alt="Sevilla · Plaza de España 城市景觀"><span class="city-copy"><b>Sevilla</b><small>10/14–10/18 · + Córdoba</small></span></button>
-        <button type="button" class="city-card" aria-pressed="false" data-city="Granada"><img src="assets/images/granada.jpg" alt="Granada · Alhambra 城市景觀"><span class="city-copy"><b>Granada</b><small>10/18–10/20</small></span></button>
-        <button type="button" class="city-card" aria-pressed="false" data-city="Madrid"><img src="assets/images/madrid.jpg" alt="Madrid · Gran Vía 城市景觀"><span class="city-copy"><b>Madrid</b><small>10/20–10/25 · + Segovia</small></span></button>
-      </div>
-    </section>
-
-    <section class="section" id="itinerary">
-      <div class="section-head">
-        <h2>每日行程｜Daily Itinerary</h2>
-        <p>每日標題旁的「Maps」會直接開核心景點或當日步行路線。</p>
-      </div>
-      <div class="tools">
-        <input id="search" class="search" type="search" placeholder="找日期、景點、城市…" aria-label="搜尋行程">
-        <button type="button" class="expand-all" id="expandAll" aria-pressed="false">展開全部</button>
-      </div>
-      <div class="days" id="days"></div>
-      <div class="empty" id="empty" hidden>找不到符合條件的行程。</div>
-    </section>
-
-    <section class="section" id="hotelsSection">
-      <div class="section-head"><h2>住宿｜Hotels</h2><p>跟著上方城市切換；可左右滑動換城市。取消城市篩選時會顯示全部住宿。</p></div>
-      <div class="hotel-pager" id="hotels" aria-label="住宿，可左右滑動切換城市"></div>
-    </section>
-
     <footer>
       資料來源：Spain 2026 Notion 行程＋已確認 Reservation。公開頁僅顯示旅途中需要的行程、住宿與票券入口，不包含訂單號、付款與其他私人資訊。
     </footer>
   </main>
 
-  <button type="button" class="quick-search-toggle" id="quickSearchBtn" aria-label="開啟搜尋條件" aria-haspopup="dialog" aria-controls="quickSearchPanel" aria-expanded="false">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
-  </button>
-
   <button type="button" class="place-language-toggle place-language-float" id="placeLanguageToggle" aria-pressed="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h12M9 3v2M5 5c1 5 4 8 8 10M13 5c-1 5-4 8-9 11M14 21l4-10 4 10M15.5 17h5"/></svg>
   </button>
-
-  <dialog id="quickSearchPanel" class="quick-search-panel" aria-labelledby="quickSearchTitle">
-    <form id="quickSearchForm">
-      <div class="quick-search-head"><h2 id="quickSearchTitle">搜尋行程</h2><button type="button" id="quickSearchClose" aria-label="關閉搜尋">×</button></div>
-      <label for="quickSearchInput">關鍵字</label>
-      <input id="quickSearchInput" type="search" placeholder="景點、餐廳、日期…">
-      <div class="quick-keywords" aria-label="常用關鍵字">
-        <button type="button" data-keyword="咖啡" aria-pressed="false">咖啡</button>
-        <button type="button" data-keyword="午餐" aria-pressed="false">午餐</button>
-        <button type="button" data-keyword="晚餐" aria-pressed="false">晚餐</button>
-        <button type="button" data-keyword="火車" aria-pressed="false">火車</button>
-        <button type="button" data-keyword="機場" aria-pressed="false">機場</button>
-        <button type="button" data-keyword="休息" aria-pressed="false">休息</button>
-      </div>
-      <label for="quickSearchCity">城市</label>
-      <select id="quickSearchCity"><option value="all">全部城市</option><option value="Barcelona">巴塞隆納＋錫切斯</option><option value="Sevilla">塞維亞＋哥多華</option><option value="Granada">格拉納達</option><option value="Madrid">馬德里＋塞哥維亞</option></select>
-      <label for="quickSearchCategory">日期標記</label>
-      <select id="quickSearchCategory"><option value="all">全部標記</option><option value="confirmed">已確認</option><option value="pending">待確認／待購票</option><option value="rest">休息</option></select>
-      <div class="quick-search-actions"><button type="button" id="quickSearchReset">清除條件</button><button type="submit">查看結果</button></div>
-    </form>
-  </dialog>
 
   <nav class="app-bottom-nav" id="appBottomNav" aria-label="主要導覽">
     <div class="app-bottom-nav-inner">

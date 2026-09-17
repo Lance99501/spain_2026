@@ -106,3 +106,29 @@ test('transport days keep a complete Today ticket tray',async({page})=>{
   await expect(tray).toBeVisible();
   await expect(tray.locator('[data-ticket-id]')).toHaveCount(3);
 });
+
+test('compact mobile layout keeps city switching and map navigation usable',async({page})=>{
+  await page.setViewportSize({width:360,height:780});
+  await page.goto('/');
+  await expect(page.locator('#quickSearchBtn')).toHaveCount(0);
+  await expect(page.locator('#quickSearchPanel')).toHaveCount(0);
+  await expect(page.locator('#cityGrid img').first()).toBeHidden();
+  const geometry=await page.evaluate(()=>({
+    overflow:document.documentElement.scrollWidth>window.innerWidth,
+    map:document.querySelector('#mapSection').offsetTop,
+    hotels:document.querySelector('#hotelsSection').offsetTop,
+    cityHeight:document.querySelector('#cityGrid').getBoundingClientRect().height
+  }));
+  expect(geometry.overflow).toBe(false);
+  expect(geometry.map).toBeGreaterThan(geometry.hotels);
+  expect(geometry.cityHeight).toBeLessThan(180);
+  await page.locator('#cityGrid [data-city="Madrid"]').click();
+  await expect(page.locator('#cityGrid [data-city="Madrid"]')).toHaveAttribute('aria-pressed','true');
+  await page.locator('[data-nav-target="map"]').click();
+  await expect(page.locator('#mapSection')).toBeInViewport();
+  await page.waitForTimeout(1300);
+  await expect(page.locator('[data-nav-target="map"]')).toHaveAttribute('aria-pressed','true');
+  await page.locator('[data-nav-target="stay"]').click();
+  await expect(page.locator('#hotelsSection')).toBeInViewport();
+  await expect(page.locator('#placeLanguageToggle')).toBeVisible();
+});

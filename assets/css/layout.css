@@ -51,15 +51,26 @@ h1{font:600 clamp(2rem,5vw,4.2rem)/1.08 Georgia,"Times New Roman",serif;margin:.
   .shell{padding-left:10px;padding-right:10px}
 }
 
-.hero-flag{font-size:1.4rem;line-height:1.2;margin-bottom:8px}
+/* Keep the title, flag and countdown together on small screens. */
+.hero-title-row{display:flex;align-items:center;gap:14px}
+.hero-flag{width:34px;height:23px;flex:none;box-shadow:0 2px 6px rgba(58,72,62,.1)}
 .hero>.route-strip{grid-column:1/-1;padding-top:0}
 @media(max-width:760px){
-  .hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(112px,.75fr);align-items:center;gap:12px 16px}
-  .hero-heading h1{font-size:clamp(1.65rem,6vw,2.5rem);margin:.4rem 0 0}
-  .hero-heading .eyebrow{font-size:.52rem;letter-spacing:.1em}
-  .hero-card{margin:0;padding:12px;border-radius:16px}
-  .hero-card b{font-size:clamp(1.3rem,5vw,1.9rem);white-space:normal}
-  .hero-card span{font-size:.6rem}
+  .hero{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px}
+  .hero-heading h1{font-size:clamp(1.55rem,5.8vw,2.3rem);margin:.4rem 0 0}
+  .hero-heading .eyebrow{font-size:.5rem;letter-spacing:.08em}
+  .hero-title-row{gap:10px}
+  .hero-flag{width:28px;height:19px;margin-top:6px}
+  .hero-card{width:auto;max-width:150px;margin:0;padding:10px 12px;border-radius:14px;box-shadow:none}
+  .hero-card b{font-size:clamp(1.25rem,4.8vw,1.65rem);white-space:nowrap}
+  .hero-card span{font-size:.58rem}
   .hero>.route-strip{font-size:.65rem;gap:6px;padding-top:2px}
-  .hero-flag{font-size:1.15rem;margin-bottom:6px}
+}
+@media(max-width:360px){
+  .hero{gap:10px 8px}
+  .hero-heading h1{font-size:1.45rem}
+  .hero-heading .eyebrow{font-size:.43rem}
+  .hero-title-row{gap:6px}
+  .hero-flag{width:24px;height:16px}
+  .hero-card{max-width:122px;padding:10px}
 }
