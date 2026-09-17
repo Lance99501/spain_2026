@@ -315,3 +315,6 @@ footer{margin-top:26px;padding:18px 0 8px;border-top:1px solid var(--line);font-
   .search{min-width:0}
   .expand-all{width:auto;font-size:.76rem;padding:8px}
 }
+
+/* Clear both the city dock and sticky itinerary tools when opening a day. */
+.day{scroll-margin-top:calc(env(safe-area-inset-top) + 150px)}

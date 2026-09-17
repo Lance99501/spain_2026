@@ -243,16 +243,6 @@ export function initTodayMode({
 
     ${renderTransport(day,placeById,ticketById)}
 
-    <ul class="today-timeline">
-      ${day.items.map(item=>`<li data-item-id="${escapeHtml(item.id)}">
-        <time>${escapeHtml(item.time)}</time>
-        <div>
-          <p>${renderSegments(item.segments,item,placeById,ticketById)}</p>
-          ${item.noteSegments?`<small>${renderSegments(item.noteSegments,item,placeById,ticketById,{allowTicket:false})}</small>`:''}
-        </div>
-      </li>`).join('')}
-    </ul>
-
     ${renderQuickActions(day,hotelEntry,uniqueTickets)}
 
     ${uniqueTickets.length>1?`<div class="today-ticket-tray" id="todayTicketTray" hidden>
@@ -334,7 +324,7 @@ export function initTodayMode({
     }
 
     if(event.target.closest('[data-action="all"]')){
-      itineraryController.showAll();
+      itineraryController.showDay(day.id);
     }
   });
 

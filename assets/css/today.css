@@ -194,11 +194,6 @@
   font-weight:800;
 }
 
-.today-timeline{list-style:none;margin:0;padding:15px 0 2px;display:grid;gap:11px}
-.today-timeline li{display:grid;grid-template-columns:64px minmax(0,1fr);gap:11px;align-items:start}
-.today-timeline time{padding-top:1px;font:500 .86rem Georgia,"Times New Roman",serif;color:var(--sage)}
-.today-timeline p{margin:0;font-size:.9rem;font-weight:650}
-.today-timeline small{display:block;margin-top:1px;color:var(--muted);font-size:.73rem}
 
 .today-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .today-action{
@@ -257,8 +252,6 @@
   .transport-place b{font-size:.7rem}
   .transport-place strong{font-size:1.08rem}
   .transport-service span{font-size:.62rem}
-  .today-timeline li{grid-template-columns:54px minmax(0,1fr);gap:8px}
-  .today-timeline p{font-size:.86rem}
   .today-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   .today-action{width:100%;padding-left:8px;padding-right:8px}
 }

@@ -45,11 +45,11 @@ function mountPanel(context,itinerary){
   const root=document.createElement('aside');
   root.className='demo-panel';
   root.innerHTML=`
-    <button type="button" class="demo-toggle" id="demoToggle" aria-expanded="false">
+    <button type="button" class="demo-toggle" id="demoToggle" aria-expanded="false" aria-controls="demoPanelBody">
       <span>DEMO</span><b>${escapeHtml(context.previewDate.slice(5).replace('-','/'))} · ${escapeHtml(context.previewTime)}</b>
     </button>
     <div class="demo-panel-body" id="demoPanelBody" hidden>
-      <div class="demo-panel-head"><div><span>DEMO MODE</span><b>Today 測試控制台</b></div><button type="button" class="demo-close" id="demoClose">×</button></div>
+      <div class="demo-panel-head"><div><span>DEMO MODE</span><b>Today 測試控制台</b></div><button type="button" class="demo-close" id="demoClose" aria-label="關閉 Demo 設定">×</button></div>
       <label><span>Scenario</span><select id="demoScenario">
         <option value="custom">自訂</option>
         ${SCENARIOS.map(s=>`<option value="${s.id}" ${s.id===presetId?'selected':''}>${escapeHtml(s.label)}</option>`).join('')}
@@ -65,7 +65,7 @@ function mountPanel(context,itinerary){
       <div class="demo-note">Current 只替換天氣日期；Today 行程仍使用上方設定的旅行日期與時間。</div>
       <div class="demo-actions"><button type="button" class="demo-apply" id="demoApply">套用 Demo</button><button type="button" class="demo-exit" id="demoExit">退出 Demo</button></div>
     </div>`;
-  document.body.appendChild(root);
+  document.querySelector('.hero').appendChild(root);
 
   const body=root.querySelector('#demoPanelBody');
   const toggle=root.querySelector('#demoToggle');
@@ -74,8 +74,9 @@ function mountPanel(context,itinerary){
   const time=root.querySelector('#demoTime');
   const weather=root.querySelector('#demoWeather');
 
-  const setOpen=open=>{body.hidden=!open;toggle.setAttribute('aria-expanded',String(open));root.classList.toggle('open',open);};
+  const setOpen=open=>{body.hidden=!open;toggle.setAttribute('aria-expanded',String(open));root.classList.toggle('open',open);if(open)scenario.focus();else toggle.focus();};
   toggle.addEventListener('click',()=>setOpen(body.hidden));
+  root.addEventListener('keydown',event=>{if(event.key==='Escape')setOpen(false);});
   root.querySelector('#demoClose').addEventListener('click',()=>setOpen(false));
   scenario.addEventListener('change',()=>{
     const p=SCENARIOS.find(s=>s.id===scenario.value); if(!p) return;

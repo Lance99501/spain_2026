@@ -42,14 +42,19 @@ test('preview Today Mode can open the full itinerary',async({page})=>{
 
   await page.getByRole('button',{name:/完整今日行程|全部行程/}).click();
   await expect(page.locator('#itinerary')).toBeInViewport();
-  await expect(page.getByRole('searchbox',{name:'搜尋行程'})).toBeInViewport();
+  const dayId=await page.locator('#todayRoot .today-card').getAttribute('data-day-id');
+  const day=page.locator(`#days .day[data-day-id="${dayId}"]`);
+  await expect(day).toHaveClass(/\bopen\b/);
+  await expect(day.locator('.day-main')).toHaveAttribute('aria-expanded','true');
+  await expect(day.locator('.day-main')).toBeInViewport();
+  await expect(page.locator('.today-timeline')).toHaveCount(0);
 });
 
 test('a mapped ticket opens its real Google Drive files without the demo QR flow',async({page})=>{
   await page.goto('/?previewDate=2026-10-19');
 
   const ticketId='tkt-alhambra';
-  const trigger=page.locator(`#todaySection [data-ticket-id="${ticketId}"]`).first();
+  const trigger=page.locator('#todaySection [data-action="tickets"]');
   const modal=page.locator('#ticketModal');
 
   await trigger.click();
@@ -84,7 +89,8 @@ test('Casa Batllo ticket is marked as an official-app ticket',async({page})=>{
   await page.goto('/?previewDate=2026-10-11');
 
   const modal=page.locator('#ticketModal');
-  await page.locator('#todaySection [data-ticket-id="tkt-casa-batllo"]').first().click();
+  await page.locator('#todaySection [data-action="tickets"]').click();
+  await page.locator('#todayTicketTray [data-ticket-id="tkt-casa-batllo"]').click();
 
   await expect(modal).toHaveClass(/\bopen\b/);
   await expect(modal).toContainText('Casa Batlló');
@@ -157,4 +163,24 @@ test('mobile city bar, title alignment and bottom links match the page',async({p
   await expect(page.locator('.hero')).toBeInViewport();
   await page.goto('/?previewDate=2026-10-19');
   await expect(page.locator('[data-nav-target="today"] b')).toHaveText('今日');
+});
+
+
+test('mobile Demo control stays in the header and opens usable settings',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/?demo=1&previewDate=2026-10-19');
+  await expect(page.locator('.hero #demoToggle')).toBeVisible();
+  await page.locator('#demoToggle').click();
+  await expect(page.locator('#demoPanelBody')).toBeInViewport();
+  await expect(page.locator('#demoApply')).toBeInViewport();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#demoPanelBody')).toBeHidden();
+  await page.locator('[data-action="all"]').click();
+  await page.waitForTimeout(1400);
+  const dayId=await page.locator('#todayRoot .today-card').getAttribute('data-day-id');
+  const day=page.locator(`#days .day[data-day-id="${dayId}"]`);
+  await expect(day).toHaveClass(/\bopen\b/);
+  const top=await day.evaluate(n=>n.getBoundingClientRect().top);
+  const toolsBottom=await page.locator('.tools').evaluate(n=>n.getBoundingClientRect().bottom);
+  expect(top).toBeGreaterThanOrEqual(toolsBottom);
 });
