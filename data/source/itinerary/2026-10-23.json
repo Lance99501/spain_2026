@@ -4,74 +4,55 @@
   "dateLabel": "10/23",
   "dow": "Fri",
   "city": "Madrid",
-  "title": "Segovia 一日遊",
-  "sub": "水道橋 → 舊城 → 城堡",
+  "title": "Prado＋Retiro",
+  "sub": "上午美術館，下午重新回到戶外",
   "categories": [
     "pending",
     "flex"
   ],
-  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Acueducto%20de%20Segovia&destination=Alc%C3%A1zar%20de%20Segovia&travelmode=walking&waypoints=Catedral%20de%20Segovia",
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Museo%20del%20Prado%2C%20Madrid&destination=Parque%20del%20Retiro%2C%20Madrid&travelmode=walking&waypoints=Puerta%20de%20Alcal%C3%A1%2C%20Madrid",
   "items": [
     {
       "id": "item-2026-10-23-01",
-      "time": "上午",
+      "time": "10:00",
       "segments": [
         {
-          "text": "Madrid ↔ Segovia"
+          "text": "Museo del Prado",
+          "placeId": "mad-museo-del-prado"
         }
       ],
       "noteSegments": [
         {
-          "text": "交通待確認"
+          "text": "10:00–12:30 基準時段，目前待購票；不再追加另一座美術館"
         }
-      ]
+      ],
+      "startTime": "10:00",
+      "sourceItineraryId": "ITN-52"
     },
     {
       "id": "item-2026-10-23-02",
-      "time": "白天",
+      "time": "下午",
       "segments": [
         {
-          "text": "Acueducto",
-          "placeId": "seg-acueducto-de-segovia"
+          "text": "Parque del Retiro",
+          "placeId": "mad-parque-del-retiro"
         },
         {
-          "text": " → "
-        },
-        {
-          "text": "Catedral",
-          "placeId": "seg-catedral-de-segovia"
-        },
-        {
-          "text": " → 午餐 → "
-        },
-        {
-          "text": "Alcázar",
-          "placeId": "seg-alcazar-de-segovia"
+          "text": " → Puerta de Alcalá → Plaza de Cibeles"
         }
-      ]
-    },
-    {
-      "id": "item-2026-10-23-03",
-      "time": "傍晚",
-      "segments": [
-        {
-          "text": "目標晚餐前回 Madrid"
-        }
-      ]
+      ],
+      "sourceItineraryId": "ITN-53"
     }
   ],
   "tags": [
     {
-      "text": "交通待確認",
+      "text": "Prado 待購",
       "tone": "pending"
     },
     {
-      "text": "Alcázar 待確認",
-      "tone": "pending"
-    },
-    {
-      "text": "不趕回程",
+      "text": "戶外散步",
       "tone": "flex"
     }
-  ]
+  ],
+  "note": "10/21 王宮日與 10/23 普拉多日，在尚未購票前可依天氣與票況整組對調；麗池公園隨普拉多日移動，購票後依票面鎖定。"
 }

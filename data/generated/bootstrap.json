@@ -467,7 +467,7 @@
       "lat": 40.4138,
       "lng": -3.6921,
       "address": "Calle de Ruiz de Alarcón 23, Madrid",
-      "dates": "10/22 10:00",
+      "dates": "10/23 10:00（待購票）",
       "unesco": true
     },
     {
@@ -480,7 +480,7 @@
       "lat": 40.4153,
       "lng": -3.6845,
       "address": "Madrid",
-      "dates": "10/22",
+      "dates": "10/23（隨普拉多日）",
       "unesco": true
     },
     {
@@ -528,11 +528,11 @@
       "name": "Acueducto de Segovia",
       "displayName": "塞哥維亞水道橋",
       "type": "attraction",
-      "status": "pending",
+      "status": "flex",
       "lat": 40.948,
       "lng": -4.1187,
       "address": "Segovia",
-      "dates": "10/23",
+      "dates": "10/22",
       "unesco": true
     },
     {
@@ -545,7 +545,7 @@
       "lat": 40.9509,
       "lng": -4.125,
       "address": "Segovia",
-      "dates": "10/23",
+      "dates": "10/22",
       "unesco": true
     },
     {
@@ -554,11 +554,11 @@
       "name": "Alcázar de Segovia",
       "displayName": "塞哥維亞城堡",
       "type": "attraction",
-      "status": "pending",
+      "status": "confirmed",
       "lat": 40.9525,
       "lng": -4.1325,
       "address": "Segovia",
-      "dates": "10/23",
+      "dates": "10/22 15:00 宮殿／16:00 塔樓（15:55 集合）",
       "unesco": true
     },
     {
@@ -2078,7 +2078,7 @@
       "dow": "Wed",
       "city": "Madrid",
       "title": "馬德里王宮日",
-      "sub": "王宮是唯一大型固定點",
+      "sub": "王宮為當日主行程，尚未購票",
       "categories": [
         "pending",
         "flex"
@@ -2095,7 +2095,7 @@
           ],
           "noteSegments": [
             {
-              "text": "目前待購票"
+              "text": "10:00–12:30 基準時段，目前待購票"
             }
           ],
           "startTime": "10:00"
@@ -2119,13 +2119,149 @@
           "text": "午後自由",
           "tone": "flex"
         }
-      ]
+      ],
+      "note": "基準排 10/21 王宮＋Almudena，午後接老城與 La Latina；尚未購票前可與 10/23 普拉多＋麗池公園整組對調，購票後依票面鎖定。"
     },
     {
       "id": "day-2026-10-22",
       "date": "2026-10-22",
       "dateLabel": "10/22",
       "dow": "Thu",
+      "city": "Madrid",
+      "title": "塞哥維亞一日遊｜Segovia",
+      "sub": "水道橋 → 舊城 → 午餐 → 15:00 城堡 → 16:00 塔樓",
+      "categories": [
+        "confirmed",
+        "pending",
+        "flex"
+      ],
+      "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Acueducto%20de%20Segovia&destination=Alc%C3%A1zar%20de%20Segovia&travelmode=walking&waypoints=Catedral%20de%20Segovia",
+      "items": [
+        {
+          "id": "item-2026-10-22-01",
+          "time": "上午",
+          "segments": [
+            {
+              "text": "馬德里 → 塞哥維亞｜Madrid → Segovia"
+            }
+          ],
+          "noteSegments": [
+            {
+              "text": "交通待確認；目標約 10:00–10:30 抵達塞哥維亞，保留步行與拍照時間"
+            }
+          ]
+        },
+        {
+          "id": "item-2026-10-22-02",
+          "time": "上午～中午",
+          "segments": [
+            {
+              "text": "Acueducto",
+              "placeId": "seg-acueducto-de-segovia"
+            },
+            {
+              "text": " → 舊城 → "
+            },
+            {
+              "text": "Catedral",
+              "placeId": "seg-catedral-de-segovia"
+            },
+            {
+              "text": " → 午餐"
+            }
+          ],
+          "noteSegments": [
+            {
+              "text": "主教座堂依現場時間安排，不視為已購票"
+            }
+          ]
+        },
+        {
+          "id": "item-2026-10-22-04",
+          "time": "15:00",
+          "startTime": "15:00",
+          "segments": [
+            {
+              "text": "Alcázar",
+              "placeId": "seg-alcazar-de-segovia"
+            },
+            {
+              "text": "｜宮殿＋博物館"
+            }
+          ],
+          "sourceItineraryId": "ITN-16",
+          "noteSegments": [
+            {
+              "text": "已確認｜Audio-Guided Full Experience，含手機語音導覽；依票面準時入場"
+            }
+          ]
+        },
+        {
+          "id": "item-2026-10-22-05",
+          "time": "15:55",
+          "startTime": "15:55",
+          "segments": [
+            {
+              "text": "胡安二世塔｜Torre de Juan II 集合"
+            }
+          ],
+          "noteSegments": [
+            {
+              "text": "16:00 登塔已確認；須提前 5 分鐘到集合點，使用同一份城堡票券"
+            }
+          ]
+        },
+        {
+          "id": "item-2026-10-22-06",
+          "time": "16:00",
+          "startTime": "16:00",
+          "segments": [
+            {
+              "text": "胡安二世塔｜Torre de Juan II"
+            }
+          ],
+          "noteSegments": [
+            {
+              "text": "已確認｜登塔時段固定"
+            }
+          ]
+        },
+        {
+          "id": "item-2026-10-22-03",
+          "time": "參觀後",
+          "segments": [
+            {
+              "text": "返回馬德里｜Segovia → Madrid"
+            }
+          ],
+          "noteSegments": [
+            {
+              "text": "回程交通待確認；保留城堡參觀後前往車站的緩衝，不趕回程"
+            }
+          ]
+        }
+      ],
+      "tags": [
+        {
+          "text": "城堡／塔樓已確認",
+          "tone": "confirmed"
+        },
+        {
+          "text": "交通待確認",
+          "tone": "pending"
+        },
+        {
+          "text": "15:55 塔樓集合",
+          "tone": "confirmed"
+        }
+      ],
+      "note": "10/22 日期已鎖定：宮殿與博物館 15:00、胡安二世塔 16:00。僅往返交通待確認，不與王宮／普拉多日對調。"
+    },
+    {
+      "id": "day-2026-10-23",
+      "date": "2026-10-23",
+      "dateLabel": "10/23",
+      "dow": "Fri",
       "city": "Madrid",
       "title": "Prado＋Retiro",
       "sub": "上午美術館，下午重新回到戶外",
@@ -2136,7 +2272,7 @@
       "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Museo%20del%20Prado%2C%20Madrid&destination=Parque%20del%20Retiro%2C%20Madrid&travelmode=walking&waypoints=Puerta%20de%20Alcal%C3%A1%2C%20Madrid",
       "items": [
         {
-          "id": "item-2026-10-22-01",
+          "id": "item-2026-10-23-01",
           "time": "10:00",
           "segments": [
             {
@@ -2146,13 +2282,14 @@
           ],
           "noteSegments": [
             {
-              "text": "目前待購票"
+              "text": "10:00–12:30 基準時段，目前待購票；不再追加另一座美術館"
             }
           ],
-          "startTime": "10:00"
+          "startTime": "10:00",
+          "sourceItineraryId": "ITN-52"
         },
         {
-          "id": "item-2026-10-22-02",
+          "id": "item-2026-10-23-02",
           "time": "下午",
           "segments": [
             {
@@ -2162,7 +2299,8 @@
             {
               "text": " → Puerta de Alcalá → Plaza de Cibeles"
             }
-          ]
+          ],
+          "sourceItineraryId": "ITN-53"
         }
       ],
       "tags": [
@@ -2174,84 +2312,8 @@
           "text": "戶外散步",
           "tone": "flex"
         }
-      ]
-    },
-    {
-      "id": "day-2026-10-23",
-      "date": "2026-10-23",
-      "dateLabel": "10/23",
-      "dow": "Fri",
-      "city": "Madrid",
-      "title": "Segovia 一日遊",
-      "sub": "水道橋 → 舊城 → 城堡",
-      "categories": [
-        "pending",
-        "flex"
       ],
-      "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Acueducto%20de%20Segovia&destination=Alc%C3%A1zar%20de%20Segovia&travelmode=walking&waypoints=Catedral%20de%20Segovia",
-      "items": [
-        {
-          "id": "item-2026-10-23-01",
-          "time": "上午",
-          "segments": [
-            {
-              "text": "Madrid ↔ Segovia"
-            }
-          ],
-          "noteSegments": [
-            {
-              "text": "交通待確認"
-            }
-          ]
-        },
-        {
-          "id": "item-2026-10-23-02",
-          "time": "白天",
-          "segments": [
-            {
-              "text": "Acueducto",
-              "placeId": "seg-acueducto-de-segovia"
-            },
-            {
-              "text": " → "
-            },
-            {
-              "text": "Catedral",
-              "placeId": "seg-catedral-de-segovia"
-            },
-            {
-              "text": " → 午餐 → "
-            },
-            {
-              "text": "Alcázar",
-              "placeId": "seg-alcazar-de-segovia"
-            }
-          ]
-        },
-        {
-          "id": "item-2026-10-23-03",
-          "time": "傍晚",
-          "segments": [
-            {
-              "text": "目標晚餐前回 Madrid"
-            }
-          ]
-        }
-      ],
-      "tags": [
-        {
-          "text": "交通待確認",
-          "tone": "pending"
-        },
-        {
-          "text": "Alcázar 待確認",
-          "tone": "pending"
-        },
-        {
-          "text": "不趕回程",
-          "tone": "flex"
-        }
-      ]
+      "note": "10/21 王宮日與 10/23 普拉多日，在尚未購票前可依天氣與票況整組對調；麗池公園隨普拉多日移動，購票後依票面鎖定。"
     },
     {
       "id": "day-2026-10-24",
@@ -2295,7 +2357,8 @@
           "text": "完全彈性",
           "tone": "flex"
         }
-      ]
+      ],
+      "note": "托雷多｜Toledo 僅為可選備案，不預先購票；抵達馬德里後，體力、天氣與交通票況都合適才考慮。預設仍在市區休息、購物與咖啡，未去不算漏行程。"
     },
     {
       "id": "day-2026-10-25",
@@ -2314,7 +2377,7 @@
       "items": [
         {
           "id": "item-2026-10-25-01",
-          "time": "09:00",
+          "time": "09:00–11:30（可選）",
           "segments": [
             {
               "text": "El Rastro + La Latina"
@@ -2322,7 +2385,7 @@
           ],
           "noteSegments": [
             {
-              "text": "可選；先確認行李寄放與機場交通"
+              "text": "11:30 左右收尾；視精神、天氣與機場動線決定是否前往"
             }
           ],
           "startTime": "09:00"
@@ -2334,6 +2397,11 @@
             {
               "text": "Hotel Acta Madfor Check-out"
             }
+          ],
+          "noteSegments": [
+            {
+              "text": "退房後可寄放行李，依現場可用性"
+            }
           ]
         },
         {
@@ -2342,6 +2410,11 @@
           "segments": [
             {
               "text": "休息 · 領行李 · 前往 Madrid-Barajas Airport"
+            }
+          ],
+          "noteSegments": [
+            {
+              "text": "取行李與機場交通／出發時間待定，保留安全緩衝"
             }
           ]
         },

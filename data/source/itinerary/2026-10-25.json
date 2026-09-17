@@ -15,7 +15,7 @@
   "items": [
     {
       "id": "item-2026-10-25-01",
-      "time": "09:00",
+      "time": "09:00–11:30（可選）",
       "segments": [
         {
           "text": "El Rastro + La Latina"
@@ -23,7 +23,7 @@
       ],
       "noteSegments": [
         {
-          "text": "可選；先確認行李寄放與機場交通"
+          "text": "11:30 左右收尾；視精神、天氣與機場動線決定是否前往"
         }
       ],
       "startTime": "09:00"
@@ -35,6 +35,11 @@
         {
           "text": "Hotel Acta Madfor Check-out"
         }
+      ],
+      "noteSegments": [
+        {
+          "text": "退房後可寄放行李，依現場可用性"
+        }
       ]
     },
     {
@@ -43,6 +48,11 @@
       "segments": [
         {
           "text": "休息 · 領行李 · 前往 Madrid-Barajas Airport"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "取行李與機場交通／出發時間待定，保留安全緩衝"
         }
       ]
     },

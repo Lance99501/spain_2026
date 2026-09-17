@@ -4,52 +4,132 @@
   "dateLabel": "10/22",
   "dow": "Thu",
   "city": "Madrid",
-  "title": "Prado＋Retiro",
-  "sub": "上午美術館，下午重新回到戶外",
+  "title": "塞哥維亞一日遊｜Segovia",
+  "sub": "水道橋 → 舊城 → 午餐 → 15:00 城堡 → 16:00 塔樓",
   "categories": [
+    "confirmed",
     "pending",
     "flex"
   ],
-  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Museo%20del%20Prado%2C%20Madrid&destination=Parque%20del%20Retiro%2C%20Madrid&travelmode=walking&waypoints=Puerta%20de%20Alcal%C3%A1%2C%20Madrid",
+  "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Acueducto%20de%20Segovia&destination=Alc%C3%A1zar%20de%20Segovia&travelmode=walking&waypoints=Catedral%20de%20Segovia",
   "items": [
     {
       "id": "item-2026-10-22-01",
-      "time": "10:00",
+      "time": "上午",
       "segments": [
         {
-          "text": "Museo del Prado",
-          "placeId": "mad-museo-del-prado"
+          "text": "馬德里 → 塞哥維亞｜Madrid → Segovia"
         }
       ],
       "noteSegments": [
         {
-          "text": "目前待購票"
+          "text": "交通待確認；目標約 10:00–10:30 抵達塞哥維亞，保留步行與拍照時間"
         }
-      ],
-      "startTime": "10:00"
+      ]
     },
     {
       "id": "item-2026-10-22-02",
-      "time": "下午",
+      "time": "上午～中午",
       "segments": [
         {
-          "text": "Parque del Retiro",
-          "placeId": "mad-parque-del-retiro"
+          "text": "Acueducto",
+          "placeId": "seg-acueducto-de-segovia"
         },
         {
-          "text": " → Puerta de Alcalá → Plaza de Cibeles"
+          "text": " → 舊城 → "
+        },
+        {
+          "text": "Catedral",
+          "placeId": "seg-catedral-de-segovia"
+        },
+        {
+          "text": " → 午餐"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "主教座堂依現場時間安排，不視為已購票"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-22-04",
+      "time": "15:00",
+      "startTime": "15:00",
+      "segments": [
+        {
+          "text": "Alcázar",
+          "placeId": "seg-alcazar-de-segovia"
+        },
+        {
+          "text": "｜宮殿＋博物館"
+        }
+      ],
+      "sourceItineraryId": "ITN-16",
+      "noteSegments": [
+        {
+          "text": "已確認｜Audio-Guided Full Experience，含手機語音導覽；依票面準時入場"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-22-05",
+      "time": "15:55",
+      "startTime": "15:55",
+      "segments": [
+        {
+          "text": "胡安二世塔｜Torre de Juan II 集合"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "16:00 登塔已確認；須提前 5 分鐘到集合點，使用同一份城堡票券"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-22-06",
+      "time": "16:00",
+      "startTime": "16:00",
+      "segments": [
+        {
+          "text": "胡安二世塔｜Torre de Juan II"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "已確認｜登塔時段固定"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-22-03",
+      "time": "參觀後",
+      "segments": [
+        {
+          "text": "返回馬德里｜Segovia → Madrid"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "回程交通待確認；保留城堡參觀後前往車站的緩衝，不趕回程"
         }
       ]
     }
   ],
   "tags": [
     {
-      "text": "Prado 待購",
+      "text": "城堡／塔樓已確認",
+      "tone": "confirmed"
+    },
+    {
+      "text": "交通待確認",
       "tone": "pending"
     },
     {
-      "text": "戶外散步",
-      "tone": "flex"
+      "text": "15:55 塔樓集合",
+      "tone": "confirmed"
     }
-  ]
+  ],
+  "note": "10/22 日期已鎖定：宮殿與博物館 15:00、胡安二世塔 16:00。僅往返交通待確認，不與王宮／普拉多日對調。"
 }

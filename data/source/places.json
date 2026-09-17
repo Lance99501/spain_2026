@@ -460,7 +460,7 @@
     "lat": 40.4138,
     "lng": -3.6921,
     "address": "Calle de Ruiz de Alarcón 23, Madrid",
-    "dates": "10/22 10:00",
+    "dates": "10/23 10:00（待購票）",
     "unesco": true
   },
   {
@@ -473,7 +473,7 @@
     "lat": 40.4153,
     "lng": -3.6845,
     "address": "Madrid",
-    "dates": "10/22",
+    "dates": "10/23（隨普拉多日）",
     "unesco": true
   },
   {
@@ -521,11 +521,11 @@
     "name": "Acueducto de Segovia",
     "displayName": "塞哥維亞水道橋",
     "type": "attraction",
-    "status": "pending",
+    "status": "flex",
     "lat": 40.948,
     "lng": -4.1187,
     "address": "Segovia",
-    "dates": "10/23",
+    "dates": "10/22",
     "unesco": true
   },
   {
@@ -538,7 +538,7 @@
     "lat": 40.9509,
     "lng": -4.125,
     "address": "Segovia",
-    "dates": "10/23",
+    "dates": "10/22",
     "unesco": true
   },
   {
@@ -547,11 +547,11 @@
     "name": "Alcázar de Segovia",
     "displayName": "塞哥維亞城堡",
     "type": "attraction",
-    "status": "pending",
+    "status": "confirmed",
     "lat": 40.9525,
     "lng": -4.1325,
     "address": "Segovia",
-    "dates": "10/23",
+    "dates": "10/22 15:00 宮殿／16:00 塔樓（15:55 集合）",
     "unesco": true
   },
   {

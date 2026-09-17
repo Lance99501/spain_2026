@@ -5,7 +5,7 @@
   "dow": "Wed",
   "city": "Madrid",
   "title": "馬德里王宮日",
-  "sub": "王宮是唯一大型固定點",
+  "sub": "王宮為當日主行程，尚未購票",
   "categories": [
     "pending",
     "flex"
@@ -22,7 +22,7 @@
       ],
       "noteSegments": [
         {
-          "text": "目前待購票"
+          "text": "10:00–12:30 基準時段，目前待購票"
         }
       ],
       "startTime": "10:00"
@@ -46,5 +46,6 @@
       "text": "午後自由",
       "tone": "flex"
     }
-  ]
+  ],
+  "note": "基準排 10/21 王宮＋Almudena，午後接老城與 La Latina；尚未購票前可與 10/23 普拉多＋麗池公園整組對調，購票後依票面鎖定。"
 }
