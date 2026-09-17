@@ -1,3 +1,4 @@
+import {PLACE_LABELS} from './place-labels.js';
 const STORAGE_KEY='spain2026_place_language_v1';
 const VALID_MODES=new Set(['zh','original']);
 let mode='zh';
@@ -120,4 +121,34 @@ export function initPlaceLanguage(){
     setPlaceLanguageMode(mode==='zh'?'original':'zh',{animate:true,persist:true});
   });
   return {getMode:getPlaceLanguageMode,setMode:setPlaceLanguageMode};
+}
+
+// Longest exact alias wins. Scope ambiguous names to a known itinerary date.
+export function renderLocalizedText(value,context=''){
+  const text=String(value||'');
+  const date=typeof context==='string'?context:(context.date||context.id||'');
+  const names=new Map();
+  for(const entry of PLACE_LABELS){
+    if(entry.dates&&!entry.dates.some(d=>date.includes(d)))continue;
+    for(const name of [entry.name,entry.displayName,...entry.aliases]){
+      if(name)names.set(name,entry);
+    }
+  }
+  const keys=[...names.keys()].sort((a,b)=>b.length-a.length);
+  let html='',index=0;
+  const latin=char=>!!char&&/[A-Za-zÀ-ž]/.test(char);
+  while(index<text.length){
+    const name=keys.find(key=>text.startsWith(key,index)
+      &&!(latin(key[0])&&latin(text[index-1]))
+      &&!(latin(key.at(-1))&&latin(text[index+key.length])));
+    if(name){html+=renderPlaceName(names.get(name));index+=name.length;}
+    else{html+=escapeHtml(text[index]);index++;}
+  }
+  return html;
+}
+
+export function localizedSearchText(value,context=''){
+  const raw=String(value||'');
+  const date=typeof context==='string'?context:(context.date||context.id||'');
+  return raw+' '+PLACE_LABELS.filter(entry=>(!entry.dates||entry.dates.some(d=>date.includes(d)))&&[entry.name,entry.displayName,...entry.aliases].some(name=>raw.includes(name))).map(entry=>entry.name+' '+entry.displayName).join(' ');
 }

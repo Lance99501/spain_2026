@@ -1,6 +1,6 @@
 import {escapeHtml,renderSegments} from './itinerary.js';
 import {initTodayWeather} from './weather.js';
-import {renderPlaceName} from './place-language.js';
+import {renderPlaceName,renderLocalizedText} from './place-language.js';
 import {dateInDeviceTimeZone,timeInDeviceTimeZone} from './device-time.js';
 
 const OFFICIAL_APP_TICKETS=new Set(['tkt-casa-batllo']);
@@ -216,8 +216,8 @@ export function initTodayMode({
     <div class="today-head">
       <div>
         <div class="today-kicker">${badge} · ${escapeHtml(day.dateLabel)} · ${escapeHtml(day.city)}</div>
-        <h2 id="todayHeading">${escapeHtml(day.title)}</h2>
-        <p>${escapeHtml(day.sub)}</p>
+        <h2 id="todayHeading">${renderLocalizedText(day.title,day)}</h2>
+        <p>${renderLocalizedText(day.sub,day)}</p>
       </div>
       <span class="today-date" aria-hidden="true">${escapeHtml(day.dateLabel)}</span>
     </div>

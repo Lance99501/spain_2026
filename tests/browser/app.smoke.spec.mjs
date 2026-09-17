@@ -25,7 +25,7 @@ test('the itinerary renders and its primary controls work',async({page})=>{
 
   await page.locator('#search').fill('Alhambra');
   await expect(page.locator('#days .day')).toHaveCount(1);
-  await expect(page.locator('#days')).toContainText('Alhambra');
+  await expect(page.locator('#days')).toContainText('阿爾罕布拉宮');
 
   await page.locator('#search').fill('');
   await expect(page.locator('#days .day')).toHaveCount(18);
@@ -194,4 +194,23 @@ test('trip runner follows the demo day and respects reduced motion',async({page}
   await expect(page.locator('.trip-runner')).toBeVisible();
   await page.emulateMedia({reducedMotion:'reduce'});
   await expect(page.locator('.trip-runner svg')).toHaveCSS('animation-name','none');
+});
+
+test('website labels translate raw synced text without changing source data',async({page})=>{
+  await page.goto('/?demo=1&previewDate=2026-10-20');
+  await page.locator('[data-action="all"]').click();
+  const day=page.locator('#days [data-day-id="day-2026-10-20"]');
+  await expect(day).toContainText('格拉納達主教座堂 / 皇家禮拜堂 / 阿爾凱塞利亞市集');
+  await expect(page.locator('#todayHeading')).toContainText('格拉納達 → 馬德里');
+  await expect(day).toContainText('ALVIA 2087 Confort');
+  await page.locator('#placeLanguageToggle').click();
+  await expect(day).toContainText('Catedral de Granada / Capilla Real / Alcaicería');
+  await page.locator('#search').fill('皇家禮拜堂');
+  await expect(page.locator('#days .day')).toHaveCount(1);
+  const raw=await page.evaluate(async()=>await(await fetch('./data/generated/bootstrap.json')).json());
+  expect(raw.itinerary.find(d=>d.date==='2026-10-20').items[0].segments[0].text).toBe('Granada Cathedral / Capilla Real / Alcaicería');
+  await page.locator('#search').fill('');
+  await page.locator('#placeLanguageToggle').click();
+  await page.locator('#expandAll').click();
+  await expect(page.locator('#days [data-day-id="day-2026-10-23"]')).toContainText('阿爾卡拉門 → 西貝萊斯廣場');
 });

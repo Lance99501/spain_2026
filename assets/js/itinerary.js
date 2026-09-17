@@ -1,4 +1,4 @@
-import {renderPlaceName} from './place-language.js';
+import {renderPlaceName,renderLocalizedText,localizedSearchText} from './place-language.js';
 import {dateInDeviceTimeZone} from './device-time.js';
 export function escapeHtml(text){
   return String(text).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -28,7 +28,7 @@ export function renderSegments(segments,item,placeById,ticketById,{allowTicket=t
 
     const segmentName=place
       ?renderPlaceName(place,{fallbackText:segment.text})
-      :escapeHtml(segment.text);
+      :renderLocalizedText(segment.text,item);
     const inner=segmentName+crown+(anchoredTicket?ticketButton(ticket):'');
     return place?.unesco?`<span class="poi-annotated">${inner}</span>`:inner;
   }).join('');
@@ -94,7 +94,7 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
       ]),
       ...day.tags.map(x=>x.text),
       day.note||''
-    ].join(' ').toLowerCase();
+    ].map(text=>localizedSearchText(text,day)).join(' ').toLowerCase();
   }
 
   function matchesCity(day,city){
@@ -108,15 +108,15 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
       <div class="day-main-wrap">
         <button type="button" class="day-main" aria-expanded="${expandState}" aria-controls="${bodyId}">
           <span class="date"><b>${escapeHtml(day.dateLabel)}</b><span>${escapeHtml(day.dow)}</span></span>
-          <span class="day-title"><b>${escapeHtml(day.title)}</b><small>${escapeHtml(day.sub)}</small></span>
+          <span class="day-title"><b>${renderLocalizedText(day.title,day)}</b><small>${renderLocalizedText(day.sub,day)}</small></span>
           <span class="arrow">⌄</span>
         </button>
         <a class="day-map" target="_blank" rel="noopener" href="${day.mapUrl}" aria-label="在 Google Maps 開啟 ${escapeHtml(day.title)}"><span class="map-icon">⌖</span><span class="map-label">Maps ↗</span></a>
       </div>
       <div class="day-body" id="${bodyId}">
         <ul class="timeline">${day.items.map(item=>`<li data-item-id="${escapeHtml(item.id)}"><time>${escapeHtml(item.time)}</time><p>${renderSegments(item.segments,item,placeById,ticketById)}${item.noteSegments?`<em>${renderSegments(item.noteSegments,item,placeById,ticketById,{allowTicket:false})}</em>`:''}</p></li>`).join('')}</ul>
-        <div class="tags">${day.tags.map(tag=>`<span class="tag ${escapeHtml(tag.tone)}">${escapeHtml(tag.text)}</span>`).join('')}</div>
-        ${day.note?`<div class="day-note">${escapeHtml(day.note)}</div>`:''}
+        <div class="tags">${day.tags.map(tag=>`<span class="tag ${escapeHtml(tag.tone)}">${renderLocalizedText(tag.text,day)}</span>`).join('')}</div>
+        ${day.note?`<div class="day-note">${renderLocalizedText(day.note,day)}</div>`:''}
       </div>
     </article>`;
   }
