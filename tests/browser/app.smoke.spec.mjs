@@ -226,7 +226,7 @@ test('Madrid weather flex pair compares and remembers the local plan',async({pag
   await day21.locator('.day-main').click();
 
   await expect(day21.locator('.flex-plan-column')).toHaveCount(2);
-  await expect(day21).toContainText('王宮 ↔ Prado｜Weather Flex');
+  await expect(day21).toContainText('王宮 ↔ 普拉多博物館｜Weather Flex');
   await expect(day21.locator('[data-flex-plan="A"]')).toHaveAttribute('aria-pressed','true');
   await expect(day21.locator('.flex-plan-column[data-flex-column="A"]')).toHaveClass(/selected/);
 
