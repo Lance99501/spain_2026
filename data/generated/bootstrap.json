@@ -948,7 +948,16 @@
             {
               "text": "BCN T1 → 官方 Taxi 為主（約 €35–45）；備案 Aerobús A1 → Plaça Catalunya → L3 → Passeig de Gràcia，再步行約 200 m"
             }
-          ]
+          ],
+          "travelHint": {
+            "sourceItineraryId": "ITN-67",
+            "from": "BCN T1",
+            "mode": "Taxi",
+            "durationMin": 35,
+            "duration": "30–40 分",
+            "backup": "Aerobús A1 → Plaça Catalunya → L3 → Passeig de Gràcia",
+            "detail": "抵達後搭官方黑黃 Taxi"
+          }
         },
         {
           "id": "item-2026-10-09-03",
@@ -1440,7 +1449,17 @@
             "departureTime": "08:30",
             "arrivalTime": "14:47"
           },
-          "sourceItineraryId": "ITN-11"
+          "sourceItineraryId": "ITN-11",
+          "travelHint": {
+            "sourceItineraryId": "ITN-74",
+            "from": "Hotel Royal Passeig de Gracia",
+            "mode": "Taxi",
+            "durationMin": 20,
+            "duration": "15–20 分",
+            "leaveTime": "07:20–07:25",
+            "backup": "Diagonal → L5 → Sants Estació（07:10–07:15 離開飯店）",
+            "detail": "約 07:40 抵站；08:30 AVE"
+          }
         },
         {
           "id": "item-2026-10-14-02",
@@ -1454,7 +1473,15 @@
             {
               "text": "Santa Justa → 官方 Taxi；步行作 Backup"
             }
-          ]
+          ],
+          "travelHint": {
+            "sourceItineraryId": "ITN-68",
+            "from": "Sevilla-Santa Justa",
+            "mode": "Taxi",
+            "leaveTime": "14:47 抵達後",
+            "backup": "步行（天候／行李合適時）",
+            "detail": "官方 Taxi 至 Calle Arroyo"
+          }
         },
         {
           "id": "item-2026-10-14-03",
@@ -1601,6 +1628,14 @@
             "destinationPlaceId": "cor-cordoba-central",
             "departureTime": "08:11",
             "arrivalTime": "08:52"
+          },
+          "travelHint": {
+            "sourceItineraryId": "ITN-69",
+            "from": "Arroyo 3 Apartments",
+            "mode": "Walk",
+            "leaveTime": "07:30–07:35",
+            "backup": "Taxi",
+            "detail": "08:11 Santa Justa 出發"
           }
         },
         {
@@ -1803,7 +1838,14 @@
             "departureTime": "11:45",
             "arrivalTime": "14:45"
           },
-          "sourceItineraryId": "ITN-13"
+          "sourceItineraryId": "ITN-13",
+          "travelHint": {
+            "sourceItineraryId": "ITN-71",
+            "from": "Arroyo 3 Apartments",
+            "mode": "Taxi",
+            "leaveTime": "10:45–10:55",
+            "detail": "11:45 ALSA；住宿最晚 11:00 退房"
+          }
         },
         {
           "id": "item-2026-10-18-03",
@@ -1817,7 +1859,17 @@
             {
               "text": "Granada Bus Station → Taxi 到最近可下車處；備案 Bus 33 → Acera del Darro 40，再步行進 Calle Navas"
             }
-          ]
+          ],
+          "travelHint": {
+            "sourceItineraryId": "ITN-72",
+            "from": "Granada Bus Station",
+            "mode": "Taxi",
+            "durationMin": 18,
+            "duration": "15–20 分",
+            "leaveTime": "14:45 抵達後",
+            "backup": "Bus 33 → Acera del Darro 40 → 步行 5–8 分",
+            "detail": "Calle Navas 為步行街；最後步行約 100m～數百公尺"
+          }
         },
         {
           "id": "item-2026-10-18-04",
@@ -2034,7 +2086,15 @@
             "departureTime": "11:04",
             "arrivalTime": "14:38"
           },
-          "sourceItineraryId": "ITN-14"
+          "sourceItineraryId": "ITN-14",
+          "travelHint": {
+            "sourceItineraryId": "ITN-75",
+            "from": "Hotel Navas",
+            "mode": "Taxi",
+            "leaveTime": "09:55–10:00 叫車；10:05–10:10 上車",
+            "backup": "市區公車",
+            "detail": "約 10:20–10:30 抵站；11:04 ALVIA"
+          }
         },
         {
           "id": "item-2026-10-20-03",
@@ -2048,7 +2108,17 @@
             {
               "text": "Atocha → 使用車票附的 CombinadoCercanías 搭 C10 到 Príncipe Pío（約 11–12 分）；Taxi €12–18 備案"
             }
-          ]
+          ],
+          "travelHint": {
+            "sourceItineraryId": "ITN-73",
+            "from": "Madrid-Puerta de Atocha",
+            "mode": "Train",
+            "durationMin": 12,
+            "duration": "11–12 分",
+            "leaveTime": "14:38 抵達後",
+            "backup": "官方 Taxi 10–20 分",
+            "detail": "Cercanías C10 → Príncipe Pío；出站後飯店就在對面"
+          }
         },
         {
           "id": "item-2026-10-20-04",
@@ -2389,7 +2459,7 @@
       "items": [
         {
           "id": "item-2026-10-25-01",
-          "time": "09:00–11:30（可選）",
+          "time": "09:30–11:45（可選）",
           "segments": [
             {
               "text": "El Rastro + La Latina"
@@ -2397,10 +2467,11 @@
           ],
           "noteSegments": [
             {
-              "text": "11:30 左右收尾；視精神、天氣與機場動線決定是否前往"
+              "text": "正常情況會去；若下雨、太累或需要更多收尾時間可直接跳過"
             }
           ],
-          "startTime": "09:00"
+          "startTime": "09:30",
+          "sourceItineraryId": "ITN-55"
         },
         {
           "id": "item-2026-10-25-02",
@@ -2418,17 +2489,39 @@
         },
         {
           "id": "item-2026-10-25-03",
-          "time": "之後",
+          "time": "17:00",
           "segments": [
             {
-              "text": "休息 · 領行李 · 前往 Madrid-Barajas Airport"
+              "text": "Hotel Acta Madfor｜取行李＋機場前整理"
             }
           ],
           "noteSegments": [
             {
-              "text": "取行李與機場交通／出發時間待定，保留安全緩衝"
+              "text": "16:30 左右開始回飯店；17:30 前完成取行李與返程整理"
             }
-          ]
+          ],
+          "startTime": "17:00",
+          "sourceItineraryId": "ITN-76"
+        },
+        {
+          "id": "item-2026-10-25-05",
+          "time": "17:30",
+          "startTime": "17:30",
+          "segments": [
+            {
+              "text": "Hotel Acta Madfor → MAD T4｜返程機場接駁"
+            }
+          ],
+          "sourceItineraryId": "ITN-77",
+          "travelHint": {
+            "sourceItineraryId": "ITN-77",
+            "from": "Hotel Acta Madfor",
+            "mode": "Taxi",
+            "duration": "30–50 分",
+            "leaveTime": "17:30",
+            "backup": "Príncipe Pío → Cercanías C1/C10 → Aeropuerto T4",
+            "detail": "預計 18:00–18:20 抵達；21:45 EK144"
+          }
         },
         {
           "id": "item-2026-10-25-04",
