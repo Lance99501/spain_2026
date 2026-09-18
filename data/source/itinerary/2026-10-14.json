@@ -59,7 +59,17 @@
         "departureTime": "08:30",
         "arrivalTime": "14:47"
       },
-      "sourceItineraryId": "ITN-11"
+      "sourceItineraryId": "ITN-11",
+      "travelHint": {
+        "sourceItineraryId": "ITN-74",
+        "from": "Hotel Royal Passeig de Gracia",
+        "mode": "Taxi",
+        "durationMin": 20,
+        "duration": "15–20 分",
+        "leaveTime": "07:20–07:25",
+        "backup": "Diagonal → L5 → Sants Estació（07:10–07:15 離開飯店）",
+        "detail": "約 07:40 抵站；08:30 AVE"
+      }
     },
     {
       "id": "item-2026-10-14-02",
@@ -73,7 +83,15 @@
         {
           "text": "Santa Justa → 官方 Taxi；步行作 Backup"
         }
-      ]
+      ],
+      "travelHint": {
+        "sourceItineraryId": "ITN-68",
+        "from": "Sevilla-Santa Justa",
+        "mode": "Taxi",
+        "leaveTime": "14:47 抵達後",
+        "backup": "步行（天候／行李合適時）",
+        "detail": "官方 Taxi 至 Calle Arroyo"
+      }
     },
     {
       "id": "item-2026-10-14-03",
