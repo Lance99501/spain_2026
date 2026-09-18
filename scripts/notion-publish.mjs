@@ -98,6 +98,7 @@ async function main(){
         }
         const hint=buildTravelHint(row);
         if(!Object.keys(hint).length){addWarning(report,'Itinerary',row,'Mapped travel hint has no structured public fields; skipped.');continue;}
+        let itemTimeChanged=false;
         if(link.syncItemTime===true){
           const nextTime=primaryClock(row['Start Time']);
           const currentTime=itemStart(entry.item);
@@ -106,12 +107,15 @@ async function main(){
               addBlock(report,'Itinerary',row,link.targetId,`Protected travel-hint time mismatch: Notion=${nextTime}, GitHub=${currentTime||'—'}.`);
               continue;
             }
-            entry.item.time=nextTime;entry.item.startTime=nextTime;
+            entry.item.time=nextTime;entry.item.startTime=nextTime;itemTimeChanged=true;
           }
         }
-        if(JSON.stringify(entry.item.travelHint||{})!==JSON.stringify(hint)){
-          entry.item.travelHint=hint;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Updated travel hint from ${link.sourceId||row['Itinerary ID']||'Notion'}.`);
-        }else if(link.syncItemTime===true){changedDayFiles.add(entry.name);}
+        const hintChanged=JSON.stringify(entry.item.travelHint||{})!==JSON.stringify(hint);
+        if(hintChanged) entry.item.travelHint=hint;
+        if(hintChanged||itemTimeChanged){
+          changedDayFiles.add(entry.name);
+          addChange(report,'Itinerary',link.targetId,`${itemTimeChanged?'Updated mapped item time; ':''}${hintChanged?`Updated travel hint from ${link.sourceId||row['Itinerary ID']||'Notion'}.`:''}`.trim());
+        }
         continue;
       }
       if(link.targetType==='day'){
