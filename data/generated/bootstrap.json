@@ -934,10 +934,7 @@
             }
           ],
           "startTime": "13:25",
-          "sourceItineraryId": "ITN-1",
-          "travelHint": {
-            "sourceItineraryId": "ITN-1"
-          }
+          "sourceItineraryId": "ITN-1"
         },
         {
           "id": "item-2026-10-09-02",
@@ -1015,10 +1012,7 @@
             }
           ],
           "startTime": "09:15",
-          "sourceItineraryId": "ITN-3",
-          "travelHint": {
-            "sourceItineraryId": "ITN-3"
-          }
+          "sourceItineraryId": "ITN-3"
         },
         {
           "id": "item-2026-10-10-02",
@@ -1111,10 +1105,7 @@
             }
           ],
           "startTime": "09:30",
-          "sourceItineraryId": "ITN-19",
-          "travelHint": {
-            "sourceItineraryId": "ITN-19"
-          }
+          "sourceItineraryId": "ITN-19"
         },
         {
           "id": "item-2026-10-11-02",
@@ -1174,10 +1165,7 @@
             }
           ],
           "startTime": "15:45",
-          "sourceItineraryId": "ITN-26",
-          "travelHint": {
-            "sourceItineraryId": "ITN-26"
-          }
+          "sourceItineraryId": "ITN-26"
         },
         {
           "id": "item-2026-10-11-05",
@@ -1542,10 +1530,7 @@
             }
           ],
           "startTime": "09:30",
-          "sourceItineraryId": "ITN-38",
-          "travelHint": {
-            "sourceItineraryId": "ITN-38"
-          }
+          "sourceItineraryId": "ITN-38"
         },
         {
           "id": "item-2026-10-15-02",
@@ -1574,10 +1559,7 @@
             }
           ],
           "startTime": "15:00",
-          "sourceItineraryId": "ITN-40",
-          "travelHint": {
-            "sourceItineraryId": "ITN-40"
-          }
+          "sourceItineraryId": "ITN-40"
         }
       ],
       "tags": [
@@ -1667,10 +1649,7 @@
           "ticketId": "tkt-mezquita-cordoba",
           "ticketAnchorPlaceId": "cor-mezquita-catedral-de-cordoba",
           "startTime": "10:00",
-          "sourceItineraryId": "ITN-45",
-          "travelHint": {
-            "sourceItineraryId": "ITN-45"
-          }
+          "sourceItineraryId": "ITN-45"
         },
         {
           "id": "item-2026-10-16-03",
@@ -2532,10 +2511,7 @@
             }
           ],
           "startTime": "09:30",
-          "sourceItineraryId": "ITN-55",
-          "travelHint": {
-            "sourceItineraryId": "ITN-55"
-          }
+          "sourceItineraryId": "ITN-55"
         },
         {
           "id": "item-2026-10-25-02",
@@ -2612,10 +2588,7 @@
             "destinationPlaceId": "dxb-dubai-airport",
             "departureTime": "21:45"
           },
-          "sourceItineraryId": "ITN-10",
-          "travelHint": {
-            "sourceItineraryId": "ITN-10"
-          }
+          "sourceItineraryId": "ITN-10"
         }
       ],
       "tags": [
