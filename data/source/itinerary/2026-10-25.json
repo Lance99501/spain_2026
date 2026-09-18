@@ -27,10 +27,7 @@
         }
       ],
       "startTime": "09:30",
-      "sourceItineraryId": "ITN-55",
-      "travelHint": {
-        "sourceItineraryId": "ITN-55"
-      }
+      "sourceItineraryId": "ITN-55"
     },
     {
       "id": "item-2026-10-25-02",
@@ -107,10 +104,7 @@
         "destinationPlaceId": "dxb-dubai-airport",
         "departureTime": "21:45"
       },
-      "sourceItineraryId": "ITN-10",
-      "travelHint": {
-        "sourceItineraryId": "ITN-10"
-      }
+      "sourceItineraryId": "ITN-10"
     }
   ],
   "tags": [
