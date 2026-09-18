@@ -107,3 +107,8 @@ test('structured travel hint preserves only public-safe compact fields',()=>{
   });
   assert.equal('Notes' in hint,false);
 });
+
+
+test('source-only rows do not create travel hints',()=>{
+  assert.deepEqual(buildTravelHint({'Itinerary ID':'ITN-1'}),{});
+});
