@@ -34,7 +34,16 @@
         {
           "text": "BCN T1 → 官方 Taxi 為主（約 €35–45）；備案 Aerobús A1 → Plaça Catalunya → L3 → Passeig de Gràcia，再步行約 200 m"
         }
-      ]
+      ],
+      "travelHint": {
+        "sourceItineraryId": "ITN-67",
+        "from": "BCN T1",
+        "mode": "Taxi",
+        "durationMin": 35,
+        "duration": "30–40 分",
+        "backup": "Aerobús A1 → Plaça Catalunya → L3 → Passeig de Gràcia",
+        "detail": "抵達後搭官方黑黃 Taxi"
+      }
     },
     {
       "id": "item-2026-10-09-03",
