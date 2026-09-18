@@ -1,6 +1,7 @@
 import {mkdir,readdir,readFile,writeFile} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {isSafeAutoCreateRow,primaryClock} from './notion-public-item.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
@@ -159,7 +160,7 @@ function summary(report){
   const lines=['# Spain 2026 · Notion Publisher Preview','', '> Read-only preview. No GitHub/Notion data is modified.','',`Scope: **${report.scope}**`,`Generated: ${report.generatedAt}`,''];
   if(report.itinerary){
     const x=report.itinerary;
-    lines.push('## Itinerary','',`- Notion rows in trip window: **${x.total}**`,`- Locked (Confirmed / Fixed): **${x.locked}**`,`- Deterministic mappings: **${x.matched.explicit}**`,`- Existing source links: **${x.matched.linked}**`,`- Heuristic candidates: **${x.matched.heuristic}**`,`- Day-level candidates: **${x.matched.day}**`,`- Ambiguous / unmatched: **${x.matched.ambiguous+x.matched.unmatched}**`,`- Review findings: **${x.reviews.length}**`,'');
+    lines.push('## Itinerary','',`- Notion rows in trip window: **${x.total}**`,`- Locked (Confirmed / Fixed): **${x.locked}**`,`- Deterministic mappings: **${x.matched.explicit}**`,`- Existing source links: **${x.matched.linked}**`,`- Heuristic candidates: **${x.matched.heuristic}**`,`- Day-level candidates: **${x.matched.day}**`,`- Ambiguous / unmatched: **${x.matched.ambiguous+x.matched.unmatched}**`,`- Safe auto-create candidates: **${x.autoCreateCandidates||0}**`,`- Review findings: **${x.reviews.length}**`,'');
     if(x.reviews.length){table(lines,['Notion','ID','Date','Match','Review'],x.reviews.slice(0,40).map(r=>[r.name,r.sourceId||'—',r.date,r.match,r.message]));lines.push('');}
     if(x.suggestedLinks.length){
       lines.push('### Suggested source links','','Suggestions only; nothing is written yet. Publish still requires a deterministic mapping.','');
@@ -171,7 +172,7 @@ function summary(report){
     lines.push('## Reservations & Tickets','',`- Notion reservations in trip window: **${x.total}**`,`- Confirmed reservations: **${x.confirmed}**`,`- Deterministic mappings: **${x.explicit}**`,`- Ignored by policy: **${x.ignored}**`,`- Ticket-like unmapped rows checked heuristically: **${x.ticketLike}**`,`- Review findings: **${x.reviews.length}**`,'');
     if(x.reviews.length){table(lines,['Reservation','ID','Date','Match','Review'],x.reviews.slice(0,40).map(r=>[r.name,r.sourceId||'—',r.date,r.match,r.message]));lines.push('');}
   }
-  lines.push('## Safety gates','','- Confirmed / Fixed rows are locked.','- Preview resolves `config/notion-links.json` before any heuristic matching.','- Preview never downgrades Confirmed data.','- Hotel check-in/check-out dates are compared against the locked stay windows.','- One Reservation may explicitly map to multiple flight tickets.','- Private records such as insurance can be explicitly ignored.','- Booking refs, amounts, currency, traveler names and internal reservation notes are not requested.','- Heuristic matches are review-only; Publish never guesses a target.','');
+  lines.push('## Safety gates','','- Confirmed / Fixed rows are locked.','- Preview resolves `config/notion-links.json` before any heuristic matching.','- Preview never downgrades Confirmed data.','- Hotel check-in/check-out dates are compared against the locked stay windows.','- One Reservation may explicitly map to multiple flight tickets.','- Private records such as insurance can be explicitly ignored.','- Booking refs, amounts, currency, traveler names and internal reservation notes are not requested.','- Unmatched low-risk Planned/Idea + Flexible/Idea rows may be auto-created only under the configured type allowlist; heuristic matches are never auto-created.','');
   return lines.join('\n');
 }
 
@@ -237,7 +238,7 @@ async function main(){
 
   if(args.scope==='all'||args.scope==='itinerary'){
     const rows=(await notionQuery({token,apiVersion:cfg.apiVersion,dataSourceId:cfg.dataSources.itinerary,propertyNames:cfg.properties.itinerary})).map(row=>({...row,Date:row.Date?.start||null})).filter(row=>inside(row.Date));
-    const result={total:rows.length,locked:rows.filter(row=>status(row.Status)==='confirmed'||row.Fixed===true).length,matched:{explicit:0,linked:0,heuristic:0,day:0,ambiguous:0,unmatched:0},reviews:[],suggestedLinks:[]};
+    const result={total:rows.length,locked:rows.filter(row=>status(row.Status)==='confirmed'||row.Fixed===true).length,matched:{explicit:0,linked:0,heuristic:0,day:0,ambiguous:0,unmatched:0},autoCreateCandidates:0,reviews:[],suggestedLinks:[]};
 
     for(const row of rows){
       const explicit=links.itinerary?.[row.pageId];
@@ -251,9 +252,23 @@ async function main(){
 
       const match=matchItinerary(row,current,placeById);
       if(match.kind==='linked-day'){result.matched.linked+=1;continue;}
+      if(match.kind==='linked'){
+        result.matched.linked+=1;
+        const notionStatus=status(row.Status),githubStatus=itemStatus(match.candidate.item,ticketById);
+        const nt=primaryClock(row['Start Time']),gt=itemStart(match.candidate.item);
+        const protectedItem=notionStatus==='confirmed'||row.Fixed===true||Boolean(match.candidate.item.ticketId);
+        if(protectedItem&&row.Date!==match.candidate.date) result.reviews.push({name:row.Name,sourceId:row['Itinerary ID'],date:row.Date,match:match.candidate.item.id,message:`BLOCK: protected linked date Notion=${row.Date}, GitHub=${match.candidate.date}.`});
+        if(protectedItem&&nt&&gt&&nt!==gt) result.reviews.push({name:row.Name,sourceId:row['Itinerary ID'],date:row.Date,match:match.candidate.item.id,message:`BLOCK: protected linked Start Time Notion=${nt}, GitHub=${gt}.`});
+        if(githubStatus==='confirmed'&&notionStatus!=='confirmed') result.reviews.push({name:row.Name,sourceId:row['Itinerary ID'],date:row.Date,match:match.candidate.item.id,message:`BLOCK: Notion ${notionStatus||'unknown'} would downgrade GitHub confirmed.`});
+        continue;
+      }
       if(result.matched[match.kind]!=null) result.matched[match.kind]+=1;
       const locked=status(row.Status)==='confirmed'||row.Fixed===true;
       if(match.kind==='unmatched'||match.kind==='ambiguous'){
+        if(match.kind==='unmatched'&&isSafeAutoCreateRow(row,cfg.autoCreateItinerary)){
+          result.autoCreateCandidates+=1;
+          continue;
+        }
         if(locked) result.reviews.push({name:row.Name,sourceId:row['Itinerary ID'],date:row.Date,match:match.kind,message:'Locked row needs explicit mapping before publish.'});
         continue;
       }

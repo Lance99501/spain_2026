@@ -14,6 +14,7 @@
       "Type",
       "Status",
       "Fixed",
+      "Flexibility",
       "Area",
       "Location",
       "Itinerary ID"
@@ -37,6 +38,7 @@
     "Type",
     "Status",
     "Fixed",
+    "Flexibility",
     "Area",
     "Location"
   ],
@@ -47,5 +49,22 @@
     "Covered Travelers",
     "Notes",
     "Source URL"
-  ]
+  ],
+  "autoCreateItinerary": {
+    "enabled": true,
+    "statuses": [
+      "Planned",
+      "Idea"
+    ],
+    "flexibilities": [
+      "Flexible",
+      "Idea"
+    ],
+    "types": [
+      "Attraction",
+      "Meal",
+      "Free time",
+      "Other"
+    ]
+  }
 }

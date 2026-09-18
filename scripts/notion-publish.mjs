@@ -1,6 +1,7 @@
 import {mkdir,readdir,readFile,writeFile} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {buildManagedItem,insertItemChronologically,isSafeAutoCreateRow,likelyDuplicateOnDay,mergeManagedItem,primaryClock} from './notion-public-item.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
@@ -60,7 +61,7 @@ function summary(report){
   else{lines.push('## Result','',`- Changes prepared: **${report.changes.length}**`,`- Warnings / skipped unmapped rows: **${report.warnings.length}**`,`- Ignored by policy: **${report.ignored.length}**`,'');if(report.changes.length){table(lines,['Source','Target','Change'],report.changes.map(x=>[x.source,x.target,x.message]));lines.push('');}}
   if(report.warnings.length){lines.push('## Warnings','');table(lines,['Source','Notion','Reason'],report.warnings.slice(0,50).map(x=>[x.source,x.name||x.pageId,x.message]));lines.push('');}
   if(report.ignored.length){lines.push('## Ignored by policy','');table(lines,['Source','Notion','Reason'],report.ignored.map(x=>[x.source,x.name||x.pageId,x.message]));lines.push('');}
-  lines.push('## Safety gates','','- Only entries in `config/notion-links.json` may be written.','- GitHub `confirmed` can never be downgraded by this workflow.','- A date change on a linked item/day/hotel stay is blocked instead of moving it automatically.','- Time changes on Confirmed / Fixed / ticketed items are blocked for manual review.','- One Notion Reservation may map to multiple GitHub ticket IDs, but Confirmed tickets can never be lowered.','- Hotel stays are linked by their existing confirmed check-in/check-out dates; Reservation details remain private.','- Explicit ignore rules keep private records such as insurance out of the public app.','- Unmapped Notion rows are skipped and reported; they are never guessed during Publish.','- Booking refs, amount, currency, traveler names and private reservation notes are never requested.','');
+  lines.push('## Safety gates','','- Explicit mappings remain authoritative; only public-safe Planned/Idea + Flexible/Idea items in configured low-risk types may be auto-created.','- Auto-created items use the same day/items timeline JSON shape and carry `sourceItineraryId` + `notionManaged` for later updates/cancellation.','- GitHub `confirmed` can never be downgraded by this workflow.','- A date change on a linked item/day/hotel stay is blocked instead of moving it automatically.','- Time changes on Confirmed / Fixed / ticketed items are blocked for manual review.','- One Notion Reservation may map to multiple GitHub ticket IDs, but Confirmed tickets can never be lowered.','- Hotel stays are linked by their existing confirmed check-in/check-out dates; Reservation details remain private.','- Explicit ignore rules keep private records such as insurance out of the public app.','- Unmapped high-risk/locked rows are skipped; likely duplicates are never auto-created and require explicit mapping.','- Booking refs, amount, currency, traveler names and private reservation notes are never requested.','');
   return lines.join('\n');
 }
 
@@ -74,7 +75,7 @@ async function main(){
   const args=parseArgs(process.argv.slice(2));const token=process.env.NOTION_TOKEN?.trim();if(!token) throw new Error('NOTION_TOKEN is missing. Add it in GitHub Settings → Secrets and variables → Actions.');
   const cfg=await readJson(resolve(root,'config/notion-publisher.json'));const links=await readJson(resolve(root,'config/notion-links.json'));const trip=await readJson(resolve(root,'data/source/config.json'));const tickets=await readJson(resolve(root,'data/source/tickets.json'));const hotels=await readJson(resolve(root,'data/source/hotels.json'));
   const files=(await readdir(resolve(root,'data/source/itinerary'))).filter(name=>name.endsWith('.json')).sort();const days=await Promise.all(files.map(async name=>({name,day:await readJson(resolve(root,'data/source/itinerary',name))})));
-  const ticketById=new Map(tickets.map(ticket=>[ticket.id,ticket]));const hotelByPlaceId=new Map(hotels.map(hotel=>[hotel.placeId,hotel]));const dayById=new Map(days.map(entry=>[entry.day.id,entry]));const itemById=new Map(days.flatMap(entry=>entry.day.items.map(item=>[item.id,{...entry,item}])));const inside=date=>typeof date==='string'&&date>=trip.departDate&&date<=trip.endDate;
+  const ticketById=new Map(tickets.map(ticket=>[ticket.id,ticket]));const hotelByPlaceId=new Map(hotels.map(hotel=>[hotel.placeId,hotel]));const dayById=new Map(days.map(entry=>[entry.day.id,entry]));const dayByDate=new Map(days.map(entry=>[entry.day.date,entry]));const itemById=new Map(days.flatMap(entry=>entry.day.items.map(item=>[item.id,{...entry,item}])));const managedBySource=new Map(days.flatMap(entry=>entry.day.items.filter(item=>item.notionManaged===true&&item.sourceItineraryId).map(item=>[item.sourceItineraryId,{...entry,item}])));const inside=date=>typeof date==='string'&&date>=trip.departDate&&date<=trip.endDate;
   const report={generatedAt:new Date().toISOString(),scope:args.scope,mode:'publish',changes:[],warnings:[],ignored:[],blockers:[]};const changedDayFiles=new Set();let ticketsChanged=false;let hotelsChanged=false;
 
   let itineraryRows=[];
@@ -101,7 +102,70 @@ async function main(){
       if(entry.item.transport&&notionStatus==='confirmed'&&status(entry.item.transport.status)!=='confirmed'){entry.item.transport.status='confirmed';changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,'Transport status promoted to confirmed.');}
       if(link.sourceId&&entry.item.sourceItineraryId!==link.sourceId){entry.item.sourceItineraryId=link.sourceId;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Linked ${link.sourceId} to item.`);}
     }
-    for(const row of itineraryRows){const locked=status(row.Status)==='confirmed'||row.Fixed===true;if(locked&&!links.itinerary?.[row.pageId]) addWarning(report,'Itinerary',row,'Locked row is not explicitly mapped yet; Publish skipped it.');}
+    const explicitPages=new Set(Object.keys(links.itinerary||{}));
+    const explicitSourceIds=new Set(Object.values(links.itinerary||{}).map(link=>link.sourceId).filter(Boolean));
+    for(const row of itineraryRows){
+      const sourceId=row['Itinerary ID'];
+      if(!sourceId||explicitPages.has(row.pageId)||explicitSourceIds.has(sourceId)) continue;
+      const managed=managedBySource.get(sourceId);
+      const notionStatus=status(row.Status);
+
+      if(managed){
+        if(notionStatus==='cancelled'){
+          managed.day.items=managed.day.items.filter(item=>item!==managed.item);
+          changedDayFiles.add(managed.name);
+          managedBySource.delete(sourceId);
+          addChange(report,'Itinerary',managed.item.id,`Removed cancelled Notion-managed item ${sourceId}.`);
+          continue;
+        }
+
+        const target=dayByDate.get(row.Date);
+        if(!target){addBlock(report,'Itinerary',row,managed.item.id,`Notion-managed item date ${row.Date} has no public itinerary day.`);continue;}
+        if(normalize(target.day.city)!==normalize(row.City)){addBlock(report,'Itinerary',row,managed.item.id,`City mismatch for Notion-managed item: Notion=${row.City}, public day=${target.day.city}.`);continue;}
+
+        const nextTime=primaryClock(row['Start Time']);
+        const currentTime=itemStart(managed.item);
+        const protectedItem=notionStatus==='confirmed'||row.Fixed===true||Boolean(managed.item.ticketId);
+        if(protectedItem&&managed.day.date!==row.Date){addBlock(report,'Itinerary',row,managed.item.id,`Protected Notion-managed date mismatch: Notion=${row.Date}, GitHub=${managed.day.date}.`);continue;}
+        if(protectedItem&&nextTime&&currentTime&&nextTime!==currentTime){addBlock(report,'Itinerary',row,managed.item.id,`Protected Notion-managed time mismatch: Notion=${nextTime}, GitHub=${currentTime}.`);continue;}
+
+        const nextItem=mergeManagedItem(managed.item,row);
+        if(managed.day.date!==row.Date){
+          managed.day.items=managed.day.items.filter(item=>item!==managed.item);
+          changedDayFiles.add(managed.name);
+          insertItemChronologically(target.day,nextItem);
+          changedDayFiles.add(target.name);
+          managedBySource.set(sourceId,{...target,item:nextItem});
+          addChange(report,'Itinerary',nextItem.id,`Moved flexible Notion-managed item to ${row.Date}.`);
+        }else if(JSON.stringify(nextItem)!==JSON.stringify(managed.item)){
+          const index=managed.day.items.indexOf(managed.item);
+          managed.day.items.splice(index,1);
+          insertItemChronologically(managed.day,nextItem);
+          changedDayFiles.add(managed.name);
+          managedBySource.set(sourceId,{...managed,item:nextItem});
+          addChange(report,'Itinerary',nextItem.id,`Updated Notion-managed item ${sourceId}.`);
+        }
+        continue;
+      }
+
+      if(isSafeAutoCreateRow(row,cfg.autoCreateItinerary)){
+        const target=dayByDate.get(row.Date);
+        if(!target){addWarning(report,'Itinerary',row,'Safe auto-create skipped: no existing public day for this date.');continue;}
+        if(normalize(target.day.city)!==normalize(row.City)){addWarning(report,'Itinerary',row,`Safe auto-create skipped: city mismatch Notion=${row.City}, public day=${target.day.city}.`);continue;}
+        if(likelyDuplicateOnDay(target.day,row)){addWarning(report,'Itinerary',row,'Safe auto-create skipped: a likely duplicate already exists on the public day; add an explicit mapping if they are the same item.');continue;}
+        const item=buildManagedItem(row);
+        if(itemById.has(item.id)){addBlock(report,'Itinerary',row,item.id,'Safe auto-create generated a duplicate public item ID.');continue;}
+        insertItemChronologically(target.day,item);
+        changedDayFiles.add(target.name);
+        itemById.set(item.id,{...target,item});
+        managedBySource.set(sourceId,{...target,item});
+        addChange(report,'Itinerary',item.id,`Auto-created public-safe flexible item from ${sourceId}.`);
+        continue;
+      }
+
+      const locked=notionStatus==='confirmed'||row.Fixed===true;
+      if(locked) addWarning(report,'Itinerary',row,'Locked row is not explicitly mapped yet; Publish skipped it.');
+    }
   }
 
   let reservationRows=[];
