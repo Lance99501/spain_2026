@@ -51,19 +51,13 @@
           "text": "Hotel Acta Madfor｜取行李＋機場前整理"
         }
       ],
-      "noteSegments": [
-        {
-          "text": "16:30 左右開始回飯店；17:30 前完成取行李與返程整理"
-        }
-      ],
       "startTime": "17:00",
       "sourceItineraryId": "ITN-76",
       "travelHint": {
         "sourceItineraryId": "ITN-76",
         "from": "Madrid 市區",
         "mode": "Return",
-        "leaveTime": "16:30 左右",
-        "detail": "17:00 取行李＋機場前整理"
+        "leaveTime": "16:30 左右"
       }
     },
     {
@@ -83,7 +77,7 @@
         "duration": "30–50 分",
         "leaveTime": "17:30",
         "backup": "Príncipe Pío → Cercanías C1/C10 → Aeropuerto T4",
-        "detail": "預計 18:00–18:20 抵達；21:45 EK144"
+        "detail": "預計 18:00–18:20 抵達"
       }
     },
     {
