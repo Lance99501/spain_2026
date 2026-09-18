@@ -11,9 +11,10 @@ export function timeDetail(value){
   const raw=String(value||'').trim();
   const clock=primaryClock(raw);
   if(!clock) return '';
-  let detail=raw.slice(raw.indexOf(clock)+clock.length).trim();
-  detail=detail.replace(/^[（(]\s*/,'').replace(/\s*[）)]$/,'').trim();
-  return detail;
+  const index=raw.indexOf(clock);
+  const before=raw.slice(0,index).trim().replace(/[（(]\s*$/,'').trim();
+  const after=raw.slice(index+clock.length).trim().replace(/^[（(]\s*/,'').replace(/\s*[）)]$/,'').trim();
+  return [before,after].filter(Boolean).join(' · ');
 }
 
 export function isSafeAutoCreateRow(row,policy={}){
@@ -22,6 +23,8 @@ export function isSafeAutoCreateRow(row,policy={}){
   const types=new Set(policy.types||[]);
   if(policy.enabled===false) return false;
   if(!row?.Name||!row?.Date||!row?.['Itinerary ID']) return false;
+  const sourceNumber=Number(String(row['Itinerary ID']).match(/(\d+)$/)?.[1]||0);
+  if(policy.minItineraryNumber&&sourceNumber<policy.minItineraryNumber) return false;
   if(row.Fixed===true) return false;
   if(!statuses.has(row.Status)) return false;
   if(!flexibilities.has(row.Flexibility)) return false;

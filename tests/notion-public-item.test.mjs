@@ -14,7 +14,8 @@ const policy={
   enabled:true,
   statuses:['Planned','Idea'],
   flexibilities:['Flexible','Idea'],
-  types:['Attraction','Meal','Free time','Other']
+  types:['Attraction','Meal','Free time','Other'],
+  minItineraryNumber:63
 };
 
 test('safe flexible attractions can be auto-created but protected types/statuses cannot',()=>{
@@ -24,6 +25,7 @@ test('safe flexible attractions can be auto-created but protected types/statuses
   assert.equal(isSafeAutoCreateRow({...row,Fixed:true},policy),false);
   assert.equal(isSafeAutoCreateRow({...row,Type:'Transit'},policy),false);
   assert.equal(isSafeAutoCreateRow({...row,Type:'Hotel'},policy),false);
+  assert.equal(isSafeAutoCreateRow({...row,'Itinerary ID':'ITN-62'},policy),false);
 });
 
 test('managed item uses the existing timeline shape and keeps alternative time as a note',()=>{
@@ -38,6 +40,7 @@ test('managed item uses the existing timeline shape and keeps alternative time a
   assert.equal(item.notionManaged,true);
   assert.equal(primaryClock(row['Start Time']),'19:30');
   assert.equal(timeDetail(row['Start Time']),'首選；備選 21:00');
+  assert.equal(timeDetail('約 11:30'),'約');
 });
 
 test('managed items are inserted chronologically without reordering equal-time existing rows',()=>{

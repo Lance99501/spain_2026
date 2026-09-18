@@ -65,6 +65,7 @@
       "Meal",
       "Free time",
       "Other"
-    ]
+    ],
+    "minItineraryNumber": 63
   }
 }
