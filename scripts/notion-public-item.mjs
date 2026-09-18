@@ -105,8 +105,7 @@ export function likelyDuplicateOnDay(day,row){
 
 
 export function buildTravelHint(row){
-  const hint={
-    sourceItineraryId:String(row?.['Itinerary ID']||'').trim()||undefined,
+  const publicFields={
     from:String(row?.['Travel From']||'').trim()||undefined,
     mode:String(row?.['Travel Mode']||'').trim()||undefined,
     durationMin:Number.isFinite(row?.['Travel Min'])?row['Travel Min']:undefined,
@@ -115,5 +114,8 @@ export function buildTravelHint(row){
     backup:String(row?.['Travel Backup']||'').trim()||undefined,
     detail:String(row?.['Travel Detail']||'').trim()||undefined
   };
-  return Object.fromEntries(Object.entries(hint).filter(([,value])=>value!==undefined&&value!==null&&value!==''));
+  const compact=Object.fromEntries(Object.entries(publicFields).filter(([,value])=>value!==undefined&&value!==null&&value!==''));
+  if(!Object.keys(compact).length) return {};
+  const sourceItineraryId=String(row?.['Itinerary ID']||'').trim()||undefined;
+  return sourceItineraryId?{sourceItineraryId,...compact}:compact;
 }
