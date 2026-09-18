@@ -129,6 +129,15 @@ async function main(){
       const notionTime=row['Start Time'],githubTime=itemStart(entry.item);if(/^\d{2}:\d{2}$/.test(notionTime||'')&&githubTime&&notionTime!==githubTime){const protectedTime=githubStatus==='confirmed'||row.Fixed===true||Boolean(entry.item.ticketId);if(protectedTime){addBlock(report,'Itinerary',row,link.targetId,`Protected time mismatch: Notion=${notionTime}, GitHub=${githubTime}. Confirmed / Fixed / ticketed times require manual verification.`);continue;}entry.item.time=notionTime;entry.item.startTime=notionTime;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Start time ${githubTime||'—'} → ${notionTime}.`);}
       if(entry.item.transport&&notionStatus==='confirmed'&&status(entry.item.transport.status)!=='confirmed'){entry.item.transport.status='confirmed';changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,'Transport status promoted to confirmed.');}
       if(link.sourceId&&entry.item.sourceItineraryId!==link.sourceId){entry.item.sourceItineraryId=link.sourceId;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Linked ${link.sourceId} to item.`);}
+      const inlineHint=buildTravelHint(row);
+      const ownsInlineHint=entry.item.travelHint?.sourceItineraryId===(link.sourceId||row['Itinerary ID']);
+      if(Object.keys(inlineHint).length){
+        if(JSON.stringify(entry.item.travelHint||{})!==JSON.stringify(inlineHint)){
+          entry.item.travelHint=inlineHint;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Updated inline travel hint from ${link.sourceId||row['Itinerary ID']||'Notion'}.`);
+        }
+      }else if(ownsInlineHint){
+        delete entry.item.travelHint;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,'Removed cleared inline travel hint.');
+      }
     }
     const explicitPages=new Set(Object.keys(links.itinerary||{}));
     const explicitSourceIds=new Set(Object.values(links.itinerary||{}).map(link=>link.sourceId).filter(Boolean));
