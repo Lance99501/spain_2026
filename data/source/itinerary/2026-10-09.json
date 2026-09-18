@@ -20,7 +20,10 @@
         }
       ],
       "startTime": "13:25",
-      "sourceItineraryId": "ITN-1"
+      "sourceItineraryId": "ITN-1",
+      "travelHint": {
+        "sourceItineraryId": "ITN-1"
+      }
     },
     {
       "id": "item-2026-10-09-02",

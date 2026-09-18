@@ -70,7 +70,10 @@
       "ticketId": "tkt-mezquita-cordoba",
       "ticketAnchorPlaceId": "cor-mezquita-catedral-de-cordoba",
       "startTime": "10:00",
-      "sourceItineraryId": "ITN-45"
+      "sourceItineraryId": "ITN-45",
+      "travelHint": {
+        "sourceItineraryId": "ITN-45"
+      }
     },
     {
       "id": "item-2026-10-16-03",

@@ -22,6 +22,25 @@
       ]
     },
     {
+      "id": "item-2026-10-24-itn-65",
+      "time": "19:00",
+      "segments": [
+        {
+          "text": "Flamenco｜Teatro Flamenco Madrid｜最後保底"
+        }
+      ],
+      "sourceItineraryId": "ITN-65",
+      "notionManaged": true,
+      "notionStatus": "Idea",
+      "notionFlexibility": "Idea",
+      "startTime": "19:00",
+      "noteSegments": [
+        {
+          "text": "最後保底；可改 20:45"
+        }
+      ]
+    },
+    {
       "id": "item-2026-10-24-02",
       "time": "隨興",
       "segments": [

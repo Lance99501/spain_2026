@@ -72,6 +72,25 @@
           "text": "Calle Navas · Tapas + 輕鬆晚餐"
         }
       ]
+    },
+    {
+      "id": "item-2026-10-19-itn-64",
+      "time": "20:00",
+      "segments": [
+        {
+          "text": "Flamenco｜Jardines de Zoraya｜Granada 備選"
+        }
+      ],
+      "sourceItineraryId": "ITN-64",
+      "notionManaged": true,
+      "notionStatus": "Idea",
+      "notionFlexibility": "Idea",
+      "startTime": "20:00",
+      "noteSegments": [
+        {
+          "text": "備選；可改 22:30"
+        }
+      ]
     }
   ],
   "tags": [

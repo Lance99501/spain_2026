@@ -37,6 +37,25 @@
           "text": "Triana 市場、陶瓷、Calle Betis、晚餐"
         }
       ]
+    },
+    {
+      "id": "item-2026-10-17-itn-63",
+      "time": "19:30",
+      "segments": [
+        {
+          "text": "Flamenco｜Teatro Flamenco Triana｜首選"
+        }
+      ],
+      "sourceItineraryId": "ITN-63",
+      "notionManaged": true,
+      "notionStatus": "Planned",
+      "notionFlexibility": "Flexible",
+      "startTime": "19:30",
+      "noteSegments": [
+        {
+          "text": "首選；備選 21:00"
+        }
+      ]
     }
   ],
   "tags": [

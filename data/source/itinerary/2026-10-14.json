@@ -86,7 +86,12 @@
         "leaveTime": "14:47 抵達後",
         "backup": "步行（天候／行李合適時）",
         "detail": "官方 Taxi 至 Calle Arroyo"
-      }
+      },
+      "noteSegments": [
+        {
+          "text": "Santa Justa → 官方 Taxi；步行作 Backup"
+        }
+      ]
     },
     {
       "id": "item-2026-10-14-03",

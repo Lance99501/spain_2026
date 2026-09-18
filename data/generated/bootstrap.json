@@ -934,7 +934,10 @@
             }
           ],
           "startTime": "13:25",
-          "sourceItineraryId": "ITN-1"
+          "sourceItineraryId": "ITN-1",
+          "travelHint": {
+            "sourceItineraryId": "ITN-1"
+          }
         },
         {
           "id": "item-2026-10-09-02",
@@ -1012,7 +1015,10 @@
             }
           ],
           "startTime": "09:15",
-          "sourceItineraryId": "ITN-3"
+          "sourceItineraryId": "ITN-3",
+          "travelHint": {
+            "sourceItineraryId": "ITN-3"
+          }
         },
         {
           "id": "item-2026-10-10-02",
@@ -1105,7 +1111,10 @@
             }
           ],
           "startTime": "09:30",
-          "sourceItineraryId": "ITN-19"
+          "sourceItineraryId": "ITN-19",
+          "travelHint": {
+            "sourceItineraryId": "ITN-19"
+          }
         },
         {
           "id": "item-2026-10-11-02",
@@ -1165,7 +1174,10 @@
             }
           ],
           "startTime": "15:45",
-          "sourceItineraryId": "ITN-26"
+          "sourceItineraryId": "ITN-26",
+          "travelHint": {
+            "sourceItineraryId": "ITN-26"
+          }
         },
         {
           "id": "item-2026-10-11-05",
@@ -1471,7 +1483,12 @@
             "leaveTime": "14:47 抵達後",
             "backup": "步行（天候／行李合適時）",
             "detail": "官方 Taxi 至 Calle Arroyo"
-          }
+          },
+          "noteSegments": [
+            {
+              "text": "Santa Justa → 官方 Taxi；步行作 Backup"
+            }
+          ]
         },
         {
           "id": "item-2026-10-14-03",
@@ -1525,7 +1542,10 @@
             }
           ],
           "startTime": "09:30",
-          "sourceItineraryId": "ITN-38"
+          "sourceItineraryId": "ITN-38",
+          "travelHint": {
+            "sourceItineraryId": "ITN-38"
+          }
         },
         {
           "id": "item-2026-10-15-02",
@@ -1554,7 +1574,10 @@
             }
           ],
           "startTime": "15:00",
-          "sourceItineraryId": "ITN-40"
+          "sourceItineraryId": "ITN-40",
+          "travelHint": {
+            "sourceItineraryId": "ITN-40"
+          }
         }
       ],
       "tags": [
@@ -1644,7 +1667,10 @@
           "ticketId": "tkt-mezquita-cordoba",
           "ticketAnchorPlaceId": "cor-mezquita-catedral-de-cordoba",
           "startTime": "10:00",
-          "sourceItineraryId": "ITN-45"
+          "sourceItineraryId": "ITN-45",
+          "travelHint": {
+            "sourceItineraryId": "ITN-45"
+          }
         },
         {
           "id": "item-2026-10-16-03",
@@ -1756,6 +1782,25 @@
               "text": "Triana 市場、陶瓷、Calle Betis、晚餐"
             }
           ]
+        },
+        {
+          "id": "item-2026-10-17-itn-63",
+          "time": "19:30",
+          "segments": [
+            {
+              "text": "Flamenco｜Teatro Flamenco Triana｜首選"
+            }
+          ],
+          "sourceItineraryId": "ITN-63",
+          "notionManaged": true,
+          "notionStatus": "Planned",
+          "notionFlexibility": "Flexible",
+          "startTime": "19:30",
+          "noteSegments": [
+            {
+              "text": "首選；備選 21:00"
+            }
+          ]
         }
       ],
       "tags": [
@@ -1790,7 +1835,7 @@
           ],
           "noteSegments": [
             {
-              "text": "11:00 前退房；不排晨間景點"
+              "text": "10:45–10:55 叫 Taxi 前往 Plaza de Armas · 11:45 ALSA · 不排晨間景點"
             }
           ]
         },
@@ -1974,6 +2019,25 @@
           "segments": [
             {
               "text": "Calle Navas · Tapas + 輕鬆晚餐"
+            }
+          ]
+        },
+        {
+          "id": "item-2026-10-19-itn-64",
+          "time": "20:00",
+          "segments": [
+            {
+              "text": "Flamenco｜Jardines de Zoraya｜Granada 備選"
+            }
+          ],
+          "sourceItineraryId": "ITN-64",
+          "notionManaged": true,
+          "notionStatus": "Idea",
+          "notionFlexibility": "Idea",
+          "startTime": "20:00",
+          "noteSegments": [
+            {
+              "text": "備選；可改 22:30"
             }
           ]
         }
@@ -2399,6 +2463,25 @@
           ]
         },
         {
+          "id": "item-2026-10-24-itn-65",
+          "time": "19:00",
+          "segments": [
+            {
+              "text": "Flamenco｜Teatro Flamenco Madrid｜最後保底"
+            }
+          ],
+          "sourceItineraryId": "ITN-65",
+          "notionManaged": true,
+          "notionStatus": "Idea",
+          "notionFlexibility": "Idea",
+          "startTime": "19:00",
+          "noteSegments": [
+            {
+              "text": "最後保底；可改 20:45"
+            }
+          ]
+        },
+        {
           "id": "item-2026-10-24-02",
           "time": "隨興",
           "segments": [
@@ -2449,7 +2532,10 @@
             }
           ],
           "startTime": "09:30",
-          "sourceItineraryId": "ITN-55"
+          "sourceItineraryId": "ITN-55",
+          "travelHint": {
+            "sourceItineraryId": "ITN-55"
+          }
         },
         {
           "id": "item-2026-10-25-02",
@@ -2526,7 +2612,10 @@
             "destinationPlaceId": "dxb-dubai-airport",
             "departureTime": "21:45"
           },
-          "sourceItineraryId": "ITN-10"
+          "sourceItineraryId": "ITN-10",
+          "travelHint": {
+            "sourceItineraryId": "ITN-10"
+          }
         }
       ],
       "tags": [
