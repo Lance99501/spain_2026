@@ -17,7 +17,14 @@
       "Flexibility",
       "Area",
       "Location",
-      "Itinerary ID"
+      "Itinerary ID",
+      "Travel From",
+      "Travel Mode",
+      "Travel Min",
+      "Travel Duration",
+      "Leave Time",
+      "Travel Backup",
+      "Travel Detail"
     ],
     "reservations": [
       "Name",
@@ -40,7 +47,14 @@
     "Fixed",
     "Flexibility",
     "Area",
-    "Location"
+    "Location",
+    "Travel From",
+    "Travel Mode",
+    "Travel Min",
+    "Travel Duration",
+    "Leave Time",
+    "Travel Backup",
+    "Travel Detail"
   ],
   "neverRequestFromReservations": [
     "Booking Ref",
