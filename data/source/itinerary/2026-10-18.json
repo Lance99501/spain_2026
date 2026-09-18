@@ -60,7 +60,14 @@
         "departureTime": "11:45",
         "arrivalTime": "14:45"
       },
-      "sourceItineraryId": "ITN-13"
+      "sourceItineraryId": "ITN-13",
+      "travelHint": {
+        "sourceItineraryId": "ITN-71",
+        "from": "Arroyo 3 Apartments",
+        "mode": "Taxi",
+        "leaveTime": "10:45–10:55",
+        "detail": "11:45 ALSA；住宿最晚 11:00 退房"
+      }
     },
     {
       "id": "item-2026-10-18-03",
@@ -74,7 +81,17 @@
         {
           "text": "Granada Bus Station → Taxi 到最近可下車處；備案 Bus 33 → Acera del Darro 40，再步行進 Calle Navas"
         }
-      ]
+      ],
+      "travelHint": {
+        "sourceItineraryId": "ITN-72",
+        "from": "Granada Bus Station",
+        "mode": "Taxi",
+        "durationMin": 18,
+        "duration": "15–20 分",
+        "leaveTime": "14:45 抵達後",
+        "backup": "Bus 33 → Acera del Darro 40 → 步行 5–8 分",
+        "detail": "Calle Navas 為步行街；最後步行約 100m～數百公尺"
+      }
     },
     {
       "id": "item-2026-10-18-04",
