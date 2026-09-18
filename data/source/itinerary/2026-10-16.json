@@ -44,6 +44,14 @@
         "destinationPlaceId": "cor-cordoba-central",
         "departureTime": "08:11",
         "arrivalTime": "08:52"
+      },
+      "travelHint": {
+        "sourceItineraryId": "ITN-69",
+        "from": "Arroyo 3 Apartments",
+        "mode": "Walk",
+        "leaveTime": "07:30–07:35",
+        "backup": "Taxi",
+        "detail": "08:11 Santa Justa 出發"
       }
     },
     {
