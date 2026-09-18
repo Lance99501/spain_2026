@@ -47,7 +47,7 @@ function travelModeIcon(mode=''){
   if(value.includes('train')||value.includes('cercan')) return '🚆';
   if(value.includes('metro')) return '🚇';
   if(value.includes('bus')) return '🚌';
-  return '↗';
+  return '';
 }
 
 function renderTravelHint(item){
@@ -69,7 +69,7 @@ function renderTravelHint(item){
     ?`<span class="travel-backup" title="${escapeHtml(hint.backup)}">備案：${escapeHtml(hint.backup)}</span>`
     :'';
 
-  return `<span class="travel-hint"><span class="travel-main">${travelModeIcon(hint.mode)} ${escapeHtml(main.join(' · '))}</span>${detail}${backup}</span>`;
+  const icon=travelModeIcon(hint.mode);\n  const mainText=escapeHtml(main.join(' · '));\n  const mainHtml=mainText?`<span class="travel-main">${icon?`${icon} `:''}${mainText}</span>`:'';\n  return `<span class="travel-hint">${mainHtml}${detail}${backup}</span>`;
 }
 
 export function initItinerary({itinerary,places,tickets,ticketController}){
