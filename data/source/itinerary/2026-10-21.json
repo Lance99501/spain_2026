@@ -47,5 +47,15 @@
       "tone": "flex"
     }
   ],
-  "note": "基準排 10/21 王宮＋Almudena，午後接老城與 La Latina；尚未購票前可與 10/23 普拉多＋麗池公園整組對調，購票後依票面鎖定。"
+  "note": "基準排 10/21 王宮＋Almudena，午後接老城與 La Latina；尚未購票前可與 10/23 普拉多＋麗池公園整組對調，購票後依票面鎖定。",
+  "flexPair": {
+    "id": "madrid-weather-21-23",
+    "pairedDate": "2026-10-23",
+    "label": "Weather Flex｜10/21 ⇄ 10/23",
+    "baselineLabel": "A 基準",
+    "alternateLabel": "B 對調",
+    "displayTitle": "王宮 ↔ Prado｜Weather Flex",
+    "displaySub": "10/21 ↔ 10/23，可依天氣與票況整組對調",
+    "note": "尚未購票前可依天氣與票況整組對調；購票後依票面日期鎖定。"
+  }
 }
