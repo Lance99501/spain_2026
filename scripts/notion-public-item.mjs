@@ -102,3 +102,18 @@ export function likelyDuplicateOnDay(day,row){
     })
   );
 }
+
+
+export function buildTravelHint(row){
+  const hint={
+    sourceItineraryId:String(row?.['Itinerary ID']||'').trim()||undefined,
+    from:String(row?.['Travel From']||'').trim()||undefined,
+    mode:String(row?.['Travel Mode']||'').trim()||undefined,
+    durationMin:Number.isFinite(row?.['Travel Min'])?row['Travel Min']:undefined,
+    duration:String(row?.['Travel Duration']||'').trim()||undefined,
+    leaveTime:String(row?.['Leave Time']||'').trim()||undefined,
+    backup:String(row?.['Travel Backup']||'').trim()||undefined,
+    detail:String(row?.['Travel Detail']||'').trim()||undefined
+  };
+  return Object.fromEntries(Object.entries(hint).filter(([,value])=>value!==undefined&&value!==null&&value!==''));
+}
