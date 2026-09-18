@@ -40,6 +40,38 @@ export function renderSegments(segments,item,placeById,ticketById,{allowTicket=t
   return html;
 }
 
+function travelModeIcon(mode=''){
+  const value=String(mode).toLowerCase();
+  if(value.includes('taxi')) return '🚕';
+  if(value.includes('walk')) return '🚶';
+  if(value.includes('train')||value.includes('cercan')) return '🚆';
+  if(value.includes('metro')) return '🚇';
+  if(value.includes('bus')) return '🚌';
+  return '↗';
+}
+
+function renderTravelHint(item){
+  const hint=item.travelHint;
+  if(!hint) return '';
+  const main=[];
+  if(hint.leaveTime){
+    const leave=String(hint.leaveTime);
+    main.push(/抵達後|叫車|上車|出發/.test(leave)?leave:`${leave} 出發`);
+  }
+  if(hint.duration) main.push(`約 ${hint.duration}`);
+  else if(Number.isFinite(hint.durationMin)) main.push(`約 ${hint.durationMin} 分`);
+  if(!main.length&&hint.mode) main.push(String(hint.mode));
+
+  const detail=hint.detail
+    ?`<span class="travel-detail" title="${escapeHtml(hint.detail)}">${escapeHtml(hint.detail)}</span>`
+    :'';
+  const backup=hint.backup
+    ?`<span class="travel-backup" title="${escapeHtml(hint.backup)}">備案：${escapeHtml(hint.backup)}</span>`
+    :'';
+
+  return `<span class="travel-hint"><span class="travel-main">${travelModeIcon(hint.mode)} ${escapeHtml(main.join(' · '))}</span>${detail}${backup}</span>`;
+}
+
 export function initItinerary({itinerary,places,tickets,ticketController}){
   const CITY_ORDER=['Barcelona','Sevilla','Granada','Madrid'];
   const daysRoot=document.getElementById('days');
@@ -90,7 +122,8 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
           const place=x.placeId?placeById.get(x.placeId):null;
           return [x.text,place?.displayName||'',place?.name||''];
         }),
-        ...(item.noteSegments||[]).map(x=>x.text)
+        ...(item.noteSegments||[]).map(x=>x.text),
+        ...Object.values(item.travelHint||{})
       ]),
       ...day.tags.map(x=>x.text),
       day.note||''
@@ -114,7 +147,7 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
         <a class="day-map" target="_blank" rel="noopener" href="${day.mapUrl}" aria-label="在 Google Maps 開啟 ${escapeHtml(day.title)}"><span class="map-icon">⌖</span><span class="map-label">Maps ↗</span></a>
       </div>
       <div class="day-body" id="${bodyId}">
-        <ul class="timeline">${day.items.map(item=>`<li data-item-id="${escapeHtml(item.id)}"><time>${escapeHtml(item.time)}</time><p>${renderSegments(item.segments,item,placeById,ticketById)}${item.noteSegments?`<em>${renderSegments(item.noteSegments,item,placeById,ticketById,{allowTicket:false})}</em>`:''}</p></li>`).join('')}</ul>
+        <ul class="timeline">${day.items.map(item=>`<li data-item-id="${escapeHtml(item.id)}"><time>${escapeHtml(item.time)}</time><p>${renderSegments(item.segments,item,placeById,ticketById)}${item.noteSegments?`<em>${renderSegments(item.noteSegments,item,placeById,ticketById,{allowTicket:false})}</em>`:''}${renderTravelHint(item)}</p></li>`).join('')}</ul>
         <div class="tags">${day.tags.map(tag=>`<span class="tag ${escapeHtml(tag.tone)}">${renderLocalizedText(tag.text,day)}</span>`).join('')}</div>
         ${day.note?`<div class="day-note">${renderLocalizedText(day.note,day)}</div>`:''}
       </div>
