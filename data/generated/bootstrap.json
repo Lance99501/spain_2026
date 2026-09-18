@@ -944,11 +944,6 @@
               "text": "Hotel Royal Passeig de Gracia 入住"
             }
           ],
-          "noteSegments": [
-            {
-              "text": "BCN T1 → 官方 Taxi 為主（約 €35–45）；備案 Aerobús A1 → Plaça Catalunya → L3 → Passeig de Gràcia，再步行約 200 m"
-            }
-          ],
           "travelHint": {
             "sourceItineraryId": "ITN-67",
             "from": "BCN T1",
@@ -1469,11 +1464,6 @@
               "text": "Arroyo 3 Apartments 入住"
             }
           ],
-          "noteSegments": [
-            {
-              "text": "Santa Justa → 官方 Taxi；步行作 Backup"
-            }
-          ],
           "travelHint": {
             "sourceItineraryId": "ITN-68",
             "from": "Sevilla-Santa Justa",
@@ -1801,7 +1791,7 @@
           ],
           "noteSegments": [
             {
-              "text": "10:45–10:55 叫 Taxi 前往 Plaza de Armas · 11:45 ALSA · 不排晨間景點"
+              "text": "11:00 前退房；不排晨間景點"
             }
           ]
         },
@@ -1853,11 +1843,6 @@
           "segments": [
             {
               "text": "Hotel Navas 入住"
-            }
-          ],
-          "noteSegments": [
-            {
-              "text": "Granada Bus Station → Taxi 到最近可下車處；備案 Bus 33 → Acera del Darro 40，再步行進 Calle Navas"
             }
           ],
           "travelHint": {
@@ -2102,11 +2087,6 @@
           "segments": [
             {
               "text": "Hotel Acta Madfor Check-in"
-            }
-          ],
-          "noteSegments": [
-            {
-              "text": "Atocha → 使用車票附的 CombinadoCercanías 搭 C10 到 Príncipe Pío（約 11–12 分）；Taxi €12–18 備案"
             }
           ],
           "travelHint": {
