@@ -1,7 +1,7 @@
 import {mkdir,readdir,readFile,writeFile} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {buildManagedItem,insertItemChronologically,isSafeAutoCreateRow,likelyDuplicateOnDay,mergeManagedItem,primaryClock} from './notion-public-item.mjs';
+import {buildManagedItem,buildTravelHint,insertItemChronologically,isSafeAutoCreateRow,likelyDuplicateOnDay,mergeManagedItem,primaryClock} from './notion-public-item.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
@@ -89,6 +89,30 @@ async function main(){
         if(!['checkIn','checkOut'].includes(link.stayRole)){addBlock(report,'Itinerary',row,link.targetId,'Hotel mapping must specify stayRole=checkIn or checkOut.');continue;}
         const expectedDate=link.stayRole==='checkIn'?hotel.checkIn:hotel.checkOut;if(row.Date!==expectedDate){addBlock(report,'Itinerary',row,link.targetId,`Protected hotel date mismatch: Notion=${row.Date}, GitHub=${expectedDate}.`);continue;}
         const sourceField=link.stayRole==='checkIn'?'sourceCheckInItineraryId':'sourceCheckOutItineraryId';if(link.sourceId&&hotel[sourceField]!==link.sourceId){hotel[sourceField]=link.sourceId;hotelsChanged=true;addChange(report,'Itinerary',`hotel:${link.targetId}:${link.stayRole}`,`Linked ${link.sourceId} to hotel ${link.stayRole}.`);}continue;
+      }
+      if(link.targetType==='travelHint'){
+        const entry=itemById.get(link.targetId);if(!entry){addBlock(report,'Itinerary',row,link.targetId,'Mapped travel-hint item does not exist in GitHub.');continue;}if(row.Date!==entry.day.date){addBlock(report,'Itinerary',row,link.targetId,`Travel-hint date mismatch: Notion=${row.Date}, GitHub=${entry.day.date}.`);continue;}
+        if(status(row.Status)==='cancelled'){
+          if(entry.item.travelHint){delete entry.item.travelHint;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Removed cancelled travel hint ${link.sourceId||row['Itinerary ID']||''}.`);}
+          continue;
+        }
+        const hint=buildTravelHint(row);
+        if(!Object.keys(hint).length){addWarning(report,'Itinerary',row,'Mapped travel hint has no structured public fields; skipped.');continue;}
+        if(link.syncItemTime===true){
+          const nextTime=primaryClock(row['Start Time']);
+          const currentTime=itemStart(entry.item);
+          if(nextTime&&currentTime!==nextTime){
+            if(Boolean(entry.item.ticketId)||itemStatus(entry.item,ticketById)==='confirmed'){
+              addBlock(report,'Itinerary',row,link.targetId,`Protected travel-hint time mismatch: Notion=${nextTime}, GitHub=${currentTime||'—'}.`);
+              continue;
+            }
+            entry.item.time=nextTime;entry.item.startTime=nextTime;
+          }
+        }
+        if(JSON.stringify(entry.item.travelHint||{})!==JSON.stringify(hint)){
+          entry.item.travelHint=hint;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Updated travel hint from ${link.sourceId||row['Itinerary ID']||'Notion'}.`);
+        }else if(link.syncItemTime===true){changedDayFiles.add(entry.name);}
+        continue;
       }
       if(link.targetType==='day'){
         const entry=dayById.get(link.targetId);if(!entry){addBlock(report,'Itinerary',row,link.targetId,'Mapped day does not exist in GitHub.');continue;}if(row.Date!==entry.day.date){addBlock(report,'Itinerary',row,link.targetId,`Date mismatch: Notion=${row.Date}, GitHub=${entry.day.date}. Automatic day moves are disabled.`);continue;}
