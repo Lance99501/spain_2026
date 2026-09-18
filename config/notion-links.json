@@ -201,6 +201,13 @@
       "targetId": "item-2026-10-25-05",
       "syncItemTime": true,
       "note": "Hotel Acta Madfor → MAD T4｜返程機場接駁"
+    },
+    "3df91e9f-a395-8116-a27d-f181b478c638": {
+      "sourceId": "ITN-66",
+      "targetType": "item",
+      "targetId": "item-2026-10-22-cathedral",
+      "syncPrimaryClock": true,
+      "note": "塞哥維亞主教座堂｜獨立彈性參觀；日期固定於 10/22，day.city 為 Madrid 城市分組"
     }
   },
   "reservations": {

@@ -6,10 +6,19 @@ import {
   insertItemChronologically,
   isSafeAutoCreateRow,
   likelyDuplicateOnDay,
+  mappedStartTime,
   mergeManagedItem,
   primaryClock,
   timeDetail
 } from '../scripts/notion-public-item.mjs';
+
+test('explicit flexible mapping parses approximate time only when opted in',()=>{
+  const row={'Start Time':'約 11:30'};
+  assert.equal(mappedStartTime(row,{syncPrimaryClock:true}),'11:30');
+  assert.equal(mappedStartTime(row,{}),'約 11:30');
+  assert.equal(mappedStartTime({'Start Time':'約 12:00'},{syncPrimaryClock:true}),'12:00');
+  assert.equal(mappedStartTime({'Start Time':'待確認'},{syncPrimaryClock:true}),'');
+});
 
 const policy={
   enabled:true,

@@ -1,7 +1,7 @@
 import {mkdir,readdir,readFile,writeFile} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {isSafeAutoCreateRow,primaryClock} from './notion-public-item.mjs';
+import {isSafeAutoCreateRow,mappedStartTime,primaryClock} from './notion-public-item.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
@@ -217,7 +217,7 @@ function reviewExplicitItinerary({row,link,itemById,dayById,hotelByPlaceId,ticke
   const notionStatus=status(row.Status),githubStatus=itemStatus(entry.item,ticketById);
   if(githubStatus==='confirmed'&&notionStatus!=='confirmed') reviews.push({match:link.targetId,message:`BLOCK: Notion ${notionStatus||'unknown'} would downgrade GitHub confirmed.`});
   else if(notionStatus&&githubStatus&&notionStatus!==githubStatus) reviews.push({match:link.targetId,message:`Status: Notion=${notionStatus}, GitHub=${githubStatus}`});
-  const nt=row['Start Time'],gt=itemStart(entry.item);
+  const nt=mappedStartTime(row,link),gt=itemStart(entry.item);
   if(/^\d{2}:\d{2}$/.test(nt||'')&&gt&&nt!==gt){
     const protectedTime=githubStatus==='confirmed'||row.Fixed===true||Boolean(entry.item.ticketId);
     reviews.push({match:link.targetId,message:`${protectedTime?'BLOCK: protected ':' '}Start Time Notion=${nt}, GitHub=${gt}`.trim()});

@@ -5,7 +5,7 @@
   "dow": "Thu",
   "city": "Madrid",
   "title": "塞哥維亞一日遊｜Segovia",
-  "sub": "水道橋 → 舊城 → 午餐 → 15:00 城堡 → 16:00 塔樓",
+  "sub": "水道橋 → 舊城 → 主教座堂 → 午餐 → 15:00 城堡 → 16:00 塔樓",
   "categories": [
     "confirmed",
     "pending",
@@ -29,26 +29,43 @@
     },
     {
       "id": "item-2026-10-22-02",
-      "time": "上午～中午",
+      "time": "上午",
       "segments": [
         {
           "text": "Acueducto",
           "placeId": "seg-acueducto-de-segovia"
         },
         {
-          "text": " → 舊城 → "
-        },
+          "text": " → 舊城"
+        }
+      ]
+    },
+    {
+      "id": "item-2026-10-22-cathedral",
+      "time": "11:30",
+      "startTime": "11:30",
+      "segments": [
         {
           "text": "Catedral",
           "placeId": "seg-catedral-de-segovia"
         },
         {
-          "text": " → 午餐"
+          "text": "｜一般參觀"
         }
       ],
       "noteSegments": [
         {
-          "text": "主教座堂依現場時間安排，不視為已購票"
+          "text": "彈性參觀，時間約估；尚未購票"
+        }
+      ],
+      "sourceItineraryId": "ITN-66"
+    },
+    {
+      "id": "item-2026-10-22-lunch",
+      "time": "參觀後午餐",
+      "segments": [
+        {
+          "text": "午餐"
         }
       ]
     },

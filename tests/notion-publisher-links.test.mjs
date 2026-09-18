@@ -48,7 +48,9 @@ test('Notion publisher deterministic links resolve to existing GitHub targets',a
 
 test('locked itinerary and reservation lifecycle mappings stay explicit',async()=>{
   const links=await readJson(new URL('../config/notion-links.json',import.meta.url));
-  assert.equal(Object.keys(links.itinerary).length,32);
+  assert.equal(Object.keys(links.itinerary).length,33);
+  assert.equal(links.itinerary['3df91e9f-a395-8116-a27d-f181b478c638'].sourceId,'ITN-66');
+  assert.equal(links.itinerary['3df91e9f-a395-8116-a27d-f181b478c638'].targetId,'item-2026-10-22-cathedral');
   assert.equal(Object.keys(links.reservations).length,20);
   assert.equal(links.reservations['3b891e9f-a395-8142-9f58-c50ddc4cb872'].ignore,true);
   assert.equal(links.reservations['3db91e9f-a395-81a2-83b2-cacdb93119a2'].hotelPlaceId,'sev-abba-sevilla');

@@ -1,7 +1,7 @@
 import {mkdir,readdir,readFile,writeFile} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {buildManagedItem,buildTravelHint,insertItemChronologically,isSafeAutoCreateRow,likelyDuplicateOnDay,mergeManagedItem,primaryClock} from './notion-public-item.mjs';
+import {buildManagedItem,buildTravelHint,insertItemChronologically,isSafeAutoCreateRow,mappedStartTime,likelyDuplicateOnDay,mergeManagedItem,primaryClock} from './notion-public-item.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
@@ -126,7 +126,7 @@ async function main(){
       if(link.targetType!=='item'){addBlock(report,'Itinerary',row,link.targetId,`Unsupported targetType: ${link.targetType}`);continue;}
       const entry=itemById.get(link.targetId);if(!entry){addBlock(report,'Itinerary',row,link.targetId,'Mapped item does not exist in GitHub.');continue;}if(row.Date!==entry.day.date){addBlock(report,'Itinerary',row,link.targetId,`Date mismatch: Notion=${row.Date}, GitHub=${entry.day.date}. Automatic item moves are disabled.`);continue;}
       const notionStatus=status(row.Status),githubStatus=itemStatus(entry.item,ticketById);if(githubStatus==='confirmed'&&notionStatus!=='confirmed'){addBlock(report,'Itinerary',row,link.targetId,`Confirmed downgrade guard: Notion=${notionStatus||'unknown'}, GitHub=confirmed.`);continue;}
-      const notionTime=row['Start Time'],githubTime=itemStart(entry.item);if(/^\d{2}:\d{2}$/.test(notionTime||'')&&githubTime&&notionTime!==githubTime){const protectedTime=githubStatus==='confirmed'||row.Fixed===true||Boolean(entry.item.ticketId);if(protectedTime){addBlock(report,'Itinerary',row,link.targetId,`Protected time mismatch: Notion=${notionTime}, GitHub=${githubTime}. Confirmed / Fixed / ticketed times require manual verification.`);continue;}entry.item.time=notionTime;entry.item.startTime=notionTime;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Start time ${githubTime||'—'} → ${notionTime}.`);}
+      const notionTime=mappedStartTime(row,link),githubTime=itemStart(entry.item);if(/^\d{2}:\d{2}$/.test(notionTime||'')&&githubTime&&notionTime!==githubTime){const protectedTime=githubStatus==='confirmed'||row.Fixed===true||Boolean(entry.item.ticketId);if(protectedTime){addBlock(report,'Itinerary',row,link.targetId,`Protected time mismatch: Notion=${notionTime}, GitHub=${githubTime}. Confirmed / Fixed / ticketed times require manual verification.`);continue;}entry.item.time=notionTime;entry.item.startTime=notionTime;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Start time ${githubTime||'—'} → ${notionTime}.`);}
       if(entry.item.transport&&notionStatus==='confirmed'&&status(entry.item.transport.status)!=='confirmed'){entry.item.transport.status='confirmed';changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,'Transport status promoted to confirmed.');}
       if(link.sourceId&&entry.item.sourceItineraryId!==link.sourceId){entry.item.sourceItineraryId=link.sourceId;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Linked ${link.sourceId} to item.`);}
       const inlineHint=buildTravelHint(row);

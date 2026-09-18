@@ -7,6 +7,11 @@ export function primaryClock(value){
   return String(value||'').match(/(?:^|\s)([01]\d|2[0-3]):[0-5]\d/)?.[0]?.trim()||'';
 }
 
+// Explicit opt-in for mapped flexible visits whose Notion time includes “約”.
+export function mappedStartTime(row,link={}){
+  return link.syncPrimaryClock===true?primaryClock(row['Start Time']):row['Start Time'];
+}
+
 export function timeDetail(value){
   const raw=String(value||'').trim();
   const clock=primaryClock(raw);
