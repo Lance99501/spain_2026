@@ -91,11 +91,6 @@
           "text": "Hotel Acta Madfor Check-in"
         }
       ],
-      "noteSegments": [
-        {
-          "text": "Atocha → 使用車票附的 CombinadoCercanías 搭 C10 到 Príncipe Pío（約 11–12 分）；Taxi €12–18 備案"
-        }
-      ],
       "travelHint": {
         "sourceItineraryId": "ITN-73",
         "from": "Madrid-Puerta de Atocha",
