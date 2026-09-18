@@ -151,6 +151,10 @@ body.city-dock-visible .tools{top:calc(env(safe-area-inset-top) + 72px)}
 .timeline time{font:500 .83rem Georgia,serif;color:var(--sage)}
 .timeline p{margin:0;font-size:.86rem}
 .timeline em{display:block;font-style:normal;color:var(--muted);font-size:.74rem}
+.travel-hint{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;margin-top:4px;color:var(--muted);font-size:.69rem;line-height:1.35}
+.travel-main{font-weight:700;color:var(--sage)}
+.travel-detail{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.travel-backup{min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:2px 6px;border:1px solid var(--line);border-radius:999px;background:var(--paper-2);font-size:.66rem}
 .poi-annotated{white-space:nowrap}
 .unesco-crown{display:inline-block;margin-left:4px;vertical-align:.06em;line-height:1;color:#a88745;font-size:.8em;cursor:help;filter:saturate(.85)}
 .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
@@ -318,3 +322,9 @@ footer{margin-top:26px;padding:18px 0 8px;border-top:1px solid var(--line);font-
 
 /* Clear both the city dock and sticky itinerary tools when opening a day. */
 .day{scroll-margin-top:calc(env(safe-area-inset-top) + 150px)}
+
+@media(max-width:480px){
+  .travel-hint{gap:3px 5px;font-size:.66rem}
+  .travel-detail{flex-basis:100%}
+  .travel-backup{max-width:100%}
+}
