@@ -69,7 +69,10 @@ function renderTravelHint(item){
     ?`<span class="travel-backup" title="${escapeHtml(hint.backup)}">備案：${escapeHtml(hint.backup)}</span>`
     :'';
 
-  const icon=travelModeIcon(hint.mode);\n  const mainText=escapeHtml(main.join(' · '));\n  const mainHtml=mainText?`<span class="travel-main">${icon?`${icon} `:''}${mainText}</span>`:'';\n  return `<span class="travel-hint">${mainHtml}${detail}${backup}</span>`;
+  const icon=travelModeIcon(hint.mode);
+  const mainText=escapeHtml(main.join(' · '));
+  const mainHtml=mainText?`<span class="travel-main">${icon?`${icon} `:''}${mainText}</span>`:'';
+  return `<span class="travel-hint">${mainHtml}${detail}${backup}</span>`;
 }
 
 export function initItinerary({itinerary,places,tickets,ticketController}){
