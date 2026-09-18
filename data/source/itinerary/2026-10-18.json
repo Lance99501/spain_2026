@@ -65,8 +65,7 @@
         "sourceItineraryId": "ITN-71",
         "from": "Arroyo 3 Apartments",
         "mode": "Taxi",
-        "leaveTime": "10:45–10:55",
-        "detail": "11:45 ALSA；住宿最晚 11:00 退房"
+        "leaveTime": "10:45–10:55"
       }
     },
     {
