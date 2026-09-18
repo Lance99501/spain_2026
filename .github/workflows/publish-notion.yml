@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Preview only, publish safe changes, or rollback an auto-publish commit'
+        description: 'Preview, safe Publish, Rollback, or retry Pages only with Deploy'
         required: true
         default: Preview
         type: choice
@@ -12,6 +12,7 @@ on:
           - Preview
           - Publish
           - Rollback
+          - Deploy
       scope:
         description: 'Which Notion source to compare / publish'
         required: true
@@ -37,7 +38,7 @@ concurrency:
 
 jobs:
   preview:
-    if: ${{ github.event_name == 'schedule' || inputs.mode != 'Rollback' }}
+    if: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (inputs.mode != 'Rollback' && inputs.mode != 'Deploy')) }}
     name: Preview + safety gate
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -121,6 +122,8 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: write
+    outputs:
+      head_sha: ${{ steps.head.outputs.sha }}
 
     steps:
       - name: Check out main
@@ -150,6 +153,22 @@ jobs:
 
       - name: Validate publisher configuration
         run: npm run check:publisher
+
+      - name: Respect rollback pause
+        run: |
+          if [ -f config/notion-publish-paused.json ]; then
+            echo '::error::Auto-publish is paused after rollback. Review Notion, then remove config/notion-publish-paused.json in a reviewed commit to resume.'
+            echo '## Auto-publish paused after rollback' >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+      - name: Recheck Preview gate on current main
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          PUBLISH_SCOPE: ${{ github.event_name == 'schedule' && 'All' || inputs.scope }}
+        run: |
+          node scripts/notion-preview-runner.mjs --scope "$PUBLISH_SCOPE" --json artifacts/notion-prepublish.json --summary "$GITHUB_STEP_SUMMARY"
+          node --input-type=module -e 'import {readFileSync} from "node:fs"; import {actionRequiredFindings} from "./scripts/notion-preview-gate.mjs"; const findings=actionRequiredFindings(JSON.parse(readFileSync("artifacts/notion-prepublish.json"))); if(findings.length) { console.error("Protected findings appeared before publish; stopped."); process.exit(1); }'
 
       - name: Apply guarded mapped changes
         env:
@@ -228,20 +247,26 @@ jobs:
 
           {
             echo
-            echo '## ✅ Auto-publish completed'
+            echo '## Data committed; Pages verification pending'
             echo
-            echo "- Commit: `$COMMIT_SHA`"
-            echo "- Previous main: `$PREVIOUS_SHA`"
+            echo "- Commit: $COMMIT_SHA"
+            echo "- Previous main: $PREVIOUS_SHA"
             echo "- Rollback: run this workflow manually with **Mode = Rollback** and **rollback_sha = $COMMIT_SHA**."
           } >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Record checkout for Pages verification
+        id: head
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
   rollback:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'Rollback' }}
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && inputs.mode == 'Rollback' }}
     name: Safe rollback of auto-publish
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
       contents: write
+    outputs:
+      head_sha: ${{ steps.push.outputs.sha }}
 
     steps:
       - name: Check out main
@@ -265,8 +290,18 @@ jobs:
           if [ -z "$TARGET" ]; then
             TARGET="$(git log --grep='^Auto-publish Spain 2026 from Notion$' -n 1 --format='%H')"
           fi
+          if [[ ! "$TARGET" =~ ^[0-9a-fA-F]{7,40}$ ]]; then
+            echo '::error::Rollback target must be a hexadecimal commit SHA.'
+            exit 1
+          fi
           if [ -z "$TARGET" ] || ! git cat-file -e "$TARGET^{commit}" 2>/dev/null; then
             echo "::error::No valid auto-publish commit was found to roll back."
+            exit 1
+          fi
+
+          TARGET="$(git rev-parse "$TARGET^{commit}")"
+          if [ "$(git show -s --format='%P' "$TARGET" | wc -w)" -ne 1 ]; then
+            echo '::error::Rollback target must have exactly one parent.'
             exit 1
           fi
 
@@ -309,6 +344,26 @@ jobs:
           SHORT_SHA="$(git rev-parse --short=12 "$TARGET_SHA")"
           git commit --amend -m "Rollback Spain 2026 Notion publish $SHORT_SHA"
 
+      - name: Pause republishing and refresh rollback cache
+        env:
+          TARGET_SHA: ${{ steps.target.outputs.sha }}
+        run: |
+          node --input-type=module <<'NODE'
+          import {readFileSync,writeFileSync} from 'node:fs';
+          import {execFileSync} from 'node:child_process';
+          writeFileSync('config/notion-publish-paused.json', JSON.stringify({reason:'Review Notion before resuming after rollback',revertedCommit:process.env.TARGET_SHA},null,2)+'\n');
+          const pattern=/const CACHE_VERSION='spain2026-(\d{8})-v(\d+)'/;
+          const sw=readFileSync('service-worker.js','utf8');
+          const previous=execFileSync('git',['show','HEAD^:service-worker.js'],{encoding:'utf8'});
+          const matches=[sw.match(pattern),previous.match(pattern)];
+          if(matches.some(match=>!match)) throw new Error('Cannot identify rollback cache versions');
+          const version=Math.max(...matches.map(match=>Number(match[2])))+1;
+          const today=new Date().toISOString().slice(0,10).replaceAll('-','');
+          writeFileSync('service-worker.js',sw.replace(pattern,`const CACHE_VERSION='spain2026-${today}-v${version}'`));
+          NODE
+          git add config/notion-publish-paused.json service-worker.js
+          git commit --amend --no-edit
+
       - name: Install dependencies
         run: npm ci
 
@@ -327,16 +382,55 @@ jobs:
         run: npm test
 
       - name: Push rollback
+        id: push
         env:
           TARGET_SHA: ${{ steps.target.outputs.sha }}
         run: |
           ROLLBACK_SHA="$(git rev-parse HEAD)"
           git push origin HEAD:main
+          echo "sha=$ROLLBACK_SHA" >> "$GITHUB_OUTPUT"
           {
             echo
-            echo '## ↩️ Rollback completed'
+            echo '## Rollback committed; Pages verification pending'
             echo
-            echo "- Reverted auto-publish: `$TARGET_SHA`"
-            echo "- Rollback commit: `$ROLLBACK_SHA`"
+            echo "- Reverted auto-publish: $TARGET_SHA"
+            echo "- Rollback commit: $ROLLBACK_SHA"
             echo '- History was preserved with a normal revert commit; no force push was used.'
+            echo '- Auto-publish is paused until Notion is reviewed and the pause file is removed.'
           } >> "$GITHUB_STEP_SUMMARY"
+
+  pages:
+    needs: [publish, rollback]
+    if: ${{ always() && github.ref == 'refs/heads/main' && (needs.publish.result == 'success' || needs.rollback.result == 'success' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'Deploy')) }}
+    name: Deploy and verify live Pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      pages: write
+    steps:
+      - name: Check out the completed publish or rollback
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.publish.outputs.head_sha || needs.rollback.outputs.head_sha || 'main' }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Validate generated data
+        run: npm run check:data
+
+      - name: Test current main for manual deployment recovery
+        if: ${{ inputs.mode == 'Deploy' }}
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          npm test
+
+      - name: Request Pages build and verify public files
+        id: deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/pages-publish.mjs

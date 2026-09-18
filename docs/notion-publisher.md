@@ -15,23 +15,20 @@ The publisher is enabled in phases so Confirmed / Fixed travel data cannot be si
 
 The data-source IDs live in `config/notion-publisher.json`; they are not secrets.
 
-## Conservative automatic Preview
+## Automatic safe publication
 
-The workflow automatically runs a read-only `Scope = All` Preview once per hour at minute `:17` (GitHub schedules can be delayed a little).
+The workflow requests an hourly run at `17 * * * *`. GitHub schedules are best effort; a configured cron is not evidence that it ran on time.
 
-Automatic Preview never publishes. It only checks Notion against the deterministic GitHub mappings and applies an alert gate:
+Each scheduled run performs Preview → safety gate → guarded Publish → build and full tests → ordinary commit/push → explicit Pages build and live verification. Protected findings stop publication. The Publish job rechecks the Preview gate against its current main checkout. No-change runs skip dependency installation and browser tests, but still verify Pages so a previous failed deployment can recover.
 
-- flexible / planning-only differences stay advisory and do not notify,
-- a Confirmed / Fixed downgrade conflict triggers action required,
-- a new locked itinerary row without deterministic mapping triggers action required,
-- a Confirmed Reservation without a deterministic ticket mapping triggers action required,
-- protected date/time/hotel conflicts trigger action required.
+`Spain PWA Sync Watch` checks separately for new commits, verified deployment, failures, rollback/pause, and more than 3 hours without a workflow run or scheduled run. Manual runs do not prove the hourly schedule is healthy. Duplicate incidents and successful no-change runs stay silent. This watch is a ChatGPT task, not a workflow in this repository.
 
-When a scheduled Preview has an action-required finding, the scheduled workflow is intentionally marked **failed** after the artifact and Summary are saved. GitHub can then surface its normal Actions failure notification according to the account's notification settings.
+Manual modes on **main**:
 
-**Publish remains manual.** A scheduled event can never execute the Publish job.
-
-For an immediate check, manual Preview is still available from **Actions** → **Publish Spain 2026 from Notion** → **Run workflow** with `Mode = Preview`.
+- **Preview**: inspect changes without writing.
+- **Publish**: run the same protected publication now.
+- **Rollback**: revert a validated auto-publish commit, test, push, deploy, and pause future publication.
+- **Deploy**: test and deploy current main without querying or changing Notion; use after a Pages failure.
 
 ## Preview
 
@@ -52,9 +49,9 @@ The Summary separates:
 
 ## Guarded Publish
 
-Choose `Mode = Publish` manually.
+Scheduled runs publish automatically after the gate passes. To run immediately, choose `Mode = Publish` manually.
 
-Publish is deterministic: **only rows listed in `config/notion-links.json` are allowed to control GitHub data**. Unmapped Notion rows are skipped and reported. Publish never guesses a target.
+Explicit mappings in `config/notion-links.json` remain authoritative. Public-safe new itinerary rows can also be created when they meet `config/notion-publisher.json → autoCreateItinerary`: Planned/Idea, Flexible/Idea, not Fixed, allowed low-risk Type, ITN-63 or newer, an existing date with a matching city, and no likely duplicate. Their existing timeline schema carries `sourceItineraryId` and `notionManaged`; subsequent updates use this embedded identity, not a new entry in `notion-links.json`. Unmapped high-risk items still require review.
 
 The mapping model supports:
 
@@ -67,7 +64,7 @@ The mapping model supports:
 - Reservation → confirmed hotel stay
 - `ignore: true` for private records that must never publish, e.g. personal travel insurance
 
-Current deterministic coverage includes all **21 Confirmed / Fixed itinerary rows** and all **19 Confirmed reservations** in the Spain trip window. Personal insurance is explicitly ignored rather than published.
+Personal insurance is explicitly ignored rather than published. Use the current Preview report to inspect coverage; counts change as bookings are added.
 
 ### Publish safety gates
 
@@ -92,21 +89,28 @@ A mapped Reservation may promote a non-confirmed GitHub ticket to `confirmed`, b
 5. Runs `npm run build:data` to regenerate `data/generated/bootstrap.json`.
 6. Installs Chromium and runs the **full `npm test` suite**, including Playwright smoke tests, before committing.
 7. Commits and pushes only when there is an actual diff.
-8. GitHub Pages deploys from the resulting commit.
+8. A separate job with `contents: read` and `pages: write` explicitly requests `POST /repos/{owner}/{repo}/pages/builds` for the existing branch-based Pages site (`main`, `/`). No PAT or hosting migration is needed.
+9. The job waits for the expected build commit and compares the live bootstrap JSON, service worker and index byte-for-byte with the checkout. A stale build or mismatched files cannot report success. If main advanced, it stops and asks for a retry against current main. Already-matching public files need no new build.
+
+A committed change is **not yet a deployed update**. Pages errors fail the workflow after preserving the data commit; retry **Deploy** or let a later successful safe/no-change Publish verify and repair deployment. Preview alone never deploys.
+
+GitHub's [Pages REST API](https://docs.github.com/en/rest/pages/pages#request-a-github-pages-build) documents the explicit build request and its `pages: write` permission.
 
 The workflow writes a Summary and keeps `notion-publisher-report` as an artifact for 14 days.
 
 ## Normal operating SOP
 
-For a real booking / ticket change:
-
 1. Update the private Notion Reservation / Itinerary first.
-2. Wait for the next automatic Preview (normally within about an hour), or run a manual Preview if you want an immediate check.
-3. If GitHub reports an automatic Preview failure, open that run's Summary and resolve the protected / mapping issue before publishing.
-4. If Preview is clean, manually run `Mode = Publish`, usually with `Scope = All`.
-5. Confirm the Publish job and GitHub Pages deployment are green.
+2. Wait for an actual scheduled run or manually run **Publish / All** on main.
+3. If Preview or Publish blocks, resolve the actual conflict using official confirmation/tickets before modifying mappings or protected data. Never downgrade Confirmed/Fixed just to pass the gate.
+4. Verify **Deploy and verify live Pages**, not just Test or the data commit.
+5. If only Pages failed, run **Deploy**. There is no need to republish or duplicate itinerary entries.
 
-For ordinary flexible route / note edits, Pages CMS can still be used later. Do not use Pages CMS to originate a Confirmed / cancelled / changed-ticket state.
+## Rollback and resume
+
+Choose **Rollback**, with an auto-publish SHA or blank for the latest auto-publish commit. Only a single-parent ancestor commit with the exact auto-publisher subject and allowed public data paths is accepted. Revert conflicts and tests stop before pushing; no force push is used.
+
+Rollback creates an ordinary revert commit, rebuilds the data, refreshes the cache version, and adds `config/notion-publish-paused.json`. It then uses the same explicit Pages verification job. The pause prevents the next hourly run from immediately reapplying unchanged Notion data. Preview remains available while paused. Review/correct Notion first, then remove the pause file in a reviewed commit and run Preview followed by Publish to resume. If rollback data was pushed but Pages failed, use **Deploy**, not a second rollback.
 
 ## Data boundary
 
