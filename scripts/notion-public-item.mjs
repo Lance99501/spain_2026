@@ -1,6 +1,6 @@
 function normalize(value){
   return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
-    .replace(/[→↔｜|/+·•–—:：,，.。()（）\[\]{}]/g,' ').replace(/\s+/g,' ').trim();
+    .replace(/[→↔｜|/+·•–—\-:：,，.。()（）\[\]{}]/g,' ').replace(/\s+/g,' ').trim();
 }
 
 export function primaryClock(value){
@@ -81,8 +81,8 @@ export function insertItemChronologically(day,item){
   else day.items.splice(index,0,item);
 }
 
-function itemText(item){
-  return [...(item?.segments||[]),...(item?.noteSegments||[])].map(x=>x?.text||'').join(' ');
+function segmentText(segment){
+  return [segment?.text||'',segment?.placeId||''].join(' ');
 }
 
 function tokens(value){
@@ -92,10 +92,13 @@ function tokens(value){
 export function likelyDuplicateOnDay(day,row){
   const source=tokens(row?.Name);
   if(!source.length) return false;
-  return (day?.items||[]).some(item=>{
-    const target=new Set(tokens(itemText(item)));
-    if(!target.size) return false;
-    const overlap=source.filter(token=>target.has(token)).length/source.length;
-    return overlap>=0.67;
-  });
+  return (day?.items||[]).some(item=>
+    [...(item?.segments||[]),...(item?.noteSegments||[])].some(segment=>{
+      const target=tokens(segmentText(segment));
+      if(!target.length) return false;
+      const targetSet=new Set(target);
+      const common=source.filter(token=>targetSet.has(token)).length;
+      return common/Math.min(source.length,target.length)>=0.66;
+    })
+  );
 }

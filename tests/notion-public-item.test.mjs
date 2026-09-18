@@ -61,4 +61,11 @@ test('managed updates preserve unrelated fields and duplicate guard catches simi
   assert.equal(next.time,'20:00');
   assert.equal(next.segments[0].text,'New');
   assert.equal(likelyDuplicateOnDay({items:[{segments:[{text:'Teatro Flamenco Triana 首選'}]}]},{Name:'Flamenco｜Teatro Flamenco Triana｜首選'}),true);
+  assert.equal(
+    likelyDuplicateOnDay(
+      {items:[{segments:[{text:'Catedral',placeId:'seg-catedral-de-segovia'}]}]},
+      {Name:'塞哥維亞主教座堂｜Catedral de Segovia｜一般參觀'}
+    ),
+    true
+  );
 });
