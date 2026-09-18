@@ -15,7 +15,7 @@
   "items": [
     {
       "id": "item-2026-10-25-01",
-      "time": "09:00–11:30（可選）",
+      "time": "09:30–11:45（可選）",
       "segments": [
         {
           "text": "El Rastro + La Latina"
@@ -23,10 +23,11 @@
       ],
       "noteSegments": [
         {
-          "text": "11:30 左右收尾；視精神、天氣與機場動線決定是否前往"
+          "text": "正常情況會去；若下雨、太累或需要更多收尾時間可直接跳過"
         }
       ],
-      "startTime": "09:00"
+      "startTime": "09:30",
+      "sourceItineraryId": "ITN-55"
     },
     {
       "id": "item-2026-10-25-02",
@@ -44,17 +45,39 @@
     },
     {
       "id": "item-2026-10-25-03",
-      "time": "之後",
+      "time": "17:00",
       "segments": [
         {
-          "text": "休息 · 領行李 · 前往 Madrid-Barajas Airport"
+          "text": "Hotel Acta Madfor｜取行李＋機場前整理"
         }
       ],
       "noteSegments": [
         {
-          "text": "取行李與機場交通／出發時間待定，保留安全緩衝"
+          "text": "16:30 左右開始回飯店；17:30 前完成取行李與返程整理"
         }
-      ]
+      ],
+      "startTime": "17:00",
+      "sourceItineraryId": "ITN-76"
+    },
+    {
+      "id": "item-2026-10-25-05",
+      "time": "17:30",
+      "startTime": "17:30",
+      "segments": [
+        {
+          "text": "Hotel Acta Madfor → MAD T4｜返程機場接駁"
+        }
+      ],
+      "sourceItineraryId": "ITN-77",
+      "travelHint": {
+        "sourceItineraryId": "ITN-77",
+        "from": "Hotel Acta Madfor",
+        "mode": "Taxi",
+        "duration": "30–50 分",
+        "leaveTime": "17:30",
+        "backup": "Príncipe Pío → Cercanías C1/C10 → Aeropuerto T4",
+        "detail": "預計 18:00–18:20 抵達；21:45 EK144"
+      }
     },
     {
       "id": "item-2026-10-25-04",
