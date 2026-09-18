@@ -69,3 +69,14 @@ test('managed updates preserve unrelated fields and duplicate guard catches simi
     true
   );
 });
+
+
+test('auto-managed item dates remain protected while same-day flexible time/name updates remain mergeable',()=>{
+  const existing={id:'item-2026-10-17-itn-63',time:'19:30',startTime:'19:30',segments:[{text:'Old'}],sourceItineraryId:'ITN-63',notionManaged:true};
+  const sameDay={Name:'Flamenco｜Teatro Flamenco Triana｜首選',Date:'2026-10-17','Itinerary ID':'ITN-63',Status:'Planned',Flexibility:'Flexible',Type:'Attraction',Fixed:false,'Start Time':'21:00（備選）'};
+  const next=mergeManagedItem(existing,sameDay);
+  assert.equal(next.id,existing.id);
+  assert.equal(next.time,'21:00');
+  assert.equal(next.startTime,'21:00');
+  assert.equal(next.segments[0].text,sameDay.Name);
+});
