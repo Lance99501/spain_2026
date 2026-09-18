@@ -29,10 +29,7 @@
         }
       ],
       "startTime": "09:30",
-      "sourceItineraryId": "ITN-38",
-      "travelHint": {
-        "sourceItineraryId": "ITN-38"
-      }
+      "sourceItineraryId": "ITN-38"
     },
     {
       "id": "item-2026-10-15-02",
@@ -61,10 +58,7 @@
         }
       ],
       "startTime": "15:00",
-      "sourceItineraryId": "ITN-40",
-      "travelHint": {
-        "sourceItineraryId": "ITN-40"
-      }
+      "sourceItineraryId": "ITN-40"
     }
   ],
   "tags": [
