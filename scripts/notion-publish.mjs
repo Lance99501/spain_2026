@@ -129,15 +129,13 @@ async function main(){
         if(protectedItem&&managed.day.date!==row.Date){addBlock(report,'Itinerary',row,managed.item.id,`Protected Notion-managed date mismatch: Notion=${row.Date}, GitHub=${managed.day.date}.`);continue;}
         if(protectedItem&&nextTime&&currentTime&&nextTime!==currentTime){addBlock(report,'Itinerary',row,managed.item.id,`Protected Notion-managed time mismatch: Notion=${nextTime}, GitHub=${currentTime}.`);continue;}
 
-        const nextItem=mergeManagedItem(managed.item,row);
         if(managed.day.date!==row.Date){
-          managed.day.items=managed.day.items.filter(item=>item!==managed.item);
-          changedDayFiles.add(managed.name);
-          insertItemChronologically(target.day,nextItem);
-          changedDayFiles.add(target.name);
-          managedBySource.set(sourceId,{...target,item:nextItem});
-          addChange(report,'Itinerary',nextItem.id,`Moved flexible Notion-managed item to ${row.Date}.`);
-        }else if(JSON.stringify(nextItem)!==JSON.stringify(managed.item)){
+          addBlock(report,'Itinerary',row,managed.item.id,`Date mismatch for Notion-managed item: Notion=${row.Date}, GitHub=${managed.day.date}. Automatic day moves are disabled.`);
+          continue;
+        }
+
+        const nextItem=mergeManagedItem(managed.item,row);
+        if(JSON.stringify(nextItem)!==JSON.stringify(managed.item)){
           const index=managed.day.items.indexOf(managed.item);
           managed.day.items.splice(index,1);
           insertItemChronologically(managed.day,nextItem);
