@@ -24,7 +24,7 @@ test('Notion publisher deterministic links resolve to existing GitHub targets',a
     assert.ok(!sourceIds.has(link.sourceId),`duplicate Notion sourceId ${link.sourceId}`);
     sourceIds.add(link.sourceId);
     if(link.targetType==='day') assert.ok(dayIds.has(link.targetId),`missing mapped day ${link.targetId}`);
-    else if(link.targetType==='item') assert.ok(itemIds.has(link.targetId),`missing mapped item ${link.targetId}`);
+    else if(link.targetType==='item'||link.targetType==='travelHint') assert.ok(itemIds.has(link.targetId),`missing mapped item ${link.targetId}`);
     else if(link.targetType==='hotel'){
       assert.ok(hotelIds.has(link.targetId),`missing mapped hotel ${link.targetId}`);
       assert.ok(['checkIn','checkOut'].includes(link.stayRole),`invalid hotel stayRole ${link.stayRole}`);
@@ -48,7 +48,7 @@ test('Notion publisher deterministic links resolve to existing GitHub targets',a
 
 test('locked itinerary and reservation lifecycle mappings stay explicit',async()=>{
   const links=await readJson(new URL('../config/notion-links.json',import.meta.url));
-  assert.equal(Object.keys(links.itinerary).length,21);
+  assert.equal(Object.keys(links.itinerary).length,32);
   assert.equal(Object.keys(links.reservations).length,20);
   assert.equal(links.reservations['3b891e9f-a395-8142-9f58-c50ddc4cb872'].ignore,true);
   assert.equal(links.reservations['3db91e9f-a395-81a2-83b2-cacdb93119a2'].hotelPlaceId,'sev-abba-sevilla');
