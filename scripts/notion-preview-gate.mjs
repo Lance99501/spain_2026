@@ -44,7 +44,7 @@ async function main(){
   const actionRequired=findings.length>0;
 
   await append(args.githubOutput,`action_required=${actionRequired?'true':'false'}\naction_required_count=${findings.length}\n`);
-  await append(args.summary,`\n## Automatic Preview gate\n\n- Action required: **${actionRequired?'YES':'no'}**\n- Protected / confirmed findings: **${findings.length}**\n- Advisory differences on flexible or unmapped planning rows do not trigger notifications.\n- Publish remains manual.\n`);
+  await append(args.summary,`\n## Automatic Preview gate\n\n- Action required: **${actionRequired?'YES':'no'}**\n- Protected / confirmed findings: **${findings.length}**\n- Advisory differences on flexible or unmapped planning rows do not trigger publishing by themselves.\n- Scheduled runs may auto-publish only after this gate passes; protected findings stop before any GitHub write.\n`);
 
   console.log(`Automatic Preview gate: ${findings.length} action-required finding(s).`);
 }
