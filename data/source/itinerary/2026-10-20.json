@@ -73,7 +73,15 @@
         "departureTime": "11:04",
         "arrivalTime": "14:38"
       },
-      "sourceItineraryId": "ITN-14"
+      "sourceItineraryId": "ITN-14",
+      "travelHint": {
+        "sourceItineraryId": "ITN-75",
+        "from": "Hotel Navas",
+        "mode": "Taxi",
+        "leaveTime": "09:55–10:00 叫車；10:05–10:10 上車",
+        "backup": "市區公車",
+        "detail": "約 10:20–10:30 抵站；11:04 ALVIA"
+      }
     },
     {
       "id": "item-2026-10-20-03",
@@ -87,7 +95,17 @@
         {
           "text": "Atocha → 使用車票附的 CombinadoCercanías 搭 C10 到 Príncipe Pío（約 11–12 分）；Taxi €12–18 備案"
         }
-      ]
+      ],
+      "travelHint": {
+        "sourceItineraryId": "ITN-73",
+        "from": "Madrid-Puerta de Atocha",
+        "mode": "Train",
+        "durationMin": 12,
+        "duration": "11–12 分",
+        "leaveTime": "14:38 抵達後",
+        "backup": "官方 Taxi 10–20 分",
+        "detail": "Cercanías C10 → Príncipe Pío；出站後飯店就在對面"
+      }
     },
     {
       "id": "item-2026-10-20-04",
