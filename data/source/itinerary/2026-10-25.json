@@ -57,7 +57,14 @@
         }
       ],
       "startTime": "17:00",
-      "sourceItineraryId": "ITN-76"
+      "sourceItineraryId": "ITN-76",
+      "travelHint": {
+        "sourceItineraryId": "ITN-76",
+        "from": "Madrid 市區",
+        "mode": "Return",
+        "leaveTime": "16:30 左右",
+        "detail": "17:00 取行李＋機場前整理"
+      }
     },
     {
       "id": "item-2026-10-25-05",
