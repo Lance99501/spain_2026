@@ -4,13 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Preview compares only; Publish writes only deterministic mapped changes'
+        description: 'Preview only, publish safe changes, or rollback an auto-publish commit'
         required: true
         default: Preview
         type: choice
         options:
           - Preview
           - Publish
+          - Rollback
       scope:
         description: 'Which Notion source to compare / publish'
         required: true
@@ -20,6 +21,10 @@ on:
           - All
           - Itinerary
           - Reservations
+      rollback_sha:
+        description: 'Rollback target auto-publish commit SHA (blank = latest auto-publish commit)'
+        required: false
+        type: string
   schedule:
     - cron: '17 * * * *'
 
@@ -32,12 +37,15 @@ concurrency:
 
 jobs:
   preview:
-    if: ${{ github.event_name == 'schedule' || inputs.mode == 'Preview' }}
-    name: Preview Notion → GitHub
+    if: ${{ github.event_name == 'schedule' || inputs.mode != 'Rollback' }}
+    name: Preview + safety gate
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: read
+    outputs:
+      action_required: ${{ steps.preview_gate.outputs.action_required }}
+      action_required_count: ${{ steps.preview_gate.outputs.action_required_count }}
 
     steps:
       - name: Check out repository
@@ -98,17 +106,18 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
-      - name: Notify when scheduled Preview needs review
-        if: ${{ github.event_name == 'schedule' && steps.preview_gate.outputs.action_required == 'true' }}
+      - name: Stop on protected findings
+        if: ${{ steps.preview_gate.outputs.action_required == 'true' }}
         run: |
-          echo "::error::Automatic Notion Preview found ${{ steps.preview_gate.outputs.action_required_count }} protected/confirmed issue(s). Open the workflow Summary before publishing."
+          echo "::error::Notion Preview found ${{ steps.preview_gate.outputs.action_required_count }} protected/confirmed issue(s). Auto-publish is blocked; no GitHub data was changed."
           exit 1
 
   publish:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'Publish' }}
-    name: Publish Notion → GitHub
+    needs: preview
+    if: ${{ always() && needs.preview.result == 'success' && (github.event_name == 'schedule' || inputs.mode == 'Publish') }}
+    name: Safe auto-publish Notion → GitHub
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     permissions:
       contents: write
 
@@ -138,24 +147,22 @@ jobs:
             exit 1
           fi
 
-      - name: Install dependencies
-        run: npm ci
-
       - name: Validate publisher configuration
         run: npm run check:publisher
 
       - name: Apply guarded mapped changes
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          PUBLISH_SCOPE: ${{ github.event_name == 'schedule' && 'All' || inputs.scope }}
         run: |
           node scripts/notion-publish.mjs \
-            --scope "${{ inputs.scope }}" \
+            --scope "$PUBLISH_SCOPE" \
             --json artifacts/notion-publish.json \
             --summary "$GITHUB_STEP_SUMMARY"
 
       - name: Apply confirmed hotel replacement
         env:
-          PUBLISH_SCOPE: ${{ inputs.scope }}
+          PUBLISH_SCOPE: ${{ github.event_name == 'schedule' && 'All' || inputs.scope }}
         run: node scripts/apply-hotel-overrides.mjs
 
       - name: Upload publish report
@@ -167,8 +174,150 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
+      - name: Detect public data changes
+        id: changes
+        run: |
+          git add data/source service-worker.js
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No public GitHub data changes are required." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "previous_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            echo "Safe mapped changes detected; rebuilding and testing before commit." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Install dependencies
+        if: ${{ steps.changes.outputs.changed == 'true' }}
+        run: npm ci
+
       - name: Rebuild public bootstrap
+        if: ${{ steps.changes.outputs.changed == 'true' }}
         run: npm run build:data
+
+      - name: Install Chromium
+        if: ${{ steps.changes.outputs.changed == 'true' }}
+        run: npx playwright install --with-deps chromium
+
+      - name: Run full test suite
+        if: ${{ steps.changes.outputs.changed == 'true' }}
+        run: npm test
+
+      - name: Commit and push safe changes
+        id: commit
+        if: ${{ steps.changes.outputs.changed == 'true' }}
+        run: |
+          git add data/source data/generated/bootstrap.json service-worker.js
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Rebuild produced no commit-worthy change." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          PREVIOUS_SHA="$(git rev-parse HEAD)"
+          git commit -m 'Auto-publish Spain 2026 from Notion'
+          COMMIT_SHA="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "commit_sha=$COMMIT_SHA" >> "$GITHUB_OUTPUT"
+          echo "previous_sha=$PREVIOUS_SHA" >> "$GITHUB_OUTPUT"
+
+          {
+            echo
+            echo '## ✅ Auto-publish completed'
+            echo
+            echo "- Commit: `$COMMIT_SHA`"
+            echo "- Previous main: `$PREVIOUS_SHA`"
+            echo "- Rollback: run this workflow manually with **Mode = Rollback** and **rollback_sha = $COMMIT_SHA**."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  rollback:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'Rollback' }}
+    name: Safe rollback of auto-publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Resolve and validate rollback target
+        id: target
+        env:
+          REQUESTED_SHA: ${{ inputs.rollback_sha }}
+        run: |
+          TARGET="$REQUESTED_SHA"
+          if [ -z "$TARGET" ]; then
+            TARGET="$(git log --grep='^Auto-publish Spain 2026 from Notion$' -n 1 --format='%H')"
+          fi
+          if [ -z "$TARGET" ] || ! git cat-file -e "$TARGET^{commit}" 2>/dev/null; then
+            echo "::error::No valid auto-publish commit was found to roll back."
+            exit 1
+          fi
+
+          SUBJECT="$(git show -s --format='%s' "$TARGET")"
+          if [ "$SUBJECT" != "Auto-publish Spain 2026 from Notion" ]; then
+            echo "::error::Rollback is limited to commits created by the Notion auto-publisher."
+            exit 1
+          fi
+
+          if ! git merge-base --is-ancestor "$TARGET" HEAD; then
+            echo "::error::Rollback target is not an ancestor of current main."
+            exit 1
+          fi
+
+          INVALID=0
+          while IFS= read -r FILE; do
+            case "$FILE" in
+              data/source/*|data/generated/bootstrap.json|service-worker.js) ;;
+              *)
+                echo "::error::Rollback target touched non-publisher path: $FILE"
+                INVALID=1
+                ;;
+            esac
+          done < <(git diff-tree --no-commit-id --name-only -r "$TARGET")
+
+          if [ "$INVALID" -ne 0 ]; then
+            exit 1
+          fi
+
+          echo "sha=$TARGET" >> "$GITHUB_OUTPUT"
+          echo "Rollback target validated: $TARGET" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Revert target locally
+        env:
+          TARGET_SHA: ${{ steps.target.outputs.sha }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git revert --no-edit "$TARGET_SHA"
+          SHORT_SHA="$(git rev-parse --short=12 "$TARGET_SHA")"
+          git commit --amend -m "Rollback Spain 2026 Notion publish $SHORT_SHA"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rebuild public bootstrap
+        run: |
+          npm run build:data
+          git add data/generated/bootstrap.json service-worker.js data/source
+          if ! git diff --cached --quiet; then
+            git commit --amend --no-edit
+          fi
 
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
@@ -176,15 +325,17 @@ jobs:
       - name: Run full test suite
         run: npm test
 
-      - name: Commit and push published data
+      - name: Push rollback
+        env:
+          TARGET_SHA: ${{ steps.target.outputs.sha }}
         run: |
-          git add data/source data/generated/bootstrap.json service-worker.js
-          if git diff --cached --quiet; then
-            echo 'No GitHub data changes were required.' >> "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
-
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'Publish Spain 2026 from Notion'
+          ROLLBACK_SHA="$(git rev-parse HEAD)"
           git push origin HEAD:main
+          {
+            echo
+            echo '## ↩️ Rollback completed'
+            echo
+            echo "- Reverted auto-publish: `$TARGET_SHA`"
+            echo "- Rollback commit: `$ROLLBACK_SHA`"
+            echo '- History was preserved with a normal revert commit; no force push was used.'
+          } >> "$GITHUB_STEP_SUMMARY"
