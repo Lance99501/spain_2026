@@ -214,3 +214,29 @@ test('website labels translate raw synced text without changing source data',asy
   await page.locator('#expandAll').click();
   await expect(page.locator('#days [data-day-id="day-2026-10-23"]')).toContainText('阿爾卡拉門 → 西貝萊斯廣場');
 });
+
+
+test('Madrid weather flex pair compares and remembers the local plan',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/');
+  await page.locator('#cityGrid [data-city="Madrid"]').click();
+
+  const day21=page.locator('#days [data-day-id="day-2026-10-21"]');
+  const day23=page.locator('#days [data-day-id="day-2026-10-23"]');
+  await day21.locator('.day-main').click();
+
+  await expect(day21.locator('.flex-plan-column')).toHaveCount(2);
+  await expect(day21).toContainText('王宮 ↔ Prado｜Weather Flex');
+  await expect(day21.locator('[data-flex-plan="A"]')).toHaveAttribute('aria-pressed','true');
+  await expect(day21.locator('.flex-plan-column[data-flex-column="A"]')).toHaveClass(/selected/);
+
+  await day21.locator('[data-flex-plan="B"]').click();
+  await expect(day21.locator('[data-flex-plan="B"]')).toHaveAttribute('aria-pressed','true');
+  await expect(day21.locator('.flex-plan-column[data-flex-column="B"]')).toHaveClass(/selected/);
+  await expect(day23.locator('.flex-plan-column[data-flex-column="B"]')).toHaveClass(/selected/);
+  await expect(day21.locator('.day-map')).toHaveAttribute('href',/Museo%20del%20Prado/);
+
+  expect(await page.evaluate(()=>localStorage.getItem('spain2026:flex:madrid-weather-21-23'))).toBe('B');
+  await page.reload();
+  await expect(page.locator('#days [data-day-id="day-2026-10-21"] .flex-plan-column[data-flex-column="B"]')).toHaveClass(/selected/);
+});
