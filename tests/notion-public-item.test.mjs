@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {
   buildManagedItem,
+  buildTravelHint,
   insertItemChronologically,
   isSafeAutoCreateRow,
   likelyDuplicateOnDay,
@@ -79,4 +80,30 @@ test('auto-managed item dates remain protected while same-day flexible time/name
   assert.equal(next.time,'21:00');
   assert.equal(next.startTime,'21:00');
   assert.equal(next.segments[0].text,sameDay.Name);
+});
+
+
+test('structured travel hint preserves only public-safe compact fields',()=>{
+  const hint=buildTravelHint({
+    'Itinerary ID':'ITN-74',
+    'Travel From':'Hotel Royal Passeig de Gracia',
+    'Travel Mode':'Taxi',
+    'Travel Min':20,
+    'Travel Duration':'15–20 分',
+    'Leave Time':'07:20–07:25',
+    'Travel Backup':'Diagonal → L5 → Sants Estació',
+    'Travel Detail':'約 07:40 抵站；08:30 AVE',
+    Notes:'private long note must not be copied'
+  });
+  assert.deepEqual(hint,{
+    sourceItineraryId:'ITN-74',
+    from:'Hotel Royal Passeig de Gracia',
+    mode:'Taxi',
+    durationMin:20,
+    duration:'15–20 分',
+    leaveTime:'07:20–07:25',
+    backup:'Diagonal → L5 → Sants Estació',
+    detail:'約 07:40 抵站；08:30 AVE'
+  });
+  assert.equal('Notes' in hint,false);
 });
