@@ -190,6 +190,19 @@ function reviewExplicitItinerary({row,link,itemById,dayById,hotelByPlaceId,ticke
     else if(row.Date!==expected) reviews.push({match:`hotel:${link.targetId}:${link.stayRole}`,message:`BLOCK: hotel date Notion=${row.Date}, GitHub=${expected}.`});
     return reviews;
   }
+  if(link.targetType==='travelHint'){
+    const entry=itemById.get(link.targetId);
+    if(!entry){reviews.push({match:link.targetId,message:'BLOCK: mapped travel-hint item does not exist.'});return reviews;}
+    if(row.Date!==entry.date) reviews.push({match:link.targetId,message:`BLOCK: travel-hint date Notion=${row.Date}, GitHub=${entry.date}.`});
+    if(link.syncItemTime===true){
+      const nt=primaryClock(row['Start Time']),gt=itemStart(entry.item);
+      if(nt&&gt&&nt!==gt){
+        const protectedTime=Boolean(entry.item.ticketId)||itemStatus(entry.item,ticketById)==='confirmed';
+        reviews.push({match:link.targetId,message:`${protectedTime?'BLOCK: protected ':''}Travel hint Start Time Notion=${nt}, GitHub=${gt}`});
+      }
+    }
+    return reviews;
+  }
   if(link.targetType==='day'){
     const day=dayById.get(link.targetId);
     if(!day){reviews.push({match:link.targetId,message:'BLOCK: mapped day does not exist.'});return reviews;}
