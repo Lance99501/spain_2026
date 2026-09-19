@@ -633,6 +633,30 @@
       "address": "Barcelona, Spain",
       "unesco": false,
       "mapVisible": false
+    },
+    {
+      "id": "mad-madrid-chamartin",
+      "city": "Madrid",
+      "name": "Madrid-Chamartín-Clara Campoamor",
+      "displayName": "馬德里查馬丁車站",
+      "type": "transport",
+      "status": "transport",
+      "address": "Madrid",
+      "dates": "10/22 09:25 / 19:00",
+      "unesco": false,
+      "mapVisible": false
+    },
+    {
+      "id": "seg-segovia-guiomar",
+      "city": "Segovia",
+      "name": "Segovia-Guiomar",
+      "displayName": "塞哥維亞吉奧馬爾車站",
+      "type": "transport",
+      "status": "transport",
+      "address": "Segovia",
+      "dates": "10/22 09:51 / 18:35",
+      "unesco": false,
+      "mapVisible": false
     }
   ],
   "hotels": [
@@ -835,14 +859,22 @@
       "label": "Renfe Avant 34763｜Madrid Chamartín → Segovia-Guiomar",
       "kind": "train",
       "type": "drive",
-      "status": "confirmed"
+      "status": "confirmed",
+      "placeIds": [
+        "mad-madrid-chamartin",
+        "seg-segovia-guiomar"
+      ]
     },
     {
       "id": "tkt-renfe-segovia-madrid",
       "label": "Renfe Avant 34792｜Segovia-Guiomar → Madrid Chamartín",
       "kind": "train",
       "type": "drive",
-      "status": "confirmed"
+      "status": "confirmed",
+      "placeIds": [
+        "seg-segovia-guiomar",
+        "mad-madrid-chamartin"
+      ]
     }
   ],
   "itinerary": [
@@ -2278,12 +2310,14 @@
           "startTime": "09:25",
           "ticketId": "tkt-renfe-madrid-segovia",
           "transport": {
-            "role": "day-trip-outbound",
+            "role": "daytrip",
             "kind": "train",
             "service": "Avant 34763",
             "status": "confirmed",
             "departureTime": "09:25",
-            "arrivalTime": "09:51"
+            "arrivalTime": "09:51",
+            "originPlaceId": "mad-madrid-chamartin",
+            "destinationPlaceId": "seg-segovia-guiomar"
           }
         },
         {
@@ -2395,12 +2429,14 @@
           "startTime": "18:35",
           "ticketId": "tkt-renfe-segovia-madrid",
           "transport": {
-            "role": "day-trip-return",
+            "role": "daytrip",
             "kind": "train",
             "service": "Avant 34792",
             "status": "confirmed",
             "departureTime": "18:35",
-            "arrivalTime": "19:00"
+            "arrivalTime": "19:00",
+            "originPlaceId": "seg-segovia-guiomar",
+            "destinationPlaceId": "mad-madrid-chamartin"
           }
         }
       ],

@@ -29,12 +29,14 @@
       "startTime": "09:25",
       "ticketId": "tkt-renfe-madrid-segovia",
       "transport": {
-        "role": "day-trip-outbound",
+        "role": "daytrip",
         "kind": "train",
         "service": "Avant 34763",
         "status": "confirmed",
         "departureTime": "09:25",
-        "arrivalTime": "09:51"
+        "arrivalTime": "09:51",
+        "originPlaceId": "mad-madrid-chamartin",
+        "destinationPlaceId": "seg-segovia-guiomar"
       }
     },
     {
@@ -146,12 +148,14 @@
       "startTime": "18:35",
       "ticketId": "tkt-renfe-segovia-madrid",
       "transport": {
-        "role": "day-trip-return",
+        "role": "daytrip",
         "kind": "train",
         "service": "Avant 34792",
         "status": "confirmed",
         "departureTime": "18:35",
-        "arrivalTime": "19:00"
+        "arrivalTime": "19:00",
+        "originPlaceId": "seg-segovia-guiomar",
+        "destinationPlaceId": "mad-madrid-chamartin"
       }
     }
   ],

@@ -626,5 +626,29 @@
     "address": "Barcelona, Spain",
     "unesco": false,
     "mapVisible": false
+  },
+  {
+    "id": "mad-madrid-chamartin",
+    "city": "Madrid",
+    "name": "Madrid-Chamartín-Clara Campoamor",
+    "displayName": "馬德里查馬丁車站",
+    "type": "transport",
+    "status": "transport",
+    "address": "Madrid",
+    "dates": "10/22 09:25 / 19:00",
+    "unesco": false,
+    "mapVisible": false
+  },
+  {
+    "id": "seg-segovia-guiomar",
+    "city": "Segovia",
+    "name": "Segovia-Guiomar",
+    "displayName": "塞哥維亞吉奧馬爾車站",
+    "type": "transport",
+    "status": "transport",
+    "address": "Segovia",
+    "dates": "10/22 09:51 / 18:35",
+    "unesco": false,
+    "mapVisible": false
   }
 ]
