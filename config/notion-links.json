@@ -208,6 +208,12 @@
       "targetId": "item-2026-10-22-cathedral",
       "syncPrimaryClock": true,
       "note": "塞哥維亞主教座堂｜獨立彈性參觀；日期固定於 10/22，day.city 為 Madrid 城市分組"
+    },
+    "3b891e9f-a395-813a-9f28-f164dcaa046e": {
+      "sourceId": "ITN-16",
+      "targetType": "day",
+      "targetId": "day-2026-10-22",
+      "note": "Segovia 一日遊｜Aqueduct＋Old Town＋Alcázar"
     }
   },
   "reservations": {
@@ -295,6 +301,14 @@
       "ignore": true,
       "reason": "Private insurance reservation; never publish to the public companion app.",
       "note": "旅平險＋旅遊不便險｜富邦產險個人保單"
+    },
+    "3df91e9f-a395-812f-9527-eba16ddb35d9": {
+      "ticketId": "tkt-renfe-madrid-segovia",
+      "note": "Madrid Chamartín → Segovia-Guiomar｜Avant 34763 ×3"
+    },
+    "3df91e9f-a395-810a-9d06-f8b962f1a9c9": {
+      "ticketId": "tkt-renfe-segovia-madrid",
+      "note": "Segovia-Guiomar → Madrid Chamartín｜Avant 34792 ×3"
     }
   }
 }
