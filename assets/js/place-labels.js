@@ -368,7 +368,8 @@ export const PLACE_LABELS=[
     "name": "Córdoba",
     "displayName": "科爾多瓦",
     "aliases": [
-      "科爾多瓦｜Córdoba"
+      "科爾多瓦｜Córdoba",
+      "Cordoba"
     ]
   },
   {
