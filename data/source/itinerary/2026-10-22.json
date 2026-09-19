@@ -4,7 +4,8 @@
   "dateLabel": "10/22",
   "dow": "Thu",
   "city": "Madrid",
-  "title": "塞哥維亞一日遊｜Segovia",
+  "focusCity": "Segovia",
+  "title": "Segovia 一日遊",
   "sub": "09:25 火車 → 水道橋 → 舊城 → 主教座堂 → 午餐 → 15:00 城堡 → 16:00 塔樓 → 18:35 回程",
   "categories": [
     "confirmed",
@@ -18,7 +19,18 @@
       "time": "09:25",
       "segments": [
         {
-          "text": "Madrid Chamartín → Segovia-Guiomar｜Avant 34763"
+          "text": "Madrid-Chamartín-Clara Campoamor",
+          "placeId": "mad-madrid-chamartin"
+        },
+        {
+          "text": " → "
+        },
+        {
+          "text": "Segovia-Guiomar",
+          "placeId": "seg-segovia-guiomar"
+        },
+        {
+          "text": "｜Avant 34763"
         }
       ],
       "noteSegments": [
@@ -108,7 +120,7 @@
       "startTime": "15:55",
       "segments": [
         {
-          "text": "胡安二世塔｜Torre de Juan II 集合"
+          "text": "Torre de Juan II 集合"
         }
       ],
       "noteSegments": [
@@ -123,7 +135,7 @@
       "startTime": "16:00",
       "segments": [
         {
-          "text": "胡安二世塔｜Torre de Juan II"
+          "text": "Torre de Juan II"
         }
       ],
       "noteSegments": [
@@ -137,7 +149,18 @@
       "time": "18:35",
       "segments": [
         {
-          "text": "Segovia-Guiomar → Madrid Chamartín｜Avant 34792"
+          "text": "Segovia-Guiomar",
+          "placeId": "seg-segovia-guiomar"
+        },
+        {
+          "text": " → "
+        },
+        {
+          "text": "Madrid-Chamartín-Clara Campoamor",
+          "placeId": "mad-madrid-chamartin"
+        },
+        {
+          "text": "｜Avant 34792"
         }
       ],
       "noteSegments": [

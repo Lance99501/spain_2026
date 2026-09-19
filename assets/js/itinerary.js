@@ -1,5 +1,5 @@
 import {renderPlaceName,renderLocalizedText,localizedSearchText} from './place-language.js';
-import {dateInDeviceTimeZone} from './device-time.js';
+import {dateInTripTimeZone} from './device-time.js';
 export function escapeHtml(text){
   return String(text).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 }
@@ -63,10 +63,10 @@ function renderTravelHint(item){
   if(!main.length&&hint.mode) main.push(String(hint.mode));
 
   const detail=hint.detail
-    ?`<span class="travel-detail" title="${escapeHtml(hint.detail)}">${escapeHtml(hint.detail)}</span>`
+    ?`<span class="travel-detail" title="${escapeHtml(hint.detail)}">${renderLocalizedText(hint.detail,item)}</span>`
     :'';
   const backup=hint.backup
-    ?`<span class="travel-backup" title="${escapeHtml(hint.backup)}">備案：${escapeHtml(hint.backup)}</span>`
+    ?`<span class="travel-backup" title="${escapeHtml(hint.backup)}">備案：${renderLocalizedText(hint.backup,item)}</span>`
     :'';
 
   const icon=travelModeIcon(hint.mode);
@@ -75,7 +75,7 @@ function renderTravelHint(item){
   return `<span class="travel-hint">${mainHtml}${detail}${backup}</span>`;
 }
 
-export function initItinerary({itinerary,places,tickets,ticketController}){
+export function initItinerary({itinerary,places,tickets,ticketController,config={}}){
   const CITY_ORDER=['Barcelona','Sevilla','Granada','Madrid'];
   const daysRoot=document.getElementById('days');
   const search=document.getElementById('search');
@@ -101,7 +101,7 @@ export function initItinerary({itinerary,places,tickets,ticketController}){
   }
 
   function getDefaultCity(){
-    const today=dateInDeviceTimeZone();
+    const today=dateInTripTimeZone(new Date(),config);
     const day=itinerary.find(entry=>entry.date===today);
     const city=mainCity(day?.city);
     return CITY_ORDER.includes(city)?city:'Barcelona';

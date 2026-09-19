@@ -215,6 +215,18 @@ test('website labels translate raw synced text without changing source data',asy
   await expect(page.locator('#days [data-day-id="day-2026-10-23"]')).toContainText('阿爾卡拉門 → 西貝萊斯廣場');
 });
 
+test('day-trip Today cards use the focus city and avoid bilingual duplicates',async({page})=>{
+  await page.goto('/?previewDate=2026-10-16');
+  await expect(page.locator('.today-kicker')).toContainText('科爾多瓦');
+
+  await page.goto('/?previewDate=2026-10-22');
+  await expect(page.locator('.today-kicker')).toContainText('塞哥維亞');
+  await expect(page.locator('#todayHeading')).toHaveText('塞哥維亞 一日遊');
+  await expect(page.locator('#todayHeading')).not.toContainText('塞哥維亞｜塞哥維亞');
+  await page.locator('#placeLanguageToggle').click();
+  await expect(page.locator('#todayHeading')).toHaveText('Segovia 一日遊');
+});
+
 
 test('Madrid weather flex pair compares and remembers the local plan',async({page})=>{
   await page.setViewportSize({width:390,height:844});

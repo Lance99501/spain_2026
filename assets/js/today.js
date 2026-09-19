@@ -1,7 +1,7 @@
 import {escapeHtml,renderSegments} from './itinerary.js';
 import {initTodayWeather} from './weather.js';
 import {renderPlaceName,renderLocalizedText} from './place-language.js';
-import {dateInDeviceTimeZone,timeInDeviceTimeZone} from './device-time.js';
+import {dateInTripTimeZone,timeInTripTimeZone,tripTimeZoneLabel} from './device-time.js';
 
 const OFFICIAL_APP_TICKETS=new Set(['tkt-casa-batllo']);
 const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
@@ -175,6 +175,7 @@ export function initTodayMode({
   hotels,
   tickets,
   mapConfig,
+  config={},
   demoContext,
   ticketController,
   itineraryController
@@ -190,7 +191,7 @@ export function initTodayMode({
 
   const todayDate=validPreview
     ?previewDate
-    :dateInDeviceTimeZone();
+    :dateInTripTimeZone(new Date(),config);
 
   const day=itinerary.find(entry=>entry.date===todayDate);
   if(!day){
@@ -211,11 +212,12 @@ export function initTodayMode({
     .filter(Boolean);
   const hotelEntry=resolveHotel(day,hotels,placeById);
   const badge=demoContext?.isDemo?'DEMO':validPreview?'PREVIEW':'TODAY';
+  const focusCity=day.focusCity||day.city;
 
   root.innerHTML=`<article class="today-card" data-day-id="${escapeHtml(day.id)}">
     <div class="today-head">
       <div>
-        <div class="today-kicker">${badge} · ${escapeHtml(day.dateLabel)} · ${escapeHtml(day.city)}</div>
+        <div class="today-kicker">${badge} · ${escapeHtml(day.dateLabel)} · ${renderLocalizedText(focusCity,day)}</div>
         <h2 id="todayHeading">${renderLocalizedText(day.title,day)}</h2>
         <p>${renderLocalizedText(day.sub,day)}</p>
       </div>
@@ -226,7 +228,7 @@ export function initTodayMode({
       <div class="now-panel">
         <span>NOW</span>
         <b id="todayNowTime">—</b>
-        <small>${effectivePreviewTime?'預覽時間':'裝置時間'}</small>
+        <small>${effectivePreviewTime?'預覽時間':escapeHtml(tripTimeZoneLabel(new Date(),config))}</small>
       </div>
       <div class="next-panel">
         <span>下一個固定時間</span>
@@ -270,7 +272,7 @@ export function initTodayMode({
   function updateNowNext(){
     const clock=effectivePreviewTime
       ?{text:effectivePreviewTime,minutes:parseClock(effectivePreviewTime)}
-      :timeInDeviceTimeZone();
+      :timeInTripTimeZone(new Date(),config);
 
     if(nowNode) nowNode.textContent=clock.text;
 

@@ -8,7 +8,7 @@ import {initAppShell} from './app-shell.js';
 import {initHotels} from './hotels.js';
 import {initDemoMode} from './demo.js';
 import {initPlaceLanguage} from './place-language.js';
-import {dateInDeviceTimeZone} from './device-time.js';
+import {dateInTripTimeZone} from './device-time.js';
 
 function initCountdown(config,demoContext){
   const now=new Date();
@@ -18,7 +18,7 @@ function initCountdown(config,demoContext){
     return Date.UTC(y,m-1,d);
   };
 
-  const actualToday=dateUtc(dateInDeviceTimeZone(now));
+  const actualToday=dateUtc(dateInTripTimeZone(now,config));
   const today=demoContext?.isDemo&&demoContext.previewDate
     ?dateUtc(demoContext.previewDate)
     :actualToday;
@@ -56,6 +56,22 @@ function initCountdown(config,demoContext){
     c.textContent='17 DAYS';
     ct.textContent='Spain 2026 · 完成';
   }
+}
+
+function watchTripDateRollover(config,demoContext){
+  if(demoContext?.isDemo) return;
+  let activeDate=dateInTripTimeZone(new Date(),config);
+  const check=()=>{
+    const nextDate=dateInTripTimeZone(new Date(),config);
+    if(nextDate!==activeDate) window.location.reload();
+  };
+  const timer=window.setInterval(check,30000);
+  const onVisibility=()=>{if(document.visibilityState==='visible') check();};
+  document.addEventListener('visibilitychange',onVisibility);
+  window.addEventListener('pagehide',()=>{
+    window.clearInterval(timer);
+    document.removeEventListener('visibilitychange',onVisibility);
+  },{once:true});
 }
 
 function initCityReturn(){
@@ -96,7 +112,8 @@ async function bootstrap(){
       itinerary:data.itinerary,
       places:data.places,
       tickets:data.tickets,
-      ticketController
+      ticketController,
+      config:data.config
     });
 
     const demoDay=demoContext?.isDemo
@@ -118,12 +135,14 @@ async function bootstrap(){
       hotels:data.hotels,
       tickets:data.tickets,
       mapConfig:data.mapConfig,
+      config:data.config,
       demoContext,
       ticketController,
       itineraryController
     });
 
     initCountdown(data.config,demoContext);
+    watchTripDateRollover(data.config,demoContext);
     initCityReturn();
     initAppShell({itineraryController,hotelsController,mapController});
   }catch(error){

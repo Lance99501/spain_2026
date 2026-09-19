@@ -53,6 +53,8 @@ Scheduled runs publish automatically after the gate passes. To run immediately, 
 
 Explicit mappings in `config/notion-links.json` remain authoritative. Public-safe new itinerary rows can also be created when they meet `config/notion-publisher.json → autoCreateItinerary`: Planned/Idea, Flexible/Idea, not Fixed, allowed low-risk Type, ITN-63 or newer, an existing date with a matching city, and no likely duplicate. Their existing timeline schema carries `sourceItineraryId` and `notionManaged`; subsequent updates use this embedded identity, not a new entry in `notion-links.json`. Unmapped high-risk items still require review.
 
+Website-only day metadata remains in the day JSON when the publisher updates linked items. `city` is the accommodation/base-city group; optional `focusCity` is the place shown in Today and used for weather on day trips. For example, the Córdoba day keeps `city: "Sevilla"` and uses `focusCity: "Cordoba"`. A future fixed Toledo day should use `city: "Madrid"` plus `focusCity: "Toledo"`. This display metadata is not written back to Notion.
+
 The mapping model supports:
 
 - Itinerary → item

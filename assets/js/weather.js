@@ -1,26 +1,15 @@
 const API_BASE='https://api.open-meteo.com/v1/forecast';
 
-const DAY_LOCATION_OVERRIDES={
-  'day-2026-10-08':{
-    key:'Taipei',
-    label:'桃園機場｜TPE',
-    lat:25.0797,
-    lng:121.2342,
-    timeZone:'Asia/Taipei'
-  },
-  'day-2026-10-12':{key:'Sitges'},
-  'day-2026-10-16':{key:'Cordoba'},
-  'day-2026-10-23':{key:'Segovia'}
-};
-
 const LABELS={
+  Taipei:'桃園機場｜TPE',
   Barcelona:'巴塞隆納｜Barcelona',
   Sevilla:'塞維亞｜Sevilla',
   Granada:'格拉納達｜Granada',
   Madrid:'馬德里｜Madrid',
   Cordoba:'科爾多瓦｜Córdoba',
   Segovia:'塞哥維亞｜Segovia',
-  Sitges:'錫切斯｜Sitges'
+  Sitges:'錫切斯｜Sitges',
+  Toledo:'托雷多｜Toledo'
 };
 
 function escapeHtml(text){
@@ -65,11 +54,8 @@ function weatherMeta(code){
   return {icon:'🌤️',label:'天氣變化'};
 }
 
-function resolveLocation(day,mapConfig){
-  const override=DAY_LOCATION_OVERRIDES[day.id];
-  if(override?.lat&&override?.lng) return override;
-
-  const key=override?.key||day.city;
+export function resolveWeatherLocation(day,mapConfig){
+  const key=day.focusCity||day.city;
   const coords=mapConfig?.cityCenter?.[key];
   if(!coords) return null;
 
@@ -78,7 +64,7 @@ function resolveLocation(day,mapConfig){
     label:LABELS[key]||key,
     lat:coords[0],
     lng:coords[1],
-    timeZone:'Europe/Madrid'
+    timeZone:day.timeZone||(key==='Taipei'?'Asia/Taipei':'Europe/Madrid')
   };
 }
 
@@ -141,7 +127,7 @@ export function initTodayWeather({
 }){
   if(!root) return {destroy(){}};
 
-  const location=resolveLocation(day,mapConfig);
+  const location=resolveWeatherLocation(day,mapConfig);
   if(!location){
     renderUnavailable(root,null,'目前沒有這一天的天氣位置資料');
     return {destroy(){}};

@@ -3,6 +3,8 @@ import {readFile} from 'node:fs/promises';
 import {test} from 'node:test';
 
 import {validateBootstrapData} from '../assets/js/data/validate.js';
+import {dateInTripTimeZone,timeInTripTimeZone,tripTimeZoneAt} from '../assets/js/device-time.js';
+import {resolveWeatherLocation} from '../assets/js/weather.js';
 
 async function loadBootstrap(){
   const raw=await readFile(new URL('../data/generated/bootstrap.json',import.meta.url),'utf8');
@@ -101,6 +103,11 @@ test('all itinerary, hotel, ticket, and map relationships resolve',async()=>{
   for(const city of routeCities){
     assert.ok(data.mapConfig.cityCenter[city],`map route city ${city} has no center`);
   }
+  for(const day of data.itinerary){
+    if(day.focusCity){
+      assert.ok(data.mapConfig.cityCenter[day.focusCity],`day ${day.id} focusCity has no map/weather center`);
+    }
+  }
 });
 
 test('itinerary dates are unique, chronological, and within the configured trip',async()=>{
@@ -111,6 +118,35 @@ test('itinerary dates are unique, chronological, and within the configured trip'
   assert.deepEqual(dates,[...dates].sort(),'itinerary dates must be chronological');
   assert.equal(dates.at(0),config.departDate);
   assert.equal(dates.at(-1),config.endDate);
+});
+
+test('trip clock switches from Taipei to Spain at Barcelona arrival',async()=>{
+  const {config}=await loadBootstrap();
+  const beforeArrival=new Date('2026-10-09T11:24:00Z');
+  const afterArrival=new Date('2026-10-09T11:26:00Z');
+
+  assert.equal(tripTimeZoneAt(beforeArrival,config),'Asia/Taipei');
+  assert.equal(dateInTripTimeZone(beforeArrival,config),'2026-10-09');
+  assert.equal(timeInTripTimeZone(beforeArrival,config).text,'19:24');
+  assert.equal(tripTimeZoneAt(afterArrival,config),'Europe/Madrid');
+  assert.equal(dateInTripTimeZone(afterArrival,config),'2026-10-09');
+  assert.equal(timeInTripTimeZone(afterArrival,config).text,'13:26');
+});
+
+test('Today weather follows each day focus city, including day trips',async()=>{
+  const {itinerary,mapConfig}=await loadBootstrap();
+  const expected=new Map([
+    ['2026-10-08','Taipei'],
+    ['2026-10-12','Sitges'],
+    ['2026-10-16','Cordoba'],
+    ['2026-10-22','Segovia']
+  ]);
+
+  for(const [date,key] of expected){
+    const day=itinerary.find(entry=>entry.date===date);
+    assert.equal(resolveWeatherLocation(day,mapConfig)?.key,key);
+  }
+  assert.ok(mapConfig.cityCenter.Toledo,'Toledo must be ready for a future focusCity assignment');
 });
 
 test('all currently locked tickets remain confirmed after the data refactor',async()=>{

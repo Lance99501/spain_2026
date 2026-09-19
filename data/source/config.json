@@ -1,5 +1,8 @@
 {
   "departDate": "2026-10-08",
   "spainStartDate": "2026-10-09",
-  "endDate": "2026-10-25"
+  "endDate": "2026-10-25",
+  "homeTimeZone": "Asia/Taipei",
+  "tripTimeZone": "Europe/Madrid",
+  "tripTimeZoneStartsAt": "2026-10-09T11:25:00Z"
 }

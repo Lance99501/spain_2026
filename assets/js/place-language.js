@@ -1,6 +1,11 @@
 import {PLACE_LABELS} from './place-labels.js';
 const STORAGE_KEY='spain2026_place_language_v1';
 const VALID_MODES=new Set(['zh','original']);
+const PROTECTED_PHRASES=[
+  'Teatro Flamenco Triana',
+  'Teatro Flamenco Madrid',
+  'Jardines de Zoraya'
+];
 let mode='zh';
 
 try{
@@ -138,6 +143,12 @@ export function renderLocalizedText(value,context=''){
   let html='',index=0;
   const latin=char=>!!char&&/[A-Za-zÀ-ž]/.test(char);
   while(index<text.length){
+    const protectedPhrase=PROTECTED_PHRASES.find(phrase=>text.startsWith(phrase,index));
+    if(protectedPhrase){
+      html+=escapeHtml(protectedPhrase);
+      index+=protectedPhrase.length;
+      continue;
+    }
     const name=keys.find(key=>text.startsWith(key,index)
       &&!(latin(key[0])&&latin(text[index-1]))
       &&!(latin(key.at(-1))&&latin(text[index+key.length])));
