@@ -158,5 +158,19 @@
     ],
     "type": "drive",
     "status": "confirmed"
+  },
+  {
+    "id": "tkt-renfe-madrid-segovia",
+    "label": "Renfe Avant 34763｜Madrid Chamartín → Segovia-Guiomar",
+    "kind": "train",
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
+    "id": "tkt-renfe-segovia-madrid",
+    "label": "Renfe Avant 34792｜Segovia-Guiomar → Madrid Chamartín",
+    "kind": "train",
+    "type": "drive",
+    "status": "confirmed"
   }
 ]
