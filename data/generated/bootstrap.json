@@ -829,6 +829,20 @@
       ],
       "type": "drive",
       "status": "confirmed"
+    },
+    {
+      "id": "tkt-renfe-madrid-segovia",
+      "label": "Renfe Avant 34763｜Madrid Chamartín → Segovia-Guiomar",
+      "kind": "train",
+      "type": "drive",
+      "status": "confirmed"
+    },
+    {
+      "id": "tkt-renfe-segovia-madrid",
+      "label": "Renfe Avant 34792｜Segovia-Guiomar → Madrid Chamartín",
+      "kind": "train",
+      "type": "drive",
+      "status": "confirmed"
     }
   ],
   "itinerary": [
@@ -2240,7 +2254,7 @@
       "dow": "Thu",
       "city": "Madrid",
       "title": "塞哥維亞一日遊｜Segovia",
-      "sub": "水道橋 → 舊城 → 主教座堂 → 午餐 → 15:00 城堡 → 16:00 塔樓",
+      "sub": "09:25 火車 → 水道橋 → 舊城 → 主教座堂 → 午餐 → 15:00 城堡 → 16:00 塔樓 → 18:35 回程",
       "categories": [
         "confirmed",
         "pending",
@@ -2250,17 +2264,27 @@
       "items": [
         {
           "id": "item-2026-10-22-01",
-          "time": "上午",
+          "time": "09:25",
           "segments": [
             {
-              "text": "馬德里 → 塞哥維亞｜Madrid → Segovia"
+              "text": "Madrid Chamartín → Segovia-Guiomar｜Avant 34763"
             }
           ],
           "noteSegments": [
             {
-              "text": "交通待確認；目標約 10:00–10:30 抵達塞哥維亞，保留步行與拍照時間"
+              "text": "已確認｜09:25 出發，09:51 抵達；抵達後前往水道橋／舊城"
             }
-          ]
+          ],
+          "startTime": "09:25",
+          "ticketId": "tkt-renfe-madrid-segovia",
+          "transport": {
+            "role": "day-trip-outbound",
+            "kind": "train",
+            "service": "Avant 34763",
+            "status": "confirmed",
+            "departureTime": "09:25",
+            "arrivalTime": "09:51"
+          }
         },
         {
           "id": "item-2026-10-22-02",
@@ -2317,7 +2341,6 @@
               "text": "｜宮殿＋博物館"
             }
           ],
-          "sourceItineraryId": "ITN-16",
           "noteSegments": [
             {
               "text": "已確認｜Audio-Guided Full Experience，含手機語音導覽；依票面準時入場"
@@ -2358,17 +2381,27 @@
         },
         {
           "id": "item-2026-10-22-03",
-          "time": "參觀後",
+          "time": "18:35",
           "segments": [
             {
-              "text": "返回馬德里｜Segovia → Madrid"
+              "text": "Segovia-Guiomar → Madrid Chamartín｜Avant 34792"
             }
           ],
           "noteSegments": [
             {
-              "text": "回程交通待確認；保留城堡參觀後前往車站的緩衝，不趕回程"
+              "text": "已確認｜18:35 出發，19:00 抵達；城堡參觀後保留前往車站緩衝"
             }
-          ]
+          ],
+          "startTime": "18:35",
+          "ticketId": "tkt-renfe-segovia-madrid",
+          "transport": {
+            "role": "day-trip-return",
+            "kind": "train",
+            "service": "Avant 34792",
+            "status": "confirmed",
+            "departureTime": "18:35",
+            "arrivalTime": "19:00"
+          }
         }
       ],
       "tags": [
@@ -2377,15 +2410,16 @@
           "tone": "confirmed"
         },
         {
-          "text": "交通待確認",
-          "tone": "pending"
+          "text": "往返交通已確認",
+          "tone": "confirmed"
         },
         {
           "text": "15:55 塔樓集合",
           "tone": "confirmed"
         }
       ],
-      "note": "10/22 日期已鎖定：宮殿與博物館 15:00、胡安二世塔 16:00。僅往返交通待確認，不與王宮／普拉多日對調。"
+      "note": "10/22 日期已鎖定：09:25 去程火車、15:00 宮殿與博物館、16:00 胡安二世塔、18:35 回程火車均已確認；不與王宮／普拉多日對調。",
+      "sourceItineraryId": "ITN-16"
     },
     {
       "id": "day-2026-10-23",
@@ -2689,6 +2723,12 @@
     ],
     "tkt-segovia-alcazar": [
       "17kxxSKW4mWAS8yth65NV3UYZ9wF9fJhF"
+    ],
+    "tkt-renfe-madrid-segovia": [
+      "1DN15zck39euvRSkW_yiLVO_Ulv5JXhg3"
+    ],
+    "tkt-renfe-segovia-madrid": [
+      "1fGsAzzuC6jKgIDtJMpHWgB9_LRRihrN6"
     ]
   },
   "mapConfig": {
