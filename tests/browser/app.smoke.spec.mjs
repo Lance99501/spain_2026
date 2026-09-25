@@ -257,3 +257,27 @@ test('Madrid weather flex pair keeps each day primary and shows a swap hint',asy
   await expect(day23.locator('.day-map')).toHaveAttribute('href',/Museo%20del%20Prado/);
   expect(await page.evaluate(()=>localStorage.getItem('spain2026:flex:madrid-weather-21-23'))).toBeNull();
 });
+
+test('Today and tomorrow switch keeps the correct route, station and lodging copy targets',async({page,context})=>{
+  await context.grantPermissions(['clipboard-read','clipboard-write']);
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/?previewDate=2026-10-21');
+  await expect(page.locator('#todayHeading')).toHaveText('馬德里王宮日');
+  await expect(page.locator('.today-date-switch [aria-current="page"]')).toHaveText('今日');
+  await expect(page.locator('#hotels .hotel-room')).toHaveCount(0);
+  await page.locator('.today-date-switch a').filter({hasText:'明日'}).click();
+  await expect(page.locator('#todayHeading')).toHaveText('塞哥維亞 一日遊');
+  await expect(page.locator('.today-date-switch [aria-current="page"]')).toHaveText('明日');
+  await expect(page.locator('.next-panel > span')).toHaveText('明日首個時間');
+  const firstStop=page.locator('.today-copy');
+  await expect(firstStop).toHaveAttribute('data-copy-text',/Chamartín/);
+  await firstStop.click();
+  await expect(firstStop).toHaveText('已複製');
+  expect(await page.evaluate(()=>navigator.clipboard.readText())).toContain('Chamartín');
+  const stay=page.locator('#todayRoot [aria-label^="複製 "][aria-label$=" 地址"]');
+  await expect(stay).toHaveAttribute('data-copy-text',/Madrid/);
+  await stay.click();
+  expect(await page.evaluate(()=>navigator.clipboard.readText())).toContain('Madrid');
+  await page.locator('.today-date-switch a').filter({hasText:'今日'}).click();
+  await expect(page.locator('#todayHeading')).toHaveText('馬德里王宮日');
+});

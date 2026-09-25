@@ -1,4 +1,4 @@
-const CACHE_VERSION='spain2026-20260925-v62';
+const CACHE_VERSION='spain2026-20260925-v63';
 const APP_CACHE=`${CACHE_VERSION}-app`;
 const RUNTIME_CACHE=`${CACHE_VERSION}-runtime`;
 const TILE_CACHE=`${CACHE_VERSION}-tiles`;
@@ -13,13 +13,13 @@ const APP_SHELL=[
   './assets/css/layout.css',
   './assets/css/app-shell.css',
   './assets/css/demo.css',
-  './assets/css/today.css',
+  './assets/css/today.css?v=59',
   './assets/css/map.css',
   './assets/css/place-language.css',
-  './assets/css/itinerary.css?v=56',
+  './assets/css/itinerary.css?v=57',
   './assets/css/ticket.css',
   './assets/css/pwa.css',
-  './assets/js/app.js?v=58',
+  './assets/js/app.js?v=59',
   './assets/js/api.js',
   './assets/js/data/source.js',
   './assets/js/data/validate.js',
@@ -29,10 +29,11 @@ const APP_SHELL=[
   './assets/js/place-labels.js',
   './assets/js/ticket.js',
   './assets/js/itinerary.js?v=58',
-  './assets/js/today.js',
+  './assets/js/today.js?v=59',
   './assets/js/pwa.js',
-  './assets/js/app-shell.js',
-  './assets/js/hotels.js',
+  './assets/js/app-shell.js?v=59',
+  './assets/js/hotels.js?v=59',
+  './assets/js/copy-text.js',
   './assets/js/demo.js',
   './assets/js/weather.js',
   './assets/js/device-time.js',
