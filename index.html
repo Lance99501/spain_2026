@@ -73,12 +73,15 @@
         <h2>每日行程</h2>
         <p>每日標題旁的「Maps」會直接開核心景點或當日步行路線。</p>
       </div>
-      <div class="tools">
-        <input id="search" class="search" type="search" placeholder="找日期、景點、城市…" aria-label="搜尋行程">
-        <button type="button" class="expand-all" id="expandAll" aria-pressed="false">展開全部</button>
+      <div class="tools" aria-label="行程顯示工具">
+        <span class="tools-hint" id="itineraryViewHint" aria-live="polite">目前：Barcelona</span>
+        <button type="button" class="expand-all" id="expandAll" aria-pressed="false">
+          <span class="expand-all-icon" aria-hidden="true">＋</span>
+          <span data-expand-label>展開本城</span>
+        </button>
       </div>
       <div class="days" id="days"></div>
-      <div class="empty" id="empty" hidden>找不到符合條件的行程。</div>
+      <div class="empty" id="empty" hidden>目前沒有可顯示的行程。</div>
     </section>
 
     <section class="section" id="hotelsSection">
@@ -98,8 +101,7 @@
           <button type="button" class="map-chip" aria-pressed="false" data-mapcity="Sevilla">Sevilla</button>
           <button type="button" class="map-chip" aria-pressed="false" data-mapcity="Cordoba">Córdoba</button>
           <button type="button" class="map-chip" aria-pressed="false" data-mapcity="Granada">Granada</button>
-          <button type="button" class="map-chip" aria-pressed="false" data-mapcity="Madrid">Madrid</button>
-          <button type="button" class="map-chip" aria-pressed="false" data-mapcity="Segovia">Segovia</button>
+          <button type="button" class="map-chip" aria-pressed="false" data-mapcity="Madrid">Madrid＋Segovia</button>
           <div class="map-meta">
             <span class="legend">
               <span><b style="background:#66836f"></b>已確認</span>

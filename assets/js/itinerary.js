@@ -1,4 +1,4 @@
-import {renderPlaceName,renderLocalizedText,localizedSearchText} from './place-language.js';
+import {renderPlaceName,renderLocalizedText} from './place-language.js';
 import {dateInTripTimeZone} from './device-time.js';
 export function escapeHtml(text){
   return String(text).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -78,9 +78,11 @@ function renderTravelHint(item){
 export function initItinerary({itinerary,places,tickets,ticketController,config={}}){
   const CITY_ORDER=['Barcelona','Sevilla','Granada','Madrid'];
   const daysRoot=document.getElementById('days');
-  const search=document.getElementById('search');
   const empty=document.getElementById('empty');
   const expandAll=document.getElementById('expandAll');
+  const expandAllIcon=expandAll?.querySelector('.expand-all-icon');
+  const expandAllLabel=expandAll?.querySelector('[data-expand-label]');
+  const itineraryViewHint=document.getElementById('itineraryViewHint');
 
   const placeById=new Map(places.map(place=>[place.id,place]));
   const ticketById=new Map(tickets.map(ticket=>[ticket.id,ticket]));
@@ -110,27 +112,6 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
   function cityIndex(city){
     const index=CITY_ORDER.indexOf(mainCity(city));
     return index>=0?index:0;
-  }
-
-  function searchableText(day){
-    return [
-      day.date,
-      day.dateLabel,
-      day.city,
-      day.title,
-      day.sub,
-      ...day.items.flatMap(item=>[
-        item.time,
-        ...item.segments.flatMap(x=>{
-          const place=x.placeId?placeById.get(x.placeId):null;
-          return [x.text,place?.displayName||'',place?.name||''];
-        }),
-        ...(item.noteSegments||[]).map(x=>x.text),
-        ...Object.values(item.travelHint||{})
-      ]),
-      ...day.tags.map(x=>x.text),
-      day.note||''
-    ].map(text=>localizedSearchText(text,day)).join(' ').toLowerCase();
   }
 
   function matchesCity(day,city){
@@ -226,14 +207,24 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
   }
 
   function filteredRows(city){
-    const term=(search?.value||'').trim().toLowerCase();
-
     return itinerary.filter(day=>{
       const matchesFilter=activeFilter==='all'||day.categories.includes(activeFilter);
-      const aliases={'火車':['火車','列車','高鐵','renfe','alvia','ave','iryo'],'機場':['機場','航班','airport'],'咖啡':['咖啡','café','cafe']};
-      const matchesSearch=!term||(aliases[term]||[term]).some(word=>searchableText(day).includes(word));
-      return matchesCity(day,city)&&matchesFilter&&matchesSearch;
+      return matchesCity(day,city)&&matchesFilter;
     });
+  }
+
+  function syncExpandControl(){
+    if(!expandAll) return;
+    const allCities=activeCity==='all';
+    const scope=allCities?'全部':'本城';
+    const action=expandState?'收合':'展開';
+    const cityLabel=allCities?'全部城市':activeCity;
+
+    expandAll.setAttribute('aria-pressed',String(expandState));
+    expandAll.setAttribute('aria-label',`${action}${cityLabel}行程`);
+    if(expandAllIcon) expandAllIcon.textContent=expandState?'−':'＋';
+    if(expandAllLabel) expandAllLabel.textContent=`${action}${scope}`;
+    if(itineraryViewHint) itineraryViewHint.textContent=allCities?'全部城市行程':`目前：${activeCity}`;
   }
 
   function announceCity(city){
@@ -312,6 +303,7 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
     daysRoot.classList.toggle('all-mode',allMode);
     daysRoot.innerHTML=pageHtml;
     if(empty) empty.hidden=true;
+    syncExpandControl();
 
     observePages();
     requestAnimationFrame(()=>{
@@ -330,6 +322,7 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
     activeCity=resolved;
     pendingCity=null;
     syncCityControls(activeCity);
+    syncExpandControl();
 
     if(changed&&announce) announceCity(activeCity);
     if(updateHeight) requestPagerHeight();
@@ -379,6 +372,7 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
     const changed=activeCity!==resolved;
     activeCity=resolved;
     syncCityControls(activeCity);
+    syncExpandControl();
     if(changed) announceCity(activeCity);
 
     if(modeChanged){
@@ -513,13 +507,9 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
     render();
   }));
 
-  search?.addEventListener('input',render);
-
-  if(expandAll) expandAll.setAttribute('aria-pressed','false');
+  syncExpandControl();
   expandAll?.addEventListener('click',()=>{
     expandState=!expandState;
-    expandAll.textContent=expandState?'收合全部':'展開全部';
-    expandAll.setAttribute('aria-pressed',String(expandState));
     render();
   });
 
@@ -568,11 +558,6 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
       activeFilter='all';
       expandState=false;
 
-      if(search) search.value='';
-      if(expandAll){
-        expandAll.textContent='展開全部';
-        expandAll.setAttribute('aria-pressed','false');
-      }
       if(initialFilter) setFilterState(initialFilter);
 
       const nextCity=activeCity===city?'all':city;
@@ -586,12 +571,6 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
   function resetView(){
     activeFilter='all';
     expandState=false;
-
-    if(search) search.value='';
-    if(expandAll){
-      expandAll.textContent='展開全部';
-      expandAll.setAttribute('aria-pressed','false');
-    }
 
     if(initialFilter) setFilterState(initialFilter);
   }
@@ -636,14 +615,6 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
     showAll,
     setCity:(city,options={})=>scrollToCity(city,{behavior:options.behavior||'smooth',syncOnly:options.syncOnly||false}),
     ensureCity,
-    getSearchState:()=>({city:activeCity,category:activeFilter}),
-    applySearch:({term='',city='all',category='all'}={})=>{
-      if(search) search.value=term;
-      activeFilter=category;
-      setFilterState(filterButtons.find(button=>button.dataset.filter===category));
-      scrollToCity(city,{behavior:'auto'});
-      render();
-    },
     getActiveCity:()=>activeCity
   };
 }

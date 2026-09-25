@@ -17,18 +17,16 @@ test('the itinerary renders and its primary controls work',async({page})=>{
   await expect(page.locator('#days .day')).toHaveCount(18);
   await expect(page.locator('#hotels .hotel')).toHaveCount(4);
   await expect(page.locator('#filters')).toHaveCount(0);
+  await expect(page.locator('#search')).toHaveCount(0);
 
   const firstDay=page.locator('#days .day').first();
   await firstDay.locator('.day-main').click();
   await expect(firstDay).toHaveClass(/\bopen\b/);
   await expect(firstDay.locator('.day-main')).toHaveAttribute('aria-expanded','true');
 
-  await page.locator('#search').fill('Alhambra');
-  await expect(page.locator('#days .day')).toHaveCount(1);
-  await expect(page.locator('#days')).toContainText('阿爾罕布拉宮');
-
-  await page.locator('#search').fill('');
-  await expect(page.locator('#days .day')).toHaveCount(18);
+  await page.locator('#expandAll').click();
+  await expect(page.locator('#expandAll')).toContainText('收合本城');
+  await expect(page.locator('#days [data-pager-city="Barcelona"] .day:not(.open)')).toHaveCount(0);
   expect(pageErrors).toEqual([]);
 });
 
@@ -118,6 +116,7 @@ test('compact mobile layout keeps city switching and map navigation usable',asyn
   await page.goto('/');
   await expect(page.locator('#quickSearchBtn')).toHaveCount(0);
   await expect(page.locator('#quickSearchPanel')).toHaveCount(0);
+  await expect(page.locator('#search')).toHaveCount(0);
   await expect(page.locator('#cityGrid img').first()).toBeHidden();
   const geometry=await page.evaluate(()=>({
     overflow:document.documentElement.scrollWidth>window.innerWidth,
@@ -137,6 +136,10 @@ test('compact mobile layout keeps city switching and map navigation usable',asyn
   await page.locator('[data-nav-target="stay"]').click();
   await expect(page.locator('#hotelsSection')).toBeInViewport();
   await expect(page.locator('#placeLanguageToggle')).toBeVisible();
+  await expect(page.locator('[data-mapcity="Madrid"]')).toHaveText('Madrid＋Segovia');
+  await expect(page.locator('[data-mapcity="Segovia"]')).toHaveCount(0);
+  await page.locator('[data-mapcity="Madrid"]').click();
+  await expect(page.locator('[data-mapcity="Madrid"]')).toHaveAttribute('aria-pressed','true');
 });
 
 test('mobile city bar, title alignment and bottom links match the page',async({page})=>{
@@ -205,11 +208,8 @@ test('website labels translate raw synced text without changing source data',asy
   await expect(day).toContainText('ALVIA 2087 Confort');
   await page.locator('#placeLanguageToggle').click();
   await expect(day).toContainText('Catedral de Granada / Capilla Real / Alcaicería');
-  await page.locator('#search').fill('皇家禮拜堂');
-  await expect(page.locator('#days .day')).toHaveCount(1);
   const raw=await page.evaluate(async()=>await(await fetch('./data/generated/bootstrap.json')).json());
   expect(raw.itinerary.find(d=>d.date==='2026-10-20').items[0].segments[0].text).toBe('Granada Cathedral / Capilla Real / Alcaicería');
-  await page.locator('#search').fill('');
   await page.locator('#placeLanguageToggle').click();
   await page.locator('#expandAll').click();
   await expect(page.locator('#days [data-day-id="day-2026-10-23"]')).toContainText('阿爾卡拉門 → 西貝萊斯廣場');
