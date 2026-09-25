@@ -1,5 +1,6 @@
 import {renderPlaceName,renderLocalizedText} from './place-language.js';
 import {dateInTripTimeZone} from './device-time.js';
+import {mainCity} from './city-groups.js?v=57';
 export function escapeHtml(text){
   return String(text).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 }
@@ -97,10 +98,6 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
   let programmaticCity=null;
   let resizeFrame=0;
   let resizeObserver=null;
-
-  function mainCity(city){
-    return city==='Cordoba'?'Sevilla':city==='Segovia'?'Madrid':city==='Sitges'?'Barcelona':city;
-  }
 
   function getDefaultCity(){
     const today=dateInTripTimeZone(new Date(),config);

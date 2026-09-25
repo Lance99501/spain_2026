@@ -3,6 +3,7 @@ import {readFile} from 'node:fs/promises';
 import {test} from 'node:test';
 
 import {validateBootstrapData} from '../assets/js/data/validate.js';
+import {MAIN_CITY_GROUPS,mainCity} from '../assets/js/city-groups.js';
 import {dateInTripTimeZone,timeInTripTimeZone,tripTimeZoneAt} from '../assets/js/device-time.js';
 import {resolveWeatherLocation} from '../assets/js/weather.js';
 
@@ -147,6 +148,11 @@ test('Today weather follows each day focus city, including day trips',async()=>{
     assert.equal(resolveWeatherLocation(day,mapConfig)?.key,key);
   }
   assert.ok(mapConfig.cityCenter.Toledo,'Toledo must be ready for a future focusCity assignment');
+});
+
+test('Toledo remains a dormant Madrid day-trip option',()=>{
+  assert.equal(mainCity('Toledo'),'Madrid');
+  assert.ok(MAIN_CITY_GROUPS.Madrid.includes('Toledo'));
 });
 
 test('all currently locked tickets remain confirmed after the data refactor',async()=>{

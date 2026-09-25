@@ -1,19 +1,6 @@
 import {renderPlaceBilingual} from './place-language.js';
+import {MAIN_CITY_GROUPS,mainCity} from './city-groups.js?v=57';
 const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
-
-const MAIN_CITY_GROUPS={
-  Barcelona:['Barcelona','Sitges'],
-  Sevilla:['Sevilla','Cordoba'],
-  Granada:['Granada'],
-  Madrid:['Madrid','Segovia']
-};
-
-function mainCity(city){
-  if(city==='Cordoba') return 'Sevilla';
-  if(city==='Segovia') return 'Madrid';
-  if(city==='Sitges') return 'Barcelona';
-  return city;
-}
 
 export function initTripMap({places,mapConfig}){
   const mapRoot=document.getElementById('tripMap');
