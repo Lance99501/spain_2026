@@ -228,7 +228,7 @@ test('day-trip Today cards use the focus city and avoid bilingual duplicates',as
 });
 
 
-test('Madrid weather flex pair compares and remembers the local plan',async({page})=>{
+test('Madrid weather flex pair keeps each day primary and shows a swap hint',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   await page.goto('/');
   await page.locator('#cityGrid [data-city="Madrid"]').click();
@@ -237,18 +237,19 @@ test('Madrid weather flex pair compares and remembers the local plan',async({pag
   const day23=page.locator('#days [data-day-id="day-2026-10-23"]');
   await day21.locator('.day-main').click();
 
-  await expect(day21.locator('.flex-plan-column')).toHaveCount(2);
-  await expect(day21).toContainText('王宮 ↔ 普拉多博物館｜Weather Flex');
-  await expect(day21.locator('[data-flex-plan="A"]')).toHaveAttribute('aria-pressed','true');
-  await expect(day21.locator('.flex-plan-column[data-flex-column="A"]')).toHaveClass(/selected/);
+  await expect(day21.locator('.day-title')).toContainText('馬德里王宮日');
+  await expect(day21).toContainText('馬德里王宮');
+  await expect(day21).not.toContainText('普拉多博物館');
+  await expect(day21.locator('.flex-pair-hint')).toContainText('可與 10/23 整日互換');
+  await expect(day21.locator('.flex-plan-column')).toHaveCount(0);
+  await expect(day21.locator('[data-flex-plan]')).toHaveCount(0);
+  await expect(day21.locator('.day-map')).toHaveAttribute('href',/Palacio%20Real/);
 
-  await day21.locator('[data-flex-plan="B"]').click();
-  await expect(day21.locator('[data-flex-plan="B"]')).toHaveAttribute('aria-pressed','true');
-  await expect(day21.locator('.flex-plan-column[data-flex-column="B"]')).toHaveClass(/selected/);
-  await expect(day23.locator('.flex-plan-column[data-flex-column="B"]')).toHaveClass(/selected/);
-  await expect(day21.locator('.day-map')).toHaveAttribute('href',/Museo%20del%20Prado/);
-
-  expect(await page.evaluate(()=>localStorage.getItem('spain2026:flex:madrid-weather-21-23'))).toBe('B');
-  await page.reload();
-  await expect(page.locator('#days [data-day-id="day-2026-10-21"] .flex-plan-column[data-flex-column="B"]')).toHaveClass(/selected/);
+  await day23.locator('.day-main').click();
+  await expect(day23.locator('.day-title')).toContainText('Prado＋Retiro');
+  await expect(day23).toContainText('普拉多博物館');
+  await expect(day23).not.toContainText('馬德里王宮');
+  await expect(day23.locator('.flex-pair-hint')).toContainText('可與 10/21 整日互換');
+  await expect(day23.locator('.day-map')).toHaveAttribute('href',/Museo%20del%20Prado/);
+  expect(await page.evaluate(()=>localStorage.getItem('spain2026:flex:madrid-weather-21-23'))).toBeNull();
 });

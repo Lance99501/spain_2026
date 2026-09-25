@@ -54,15 +54,10 @@
       "tone": "flex"
     }
   ],
-  "note": "10/21 王宮日與 10/23 普拉多日，在尚未購票前可依天氣與票況整組對調；麗池公園隨普拉多日移動，購票後依票面鎖定。",
+  "note": "上午普拉多、下午麗池公園與周邊散步；目前尚未購票。",
   "flexPair": {
     "id": "madrid-weather-21-23",
     "pairedDate": "2026-10-21",
-    "label": "Weather Flex｜10/21 ⇄ 10/23",
-    "baselineLabel": "A 基準",
-    "alternateLabel": "B 對調",
-    "displayTitle": "王宮 ↔ Prado｜Weather Flex",
-    "displaySub": "10/21 ↔ 10/23，可依天氣與票況整組對調",
     "note": "尚未購票前可依天氣與票況整組對調；購票後依票面日期鎖定。"
   }
 }
