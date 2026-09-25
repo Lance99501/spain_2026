@@ -9,6 +9,7 @@ import {
   mappedStartTime,
   mergeManagedItem,
   primaryClock,
+  syncMappedPublicItem,
   timeDetail
 } from '../scripts/notion-public-item.mjs';
 
@@ -121,4 +122,47 @@ test('structured travel hint preserves only public-safe compact fields',()=>{
 
 test('source-only rows do not create travel hints',()=>{
   assert.deepEqual(buildTravelHint({'Itinerary ID':'ITN-1'}),{});
+});
+
+test('same-date public-field sync preserves one Maps anchor and copies only allowlisted metadata',()=>{
+  const existing={
+    id:'item-2026-10-23-02',time:'下午',
+    segments:[
+      {text:'Parque del Retiro',placeId:'mad-parque-del-retiro'},
+      {text:' → Puerta de Alcalá → Plaza de Cibeles'}
+    ],
+    sourceItineraryId:'ITN-53',customField:'keep'
+  };
+  const row={
+    Name:'Retiro＋Puerta de Alcalá＋Cibeles｜城市景觀','Start Time':'Prado 後','End Time':'',
+    Status:'Planned',Fixed:false,Flexibility:'Flexible',Area:'Retiro / Paseo del Prado / Cibeles',
+    Type:'Free time',City:'Madrid',Notes:'must remain private'
+  };
+  const link={syncPublicFields:['Name','Start Time','End Time','Status','Fixed','Flexibility','Area','Type','City']};
+  const result=syncMappedPublicItem(existing,row,link);
+  assert.equal(result.error,undefined);
+  assert.deepEqual(result.item.segments,[{text:row.Name,placeId:'mad-parque-del-retiro'}]);
+  assert.equal(result.item.time,'Prado 後');
+  assert.equal('startTime' in result.item,false);
+  assert.equal(result.item.notionArea,row.Area);
+  assert.equal(result.item.notionFixed,false);
+  assert.equal(result.item.customField,'keep');
+  assert.equal('Notes' in result.item,false);
+});
+
+test('mapped Name sync can strip an internal prefix but blocks multiple Maps anchors',()=>{
+  const stripped=syncMappedPublicItem(
+    {id:'royal',segments:[{text:'Old'}]},
+    {Name:'Royal Madrid｜Palacio Real＋Almudena'},
+    {syncPublicFields:['Name'],stripNamePrefix:'Royal Madrid｜'}
+  );
+  assert.equal(stripped.item.segments[0].text,'Palacio Real＋Almudena');
+  assert.equal(stripped.item.notionName,'Royal Madrid｜Palacio Real＋Almudena');
+
+  const blocked=syncMappedPublicItem(
+    {id:'route',segments:[{text:'A',placeId:'a'},{text:'B',placeId:'b'}]},
+    {Name:'A＋B'},
+    {syncPublicFields:['Name']}
+  );
+  assert.match(blocked.error,/multiple Maps place anchors/);
 });

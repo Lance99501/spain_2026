@@ -681,7 +681,8 @@ export const PLACE_LABELS=[
     "name": "Plaza de Cibeles",
     "displayName": "西貝萊斯廣場",
     "aliases": [
-      "西貝萊斯廣場｜Plaza de Cibeles"
+      "西貝萊斯廣場｜Plaza de Cibeles",
+      "Cibeles"
     ]
   },
   {

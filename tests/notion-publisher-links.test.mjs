@@ -73,7 +73,9 @@ test('Madrid weather-flex rows have stable same-date mappings',async()=>{
   for(const [pageId,sourceId,targetId] of expected){
     assert.equal(links.itinerary[pageId].sourceId,sourceId);
     assert.equal(links.itinerary[pageId].targetId,targetId);
+    assert.deepEqual(links.itinerary[pageId].syncPublicFields,['Name','Start Time','End Time','Status','Fixed','Flexibility','Area','Type','City']);
   }
+  assert.equal(links.itinerary['3b891e9f-a395-819d-9006-c0c55205093c'].stripNamePrefix,'Royal Madrid｜');
   assert.deepEqual(day21.items.map(item=>item.sourceItineraryId),['ITN-50','ITN-51']);
   assert.deepEqual(day23.items.map(item=>item.sourceItineraryId),['ITN-52','ITN-53']);
   assert.equal(day21.flexPair.id,'madrid-weather-21-23');

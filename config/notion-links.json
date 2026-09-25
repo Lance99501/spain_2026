@@ -126,12 +126,15 @@
       "targetType": "item",
       "targetId": "item-2026-10-21-01",
       "syncPrimaryClock": true,
+      "syncPublicFields": ["Name", "Start Time", "End Time", "Status", "Fixed", "Flexibility", "Area", "Type", "City"],
+      "stripNamePrefix": "Royal Madrid｜",
       "note": "Royal Madrid｜Palacio Real＋Almudena｜Madrid A/B"
     },
     "3b891e9f-a395-8131-98ac-c28f6bbaf78a": {
       "sourceId": "ITN-51",
       "targetType": "item",
       "targetId": "item-2026-10-21-02",
+      "syncPublicFields": ["Name", "Start Time", "End Time", "Status", "Fixed", "Flexibility", "Area", "Type", "City"],
       "note": "Madrid de los Austrias＋La Latina｜Madrid A/B"
     },
     "3b891e9f-a395-812f-a6b3-d1de50b584b3": {
@@ -139,12 +142,14 @@
       "targetType": "item",
       "targetId": "item-2026-10-23-01",
       "syncPrimaryClock": true,
+      "syncPublicFields": ["Name", "Start Time", "End Time", "Status", "Fixed", "Flexibility", "Area", "Type", "City"],
       "note": "Museo del Prado｜Madrid A/B"
     },
     "3b891e9f-a395-81f3-ba97-cd14079b6b22": {
       "sourceId": "ITN-53",
       "targetType": "item",
       "targetId": "item-2026-10-23-02",
+      "syncPublicFields": ["Name", "Start Time", "End Time", "Status", "Fixed", "Flexibility", "Area", "Type", "City"],
       "note": "Retiro＋Puerta de Alcalá＋Cibeles｜Madrid A/B"
     },
     "3c191e9f-a395-8107-bdee-d7c4afd44549": {

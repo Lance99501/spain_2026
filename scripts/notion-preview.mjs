@@ -1,7 +1,7 @@
 import {mkdir,readdir,readFile,writeFile} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {isSafeAutoCreateRow,mappedStartTime,primaryClock} from './notion-public-item.mjs';
+import {isSafeAutoCreateRow,mappedStartTime,primaryClock,syncMappedPublicItem} from './notion-public-item.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
@@ -214,6 +214,7 @@ function reviewExplicitItinerary({row,link,itemById,dayById,hotelByPlaceId,ticke
   const entry=itemById.get(link.targetId);
   if(!entry){reviews.push({match:link.targetId,message:'BLOCK: mapped item does not exist.'});return reviews;}
   if(row.Date!==entry.date) reviews.push({match:link.targetId,message:`BLOCK: date Notion=${row.Date}, GitHub=${entry.date}.`});
+  if(Array.isArray(link.syncPublicFields)&&link.syncPublicFields.includes('City')&&normalize(row.City)!==normalize(entry.city)) reviews.push({match:link.targetId,message:`BLOCK: city Notion=${row.City||'—'}, GitHub=${entry.city||'—'}.`});
   const notionStatus=status(row.Status),githubStatus=itemStatus(entry.item,ticketById);
   if(githubStatus==='confirmed'&&notionStatus!=='confirmed') reviews.push({match:link.targetId,message:`BLOCK: Notion ${notionStatus||'unknown'} would downgrade GitHub confirmed.`});
   else if(notionStatus&&githubStatus&&notionStatus!==githubStatus) reviews.push({match:link.targetId,message:`Status: Notion=${notionStatus}, GitHub=${githubStatus}`});
@@ -221,6 +222,13 @@ function reviewExplicitItinerary({row,link,itemById,dayById,hotelByPlaceId,ticke
   if(/^\d{2}:\d{2}$/.test(nt||'')&&gt&&nt!==gt){
     const protectedTime=githubStatus==='confirmed'||row.Fixed===true||Boolean(entry.item.ticketId);
     reviews.push({match:link.targetId,message:`${protectedTime?'BLOCK: protected ':' '}Start Time Notion=${nt}, GitHub=${gt}`.trim()});
+  }
+  const publicSync=syncMappedPublicItem(entry.item,row,link);
+  if(publicSync.error) reviews.push({match:link.targetId,message:`BLOCK: public-field sync ${publicSync.error}`});
+  else if(publicSync.changed.length){
+    const protectedFields=publicSync.changed.filter(field=>['Name','Start Time','End Time','Area','Type','City'].includes(field));
+    const locked=githubStatus==='confirmed'||row.Fixed===true||Boolean(entry.item.ticketId);
+    reviews.push({match:link.targetId,message:`${locked&&protectedFields.length?'BLOCK: protected ':''}Public fields: ${publicSync.changed.join(', ')}`});
   }
   return reviews;
 }
@@ -242,7 +250,7 @@ async function main(){
   const placeById=new Map(places.map(place=>[place.id,place]));
   const ticketById=new Map(tickets.map(ticket=>[ticket.id,ticket]));
   const hotelByPlaceId=new Map(hotels.map(hotel=>[hotel.placeId,hotel]));
-  const currentItems=days.flatMap(day=>day.items.map(item=>({date:day.date,dayId:day.id,item})));
+  const currentItems=days.flatMap(day=>day.items.map(item=>({date:day.date,dayId:day.id,city:day.city,item})));
   const itemById=new Map(currentItems.map(entry=>[entry.item.id,entry]));
   const dayById=new Map(days.map(day=>[day.id,day]));
   const current={days,items:currentItems};

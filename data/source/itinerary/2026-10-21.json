@@ -17,7 +17,7 @@
       "time": "10:00",
       "segments": [
         {
-          "text": "Palacio Real + Catedral de la Almudena"
+          "text": "Palacio Real＋Almudena"
         }
       ],
       "noteSegments": [
@@ -26,17 +26,32 @@
         }
       ],
       "startTime": "10:00",
-      "sourceItineraryId": "ITN-50"
+      "sourceItineraryId": "ITN-50",
+      "notionName": "Royal Madrid｜Palacio Real＋Almudena",
+      "endTime": "12:30",
+      "notionStatus": "Planned",
+      "notionFixed": false,
+      "notionFlexibility": "Flexible",
+      "notionArea": "Palacio Real / Ópera",
+      "notionType": "Attraction",
+      "notionCity": "Madrid"
     },
     {
       "id": "item-2026-10-21-02",
-      "time": "下午",
+      "time": "下午～晚上",
       "segments": [
         {
-          "text": "Madrid de los Austrias + La Latina"
+          "text": "Madrid de los Austrias＋La Latina｜老城慢走"
         }
       ],
-      "sourceItineraryId": "ITN-51"
+      "sourceItineraryId": "ITN-51",
+      "notionName": "Madrid de los Austrias＋La Latina｜老城慢走",
+      "notionStatus": "Planned",
+      "notionFixed": false,
+      "notionFlexibility": "Flexible",
+      "notionArea": "Austrias / Plaza Mayor / La Latina",
+      "notionType": "Free time",
+      "notionCity": "Madrid"
     }
   ],
   "tags": [

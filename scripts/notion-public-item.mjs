@@ -12,6 +12,60 @@ export function mappedStartTime(row,link={}){
   return link.syncPrimaryClock===true?primaryClock(row['Start Time']):row['Start Time'];
 }
 
+function cleanPublicName(value,link={}){
+  let name=String(value||'').trim();
+  const prefix=String(link.stripNamePrefix||'');
+  if(prefix&&name.startsWith(prefix)) name=name.slice(prefix.length).trim();
+  return name;
+}
+
+function setField(target,key,value,changed,label){
+  if(value===undefined||value===null||value===''){
+    if(key in target){delete target[key];changed.add(label);}
+    return;
+  }
+  if(target[key]!==value){target[key]=value;changed.add(label);}
+}
+
+// Same-date explicit mappings may opt in to a small public-field allowlist.
+// Existing structure is preserved; Name may only reuse zero or one Maps anchor.
+export function syncMappedPublicItem(existing,row,link={}){
+  const fields=new Set(Array.isArray(link.syncPublicFields)?link.syncPublicFields:[]);
+  const next=structuredClone(existing);
+  const changed=new Set();
+  if(!fields.size) return {item:next,changed:[]};
+
+  if(fields.has('Name')){
+    const notionName=String(row?.Name||'').trim();
+    const publicName=cleanPublicName(notionName,link);
+    if(!publicName||publicName.length>160) return {item:existing,changed:[],error:'Name must contain 1–160 public characters.'};
+    const anchored=(existing?.segments||[]).filter(segment=>segment?.placeId);
+    const placeIds=[...new Set(anchored.map(segment=>segment.placeId))];
+    if(placeIds.length>1) return {item:existing,changed:[],error:'Name sync cannot safely flatten an item with multiple Maps place anchors.'};
+    const segment={text:publicName};
+    if(placeIds[0]) segment.placeId=placeIds[0];
+    if(JSON.stringify(next.segments||[])!==JSON.stringify([segment])){next.segments=[segment];changed.add('Name');}
+    setField(next,'notionName',notionName,changed,'Name');
+  }
+
+  if(fields.has('Start Time')){
+    const raw=String(row?.['Start Time']||'').trim();
+    const clock=primaryClock(raw);
+    const display=link.syncPrimaryClock===true?(clock||'彈性'):(raw||'彈性');
+    if(display&&display.length>80) return {item:existing,changed:[],error:'Start Time exceeds the 80-character public limit.'};
+    setField(next,'time',display,changed,'Start Time');
+    setField(next,'startTime',clock||undefined,changed,'Start Time');
+  }
+  if(fields.has('End Time')) setField(next,'endTime',String(row?.['End Time']||'').trim()||undefined,changed,'End Time');
+  if(fields.has('Status')) setField(next,'notionStatus',row?.Status||undefined,changed,'Status');
+  if(fields.has('Fixed')) setField(next,'notionFixed',row?.Fixed===true,changed,'Fixed');
+  if(fields.has('Flexibility')) setField(next,'notionFlexibility',row?.Flexibility||undefined,changed,'Flexibility');
+  if(fields.has('Area')) setField(next,'notionArea',String(row?.Area||'').trim()||undefined,changed,'Area');
+  if(fields.has('Type')) setField(next,'notionType',row?.Type||undefined,changed,'Type');
+  if(fields.has('City')) setField(next,'notionCity',String(row?.City||'').trim()||undefined,changed,'City');
+  return {item:next,changed:[...changed]};
+}
+
 export function timeDetail(value){
   const raw=String(value||'').trim();
   const clock=primaryClock(raw);

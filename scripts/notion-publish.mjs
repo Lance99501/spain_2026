@@ -1,7 +1,7 @@
 import {mkdir,readdir,readFile,writeFile} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {buildManagedItem,buildTravelHint,insertItemChronologically,isSafeAutoCreateRow,mappedStartTime,likelyDuplicateOnDay,mergeManagedItem,primaryClock} from './notion-public-item.mjs';
+import {buildManagedItem,buildTravelHint,insertItemChronologically,isSafeAutoCreateRow,mappedStartTime,likelyDuplicateOnDay,mergeManagedItem,primaryClock,syncMappedPublicItem} from './notion-public-item.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
@@ -125,8 +125,14 @@ async function main(){
       }
       if(link.targetType!=='item'){addBlock(report,'Itinerary',row,link.targetId,`Unsupported targetType: ${link.targetType}`);continue;}
       const entry=itemById.get(link.targetId);if(!entry){addBlock(report,'Itinerary',row,link.targetId,'Mapped item does not exist in GitHub.');continue;}if(row.Date!==entry.day.date){addBlock(report,'Itinerary',row,link.targetId,`Date mismatch: Notion=${row.Date}, GitHub=${entry.day.date}. Automatic item moves are disabled.`);continue;}
+      if(Array.isArray(link.syncPublicFields)&&link.syncPublicFields.includes('City')&&normalize(row.City)!==normalize(entry.day.city)){addBlock(report,'Itinerary',row,link.targetId,`City mismatch: Notion=${row.City||'—'}, public day=${entry.day.city}.`);continue;}
       const notionStatus=status(row.Status),githubStatus=itemStatus(entry.item,ticketById);if(githubStatus==='confirmed'&&notionStatus!=='confirmed'){addBlock(report,'Itinerary',row,link.targetId,`Confirmed downgrade guard: Notion=${notionStatus||'unknown'}, GitHub=confirmed.`);continue;}
-      const notionTime=mappedStartTime(row,link),githubTime=itemStart(entry.item);if(/^\d{2}:\d{2}$/.test(notionTime||'')&&githubTime&&notionTime!==githubTime){const protectedTime=githubStatus==='confirmed'||row.Fixed===true||Boolean(entry.item.ticketId);if(protectedTime){addBlock(report,'Itinerary',row,link.targetId,`Protected time mismatch: Notion=${notionTime}, GitHub=${githubTime}. Confirmed / Fixed / ticketed times require manual verification.`);continue;}entry.item.time=notionTime;entry.item.startTime=notionTime;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Start time ${githubTime||'—'} → ${notionTime}.`);}
+      const notionTime=mappedStartTime(row,link),githubTime=itemStart(entry.item);if(/^\d{2}:\d{2}$/.test(notionTime||'')&&githubTime&&notionTime!==githubTime){const protectedTime=githubStatus==='confirmed'||row.Fixed===true||Boolean(entry.item.ticketId);if(protectedTime){addBlock(report,'Itinerary',row,link.targetId,`Protected time mismatch: Notion=${notionTime}, GitHub=${githubTime}. Confirmed / Fixed / ticketed times require manual verification.`);continue;}if(!link.syncPublicFields?.includes('Start Time')){entry.item.time=notionTime;entry.item.startTime=notionTime;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Start time ${githubTime||'—'} → ${notionTime}.`);}}
+      const publicSync=syncMappedPublicItem(entry.item,row,link);
+      if(publicSync.error){addBlock(report,'Itinerary',row,link.targetId,`Public-field sync blocked: ${publicSync.error}`);continue;}
+      const protectedPublicFields=publicSync.changed.filter(field=>['Name','Start Time','End Time','Area','Type','City'].includes(field));
+      if(protectedPublicFields.length&&(githubStatus==='confirmed'||row.Fixed===true||Boolean(entry.item.ticketId))){addBlock(report,'Itinerary',row,link.targetId,`Protected public-field mismatch: ${protectedPublicFields.join(', ')}. Confirmed / Fixed / ticketed items require manual verification.`);continue;}
+      if(publicSync.changed.length){const index=entry.day.items.indexOf(entry.item);entry.day.items[index]=publicSync.item;entry.item=publicSync.item;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Synced public fields: ${publicSync.changed.join(', ')}.`);}
       if(entry.item.transport&&notionStatus==='confirmed'&&status(entry.item.transport.status)!=='confirmed'){entry.item.transport.status='confirmed';changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,'Transport status promoted to confirmed.');}
       if(link.sourceId&&entry.item.sourceItineraryId!==link.sourceId){entry.item.sourceItineraryId=link.sourceId;changedDayFiles.add(entry.name);addChange(report,'Itinerary',link.targetId,`Linked ${link.sourceId} to item.`);}
       const inlineHint=buildTravelHint(row);

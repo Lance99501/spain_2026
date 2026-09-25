@@ -5,6 +5,7 @@ import {test} from 'node:test';
 import {validateBootstrapData} from '../assets/js/data/validate.js';
 import {MAIN_CITY_GROUPS,mainCity} from '../assets/js/city-groups.js';
 import {dateInTripTimeZone,timeInTripTimeZone,tripTimeZoneAt} from '../assets/js/device-time.js';
+import {renderLocalizedText} from '../assets/js/place-language.js';
 import {resolveWeatherLocation} from '../assets/js/weather.js';
 
 async function loadBootstrap(){
@@ -155,6 +156,13 @@ test('day-trip cities remain grouped under their lodging bases',()=>{
   assert.ok(MAIN_CITY_GROUPS.Sevilla.includes('Cordoba'));
   assert.equal(mainCity('Toledo'),'Madrid');
   assert.ok(MAIN_CITY_GROUPS.Madrid.includes('Toledo'));
+});
+
+test('Madrid flexible route names remain translatable after Notion sync',()=>{
+  const html=renderLocalizedText('Retiro＋Puerta de Alcalá＋Cibeles｜城市景觀','2026-10-23');
+  assert.match(html,/data-name-zh="麗池公園"/);
+  assert.match(html,/data-name-zh="阿爾卡拉門"/);
+  assert.match(html,/data-name-zh="西貝萊斯廣場"/);
 });
 
 test('all currently locked tickets remain confirmed after the data refactor',async()=>{
