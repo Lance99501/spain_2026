@@ -14,7 +14,7 @@
     "test:smoke:headed": "playwright test --headed",
     "build:data": "node scripts/build-data.mjs",
     "check:data": "node scripts/build-data.mjs --check",
-    "check:publisher": "node --check scripts/notion-preview.mjs && node --check scripts/notion-preview-runner.mjs && node --check scripts/notion-preview-normalize.mjs && node --check scripts/notion-preview-gate.mjs && node --check scripts/notion-publish.mjs && node --check scripts/notion-public-item.mjs && node --check scripts/apply-hotel-overrides.mjs && node --test tests/notion-publisher-links.test.mjs tests/notion-preview-gate.test.mjs tests/notion-preview-normalize.test.mjs tests/notion-public-item.test.mjs && node --test tests/pages-publish.test.mjs",
+    "check:publisher": "node --check scripts/notion-preview.mjs && node --check scripts/notion-preview-runner.mjs && node --check scripts/notion-preview-normalize.mjs && node --check scripts/notion-preview-gate.mjs && node --check scripts/notion-publish.mjs && node --check scripts/notion-public-item.mjs && node --check scripts/notion-day-swap.mjs && node --check scripts/apply-hotel-overrides.mjs && node --test tests/notion-publisher-links.test.mjs tests/notion-preview-gate.test.mjs tests/notion-preview-normalize.test.mjs tests/notion-public-item.test.mjs tests/notion-day-swap.test.mjs && node --test tests/pages-publish.test.mjs",
     "preview:notion": "node scripts/notion-preview-runner.mjs",
     "publish:notion": "node scripts/notion-publish.mjs"
   },

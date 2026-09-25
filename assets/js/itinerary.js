@@ -146,6 +146,7 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
     const body=`<ul class="timeline">${day.items.map(item=>`<li data-item-id="${escapeHtml(item.id)}"><time>${escapeHtml(item.time)}</time><p>${renderSegments(item.segments,item,placeById,ticketById)}${item.noteSegments?`<em>${renderSegments(item.noteSegments,item,placeById,ticketById,{allowTicket:false})}</em>`:''}${renderTravelHint(item)}</p></li>`).join('')}</ul>
       <div class="tags">${day.tags.map(tag=>`<span class="tag ${escapeHtml(tag.tone)}">${renderLocalizedText(tag.text,day)}</span>`).join('')}</div>
       ${day.note?`<div class="day-note">${renderLocalizedText(day.note,day)}</div>`:''}
+      ${day.dateNote?`<div class="day-note">${renderLocalizedText(day.dateNote,day)}</div>`:''}
       ${renderFlexHint(day)}`;
 
     return `<article class="day${day.flexPair?' flex-day':''}${expandState?' open':''}" data-city="${escapeHtml(day.city)}" data-day-id="${escapeHtml(day.id)}"${flexAttrs}>

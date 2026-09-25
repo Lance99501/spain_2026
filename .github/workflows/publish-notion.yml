@@ -80,6 +80,7 @@ jobs:
           node --check scripts/notion-preview-normalize.mjs
           node --check scripts/notion-preview-gate.mjs
           node --check scripts/notion-public-item.mjs
+          node --check scripts/notion-day-swap.mjs
 
       - name: Run read-only preview
         env:

@@ -1,3 +1,4 @@
+import {planDaySwaps,applyDaySwaps} from './notion-day-swap.mjs';
 import {mkdir,readdir,readFile,writeFile} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -250,8 +251,8 @@ async function main(){
   const placeById=new Map(places.map(place=>[place.id,place]));
   const ticketById=new Map(tickets.map(ticket=>[ticket.id,ticket]));
   const hotelByPlaceId=new Map(hotels.map(hotel=>[hotel.placeId,hotel]));
-  const currentItems=days.flatMap(day=>day.items.map(item=>({date:day.date,dayId:day.id,city:day.city,item})));
-  const itemById=new Map(currentItems.map(entry=>[entry.item.id,entry]));
+  let currentItems=days.flatMap(day=>day.items.map(item=>({date:day.date,dayId:day.id,city:day.city,item})));
+  let itemById=new Map(currentItems.map(entry=>[entry.item.id,entry]));
   const dayById=new Map(days.map(day=>[day.id,day]));
   const current={days,items:currentItems};
   const inside=date=>typeof date==='string'&&date>=trip.departDate&&date<=trip.endDate;
@@ -259,8 +260,16 @@ async function main(){
 
   if(args.scope==='all'||args.scope==='itinerary'){
     const rows=(await notionQuery({token,apiVersion:cfg.apiVersion,dataSourceId:cfg.dataSources.itinerary,propertyNames:cfg.properties.itinerary})).map(row=>({...row,Date:row.Date?.start||null})).filter(row=>inside(row.Date));
+    const swapPlan=planDaySwaps({days:days.map((day,i)=>({name:files[i],day})),rows,links,hotels});
+    if(!swapPlan.blockers.length){
+      applyDaySwaps(days.map((day,i)=>({name:files[i],day})),swapPlan.swaps);
+      currentItems=days.flatMap(day=>day.items.map(item=>({date:day.date,dayId:day.id,city:day.city,item})));
+      itemById=new Map(currentItems.map(entry=>[entry.item.id,entry]));
+      current.items=currentItems;
+    }
     const result={total:rows.length,locked:rows.filter(row=>status(row.Status)==='confirmed'||row.Fixed===true).length,matched:{explicit:0,linked:0,heuristic:0,day:0,ambiguous:0,unmatched:0},autoCreateCandidates:0,reviews:[],suggestedLinks:[]};
 
+    for(const message of swapPlan.blockers) result.reviews.push({name:'整日交換',sourceId:'—',date:'—',match:'day-swap',message:`BLOCK: ${message}`});
     for(const row of rows){
       const explicit=links.itinerary?.[row.pageId];
       if(explicit){
