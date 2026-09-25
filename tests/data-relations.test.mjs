@@ -150,7 +150,9 @@ test('Today weather follows each day focus city, including day trips',async()=>{
   assert.ok(mapConfig.cityCenter.Toledo,'Toledo must be ready for a future focusCity assignment');
 });
 
-test('Toledo remains a dormant Madrid day-trip option',()=>{
+test('day-trip cities remain grouped under their lodging bases',()=>{
+  assert.equal(mainCity('Cordoba'),'Sevilla');
+  assert.ok(MAIN_CITY_GROUPS.Sevilla.includes('Cordoba'));
   assert.equal(mainCity('Toledo'),'Madrid');
   assert.ok(MAIN_CITY_GROUPS.Madrid.includes('Toledo'));
 });

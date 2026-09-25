@@ -34,6 +34,7 @@ test('safe flexible attractions can be auto-created but protected types/statuses
   assert.equal(isSafeAutoCreateRow({...row,Status:'Confirmed'},policy),false);
   assert.equal(isSafeAutoCreateRow({...row,Fixed:true},policy),false);
   assert.equal(isSafeAutoCreateRow({...row,Type:'Transit'},policy),false);
+  assert.equal(isSafeAutoCreateRow({...row,Status:'Idea',Flexibility:'Idea',Type:'Day trip'},policy),false);
   assert.equal(isSafeAutoCreateRow({...row,Type:'Hotel'},policy),false);
   assert.equal(isSafeAutoCreateRow({...row,'Itinerary ID':'ITN-62'},policy),false);
 });

@@ -136,6 +136,10 @@ test('compact mobile layout keeps city switching and map navigation usable',asyn
   await page.locator('[data-nav-target="stay"]').click();
   await expect(page.locator('#hotelsSection')).toBeInViewport();
   await expect(page.locator('#placeLanguageToggle')).toBeVisible();
+  await expect(page.locator('[data-mapcity="Sevilla"]')).toHaveText('Sevilla＋Córdoba');
+  await expect(page.locator('[data-mapcity="Cordoba"]')).toHaveCount(0);
+  await page.locator('[data-mapcity="Sevilla"]').click();
+  await expect(page.locator('[data-mapcity="Sevilla"]')).toHaveAttribute('aria-pressed','true');
   await expect(page.locator('[data-mapcity="Madrid"]')).toHaveText('Madrid＋Segovia');
   await expect(page.locator('[data-mapcity="Segovia"]')).toHaveCount(0);
   await page.locator('[data-mapcity="Madrid"]').click();
