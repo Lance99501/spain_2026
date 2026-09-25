@@ -246,7 +246,7 @@ test('Madrid weather flex pair keeps each day primary and shows a swap hint',asy
   await expect(day21.locator('.day-map')).toHaveAttribute('href',/Palacio%20Real/);
 
   await day23.locator('.day-main').click();
-  await expect(day23.locator('.day-title')).toContainText('Prado＋Retiro');
+  await expect(day23.locator('.day-title')).toContainText('普拉多博物館＋麗池公園');
   await expect(day23).toContainText('普拉多博物館');
   await expect(day23).not.toContainText('馬德里王宮');
   await expect(day23.locator('.flex-pair-hint')).toContainText('可與 10/21 整日互換');
