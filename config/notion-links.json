@@ -121,6 +121,32 @@
       "targetId": "item-2026-10-16-02",
       "note": "Mezquita-Catedral｜Córdoba 核心"
     },
+    "3b891e9f-a395-819d-9006-c0c55205093c": {
+      "sourceId": "ITN-50",
+      "targetType": "item",
+      "targetId": "item-2026-10-21-01",
+      "syncPrimaryClock": true,
+      "note": "Royal Madrid｜Palacio Real＋Almudena｜Madrid A/B"
+    },
+    "3b891e9f-a395-8131-98ac-c28f6bbaf78a": {
+      "sourceId": "ITN-51",
+      "targetType": "item",
+      "targetId": "item-2026-10-21-02",
+      "note": "Madrid de los Austrias＋La Latina｜Madrid A/B"
+    },
+    "3b891e9f-a395-812f-a6b3-d1de50b584b3": {
+      "sourceId": "ITN-52",
+      "targetType": "item",
+      "targetId": "item-2026-10-23-01",
+      "syncPrimaryClock": true,
+      "note": "Museo del Prado｜Madrid A/B"
+    },
+    "3b891e9f-a395-81f3-ba97-cd14079b6b22": {
+      "sourceId": "ITN-53",
+      "targetType": "item",
+      "targetId": "item-2026-10-23-02",
+      "note": "Retiro＋Puerta de Alcalá＋Cibeles｜Madrid A/B"
+    },
     "3c191e9f-a395-8107-bdee-d7c4afd44549": {
       "sourceId": "ITN-59",
       "targetType": "hotel",

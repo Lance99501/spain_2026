@@ -2252,7 +2252,8 @@
               "text": "10:00–12:30 基準時段，目前待購票"
             }
           ],
-          "startTime": "10:00"
+          "startTime": "10:00",
+          "sourceItineraryId": "ITN-50"
         },
         {
           "id": "item-2026-10-21-02",
@@ -2261,7 +2262,8 @@
             {
               "text": "Madrid de los Austrias + La Latina"
             }
-          ]
+          ],
+          "sourceItineraryId": "ITN-51"
         }
       ],
       "tags": [

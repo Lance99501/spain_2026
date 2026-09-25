@@ -48,7 +48,7 @@ test('Notion publisher deterministic links resolve to existing GitHub targets',a
 
 test('locked itinerary and reservation lifecycle mappings stay explicit',async()=>{
   const links=await readJson(new URL('../config/notion-links.json',import.meta.url));
-  assert.equal(Object.keys(links.itinerary).length,34);
+  assert.equal(Object.keys(links.itinerary).length,38);
   assert.equal(links.itinerary['3df91e9f-a395-8116-a27d-f181b478c638'].sourceId,'ITN-66');
   assert.equal(links.itinerary['3df91e9f-a395-8116-a27d-f181b478c638'].targetId,'item-2026-10-22-cathedral');
   assert.equal(links.itinerary['3b891e9f-a395-813a-9f28-f164dcaa046e'].sourceId,'ITN-16');
@@ -58,6 +58,26 @@ test('locked itinerary and reservation lifecycle mappings stay explicit',async()
   assert.equal(Object.keys(links.reservations).length,22);
   assert.equal(links.reservations['3b891e9f-a395-8142-9f58-c50ddc4cb872'].ignore,true);
   assert.equal(links.reservations['3db91e9f-a395-81a2-83b2-cacdb93119a2'].hotelPlaceId,'sev-abba-sevilla');
+});
+
+test('Madrid weather-flex rows have stable same-date mappings',async()=>{
+  const links=await readJson(new URL('../config/notion-links.json',import.meta.url));
+  const day21=await readJson(new URL('../data/source/itinerary/2026-10-21.json',import.meta.url));
+  const day23=await readJson(new URL('../data/source/itinerary/2026-10-23.json',import.meta.url));
+  const expected=[
+    ['3b891e9f-a395-819d-9006-c0c55205093c','ITN-50','item-2026-10-21-01'],
+    ['3b891e9f-a395-8131-98ac-c28f6bbaf78a','ITN-51','item-2026-10-21-02'],
+    ['3b891e9f-a395-812f-a6b3-d1de50b584b3','ITN-52','item-2026-10-23-01'],
+    ['3b891e9f-a395-81f3-ba97-cd14079b6b22','ITN-53','item-2026-10-23-02']
+  ];
+  for(const [pageId,sourceId,targetId] of expected){
+    assert.equal(links.itinerary[pageId].sourceId,sourceId);
+    assert.equal(links.itinerary[pageId].targetId,targetId);
+  }
+  assert.deepEqual(day21.items.map(item=>item.sourceItineraryId),['ITN-50','ITN-51']);
+  assert.deepEqual(day23.items.map(item=>item.sourceItineraryId),['ITN-52','ITN-53']);
+  assert.equal(day21.flexPair.id,'madrid-weather-21-23');
+  assert.equal(day23.flexPair.id,'madrid-weather-21-23');
 });
 
 test('multi-ticket, shared-ticket, hotel, and ignore policies are encoded explicitly',async()=>{
