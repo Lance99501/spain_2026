@@ -13,8 +13,7 @@
 .today-date-switch{display:inline-flex;gap:3px;padding:3px;margin-bottom:12px;border:1px solid var(--line);border-radius:999px;background:var(--paper-2)}
 .today-date-switch a{min-width:55px;padding:6px 12px;border-radius:999px;text-align:center;text-decoration:none;color:var(--muted);font-size:.76rem;font-weight:750}
 .today-date-switch a[aria-current="page"]{background:var(--card);color:var(--sage);box-shadow:0 2px 7px rgba(58,72,62,.1)}
-.today-date-switch a:focus-visible,.today-copy:focus-visible{outline:2px solid var(--sage);outline-offset:2px}
-.today-copy{border:1px solid var(--line);border-radius:999px;background:var(--card);padding:4px 9px;margin:2px 0 5px;color:var(--sage);font-size:.7rem;font-weight:700;cursor:pointer}
+.today-date-switch a:focus-visible{outline:2px solid var(--sage);outline-offset:2px}
 .today-head{
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;

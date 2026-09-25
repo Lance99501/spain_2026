@@ -2,7 +2,7 @@ import {api} from './api.js';
 import {initTripMap} from './map.js?v=57';
 import {createTicketController} from './ticket.js';
 import {initItinerary} from './itinerary.js?v=58';
-import {initTodayMode} from './today.js?v=59';
+import {initTodayMode} from './today.js?v=60';
 import {initPwa} from './pwa.js';
 import {initAppShell} from './app-shell.js?v=59';
 import {initHotels} from './hotels.js?v=59';
@@ -137,8 +137,7 @@ async function bootstrap(){
       mapConfig:data.mapConfig,
       config:data.config,
       demoContext,
-      ticketController,
-      itineraryController
+      ticketController
     });
 
     initCountdown(data.config,demoContext);

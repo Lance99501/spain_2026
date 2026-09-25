@@ -1,4 +1,3 @@
-import {copyFromButton} from './copy-text.js';
 import {escapeHtml,renderSegments} from './itinerary.js';
 import {initTodayWeather} from './weather.js';
 import {renderPlaceName,renderLocalizedText} from './place-language.js';
@@ -156,7 +155,7 @@ function renderQuickActions(day,hotelEntry,uniqueTickets,{tomorrow=false}={}){
     ?ticketActionText(singleTicket)
     :`🎫 ${dayLabel}票券 ${uniqueTickets.length}`;
 
-  return `<div class="today-actions" aria-label="今日快速操作">
+  return `<div class="today-actions" aria-label="${dayLabel}快速操作">
     <a class="today-action primary" href="${day.mapUrl}" target="_blank" rel="noopener">⌖ ${dayLabel} Maps</a>
 
     ${uniqueTickets.length
@@ -164,10 +163,9 @@ function renderQuickActions(day,hotelEntry,uniqueTickets,{tomorrow=false}={}){
       :''}
 
     ${hotel
-      ?`<a class="today-action" href="${placeMapsUrl(hotel)}" target="_blank" rel="noopener" aria-label="開啟 ${escapeHtml(hotel.name)} 地圖">⌂ 住宿</a>${hotel.address?`<button type="button" class="today-action" data-copy-text="${escapeHtml(hotel.address)}" aria-label="複製 ${escapeHtml(hotel.name)} 地址">複製住宿地址</button>`:''}`
+      ?`<a class="today-action" href="${placeMapsUrl(hotel)}" target="_blank" rel="noopener" aria-label="開啟 ${escapeHtml(hotel.name)} 地圖">⌂ 住宿</a>`
       :''}
 
-    <button type="button" class="today-action" data-action="all">☰ 全部行程</button>
   </div>`;
 }
 
@@ -179,8 +177,7 @@ export function initTodayMode({
   mapConfig,
   config={},
   demoContext,
-  ticketController,
-  itineraryController
+  ticketController
 }){
   const section=document.getElementById('todaySection');
   const root=document.getElementById('todayRoot');
@@ -299,14 +296,8 @@ export function initTodayMode({
         ?`抵達 ${renderPlaceName(next.place)}`
         :escapeHtml(next.label);
 
-    const nextPlace=next.type==='arrival'?next.place:next.item.transport
-      ?placeById.get(next.item.transport.originPlaceId)
-      :next.item.segments.map(segment=>placeById.get(segment.placeId)).find(Boolean);
-    const nextAddress=nextPlace?.address&&nextPlace.address!==nextPlace.city
-      ?nextPlace.address:(nextPlace?.name||plainItemText(next.item));
     nextNode.innerHTML=`<b>${escapeHtml(String(Math.floor(next.minutes/60)).padStart(2,'0'))}:${escapeHtml(String(next.minutes%60).padStart(2,'0'))}</b>
       <p>${title}</p>
-      ${nextAddress?`<button type="button" class="today-copy" data-copy-text="${escapeHtml(nextAddress)}" aria-label="複製下一站地址或名稱">複製下一站</button>`:''}
       <small>${showTomorrow?'明日首站':escapeHtml(countdownLabel(diff))}</small>`;
   }
 
@@ -317,8 +308,6 @@ export function initTodayMode({
   }
 
   root.addEventListener('click',event=>{
-    const copyButton=event.target.closest('[data-copy-text]');
-    if(copyButton){copyFromButton(copyButton);return;}
     const ticketButton=event.target.closest('[data-ticket-id]');
     if(ticketButton){
       event.preventDefault();
@@ -341,9 +330,6 @@ export function initTodayMode({
       return;
     }
 
-    if(event.target.closest('[data-action="all"]')){
-      itineraryController.showDay(day.id);
-    }
   });
 
   window.addEventListener('pagehide',()=>{

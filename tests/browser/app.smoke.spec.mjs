@@ -30,7 +30,7 @@ test('the itinerary renders and its primary controls work',async({page})=>{
   expect(pageErrors).toEqual([]);
 });
 
-test('preview Today Mode can open the full itinerary',async({page})=>{
+test('preview Today Mode can reach the full itinerary from bottom navigation',async({page})=>{
   await page.goto('/?previewDate=2026-10-19');
 
   const todaySection=page.locator('#todaySection');
@@ -38,10 +38,13 @@ test('preview Today Mode can open the full itinerary',async({page})=>{
   await expect(todaySection.locator('.today-kicker')).toContainText('PREVIEW');
   await expect(todaySection.locator('.next-panel > span')).toHaveText('下一個固定時間');
 
-  await page.getByRole('button',{name:/完整今日行程|全部行程/}).click();
+  await expect(page.locator('#todayRoot [data-action="all"]')).toHaveCount(0);
+  await page.locator('#cityGrid [data-city="Granada"]').click();
+  await page.locator('[data-nav-target="trip"]').click();
   await expect(page.locator('#itinerary')).toBeInViewport();
   const dayId=await page.locator('#todayRoot .today-card').getAttribute('data-day-id');
   const day=page.locator(`#days .day[data-day-id="${dayId}"]`);
+  await day.locator('.day-main').click();
   await expect(day).toHaveClass(/\bopen\b/);
   await expect(day.locator('.day-main')).toHaveAttribute('aria-expanded','true');
   await expect(day.locator('.day-main')).toBeInViewport();
@@ -182,10 +185,11 @@ test('mobile Demo control stays in the header and opens usable settings',async({
   await expect(page.locator('#demoApply')).toBeInViewport();
   await page.keyboard.press('Escape');
   await expect(page.locator('#demoPanelBody')).toBeHidden();
-  await page.locator('[data-action="all"]').click();
+  await page.locator('[data-nav-target="trip"]').click();
   await page.waitForTimeout(1400);
   const dayId=await page.locator('#todayRoot .today-card').getAttribute('data-day-id');
   const day=page.locator(`#days .day[data-day-id="${dayId}"]`);
+  await day.locator('.day-main').click();
   await expect(day).toHaveClass(/\bopen\b/);
   const top=await day.evaluate(n=>n.getBoundingClientRect().top);
   const toolsBottom=await page.locator('.tools').evaluate(n=>n.getBoundingClientRect().bottom);
@@ -205,8 +209,9 @@ test('trip runner follows the demo day and respects reduced motion',async({page}
 
 test('website labels translate raw synced text without changing source data',async({page})=>{
   await page.goto('/?demo=1&previewDate=2026-10-20');
-  await page.locator('[data-action="all"]').click();
+  await page.locator('[data-nav-target="trip"]').click();
   const day=page.locator('#days [data-day-id="day-2026-10-20"]');
+  await day.locator('.day-main').click();
   await expect(day).toContainText('格拉納達主教座堂 / 皇家禮拜堂 / 阿爾凱塞利亞市集');
   await expect(page.locator('#todayHeading')).toContainText('格拉納達 → 馬德里');
   await expect(day).toContainText('ALVIA 2087 Confort');
@@ -258,8 +263,7 @@ test('Madrid weather flex pair keeps each day primary and shows a swap hint',asy
   expect(await page.evaluate(()=>localStorage.getItem('spain2026:flex:madrid-weather-21-23'))).toBeNull();
 });
 
-test('Today and tomorrow switch keeps the correct route, station and lodging copy targets',async({page,context})=>{
-  await context.grantPermissions(['clipboard-read','clipboard-write']);
+test('Today and tomorrow switch keeps the correct route without extra actions',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   await page.goto('/?previewDate=2026-10-21');
   await expect(page.locator('#todayHeading')).toHaveText('馬德里王宮日');
@@ -269,15 +273,8 @@ test('Today and tomorrow switch keeps the correct route, station and lodging cop
   await expect(page.locator('#todayHeading')).toHaveText('塞哥維亞 一日遊');
   await expect(page.locator('.today-date-switch [aria-current="page"]')).toHaveText('明日');
   await expect(page.locator('.next-panel > span')).toHaveText('明日首個時間');
-  const firstStop=page.locator('.today-copy');
-  await expect(firstStop).toHaveAttribute('data-copy-text',/Chamartín/);
-  await firstStop.click();
-  await expect(firstStop).toHaveText('已複製');
-  expect(await page.evaluate(()=>navigator.clipboard.readText())).toContain('Chamartín');
-  const stay=page.locator('#todayRoot [aria-label^="複製 "][aria-label$=" 地址"]');
-  await expect(stay).toHaveAttribute('data-copy-text',/Madrid/);
-  await stay.click();
-  expect(await page.evaluate(()=>navigator.clipboard.readText())).toContain('Madrid');
+  await expect(page.locator('#todayRoot .today-copy, #todayRoot [data-copy-text], #todayRoot [data-action="all"]')).toHaveCount(0);
+  await expect(page.locator('#todayRoot .today-action')).toHaveCount(3);
   await page.locator('.today-date-switch a').filter({hasText:'今日'}).click();
   await expect(page.locator('#todayHeading')).toHaveText('馬德里王宮日');
 });
