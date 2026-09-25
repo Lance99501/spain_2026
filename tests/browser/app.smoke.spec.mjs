@@ -216,7 +216,7 @@ test('website labels translate raw synced text without changing source data',asy
   expect(raw.itinerary.find(d=>d.date==='2026-10-20').items[0].segments[0].text).toBe('Granada Cathedral / Capilla Real / Alcaicería');
   await page.locator('#placeLanguageToggle').click();
   await page.locator('#expandAll').click();
-  await expect(page.locator('#days [data-day-id="day-2026-10-23"]')).toContainText('阿爾卡拉門 → 西貝萊斯廣場');
+  await expect(page.locator('#days [data-day-id="day-2026-10-23"]')).toContainText('麗池公園＋阿爾卡拉門＋西貝萊斯廣場');
 });
 
 test('day-trip Today cards use the focus city and avoid bilingual duplicates',async({page})=>{
