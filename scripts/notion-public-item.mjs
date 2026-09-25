@@ -42,9 +42,15 @@ export function syncMappedPublicItem(existing,row,link={}){
     const anchored=(existing?.segments||[]).filter(segment=>segment?.placeId);
     const placeIds=[...new Set(anchored.map(segment=>segment.placeId))];
     if(placeIds.length>1) return {item:existing,changed:[],error:'Name sync cannot safely flatten an item with multiple Maps place anchors.'};
-    const segment={text:publicName};
-    if(placeIds[0]) segment.placeId=placeIds[0];
-    if(JSON.stringify(next.segments||[])!==JSON.stringify([segment])){next.segments=[segment];changed.add('Name');}
+    const segments=[];
+    if(placeIds[0]){
+      const anchor=String(link.nameAnchor||'').trim();
+      if(!anchor||!publicName.startsWith(anchor)) return {item:existing,changed:[],error:'Name sync with a Maps anchor requires a matching nameAnchor prefix.'};
+      segments.push({text:anchor,placeId:placeIds[0]});
+      const remainder=publicName.slice(anchor.length);
+      if(remainder) segments.push({text:remainder});
+    }else segments.push({text:publicName});
+    if(JSON.stringify(next.segments||[])!==JSON.stringify(segments)){next.segments=segments;changed.add('Name');}
     setField(next,'notionName',notionName,changed,'Name');
   }
 

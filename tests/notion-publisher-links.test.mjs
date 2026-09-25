@@ -76,6 +76,8 @@ test('Madrid weather-flex rows have stable same-date mappings',async()=>{
     assert.deepEqual(links.itinerary[pageId].syncPublicFields,['Name','Start Time','End Time','Status','Fixed','Flexibility','Area','Type','City']);
   }
   assert.equal(links.itinerary['3b891e9f-a395-819d-9006-c0c55205093c'].stripNamePrefix,'Royal Madrid｜');
+  assert.equal(links.itinerary['3b891e9f-a395-812f-a6b3-d1de50b584b3'].nameAnchor,'Museo del Prado');
+  assert.equal(links.itinerary['3b891e9f-a395-81f3-ba97-cd14079b6b22'].nameAnchor,'Retiro');
   assert.deepEqual(day21.items.map(item=>item.sourceItineraryId),['ITN-50','ITN-51']);
   assert.deepEqual(day23.items.map(item=>item.sourceItineraryId),['ITN-52','ITN-53']);
   assert.equal(day21.flexPair.id,'madrid-weather-21-23');

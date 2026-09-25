@@ -17,8 +17,11 @@
       "time": "10:00",
       "segments": [
         {
-          "text": "Museo del Prado｜藝術主日",
+          "text": "Museo del Prado",
           "placeId": "mad-museo-del-prado"
+        },
+        {
+          "text": "｜藝術主日"
         }
       ],
       "noteSegments": [
@@ -42,8 +45,11 @@
       "time": "Prado 後",
       "segments": [
         {
-          "text": "Retiro＋Puerta de Alcalá＋Cibeles｜城市景觀",
+          "text": "Retiro",
           "placeId": "mad-parque-del-retiro"
+        },
+        {
+          "text": "＋Puerta de Alcalá＋Cibeles｜城市景觀"
         }
       ],
       "sourceItineraryId": "ITN-53",

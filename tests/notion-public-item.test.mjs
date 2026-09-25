@@ -138,10 +138,13 @@ test('same-date public-field sync preserves one Maps anchor and copies only allo
     Status:'Planned',Fixed:false,Flexibility:'Flexible',Area:'Retiro / Paseo del Prado / Cibeles',
     Type:'Free time',City:'Madrid',Notes:'must remain private'
   };
-  const link={syncPublicFields:['Name','Start Time','End Time','Status','Fixed','Flexibility','Area','Type','City']};
+  const link={syncPublicFields:['Name','Start Time','End Time','Status','Fixed','Flexibility','Area','Type','City'],nameAnchor:'Retiro'};
   const result=syncMappedPublicItem(existing,row,link);
   assert.equal(result.error,undefined);
-  assert.deepEqual(result.item.segments,[{text:row.Name,placeId:'mad-parque-del-retiro'}]);
+  assert.deepEqual(result.item.segments,[
+    {text:'Retiro',placeId:'mad-parque-del-retiro'},
+    {text:'＋Puerta de Alcalá＋Cibeles｜城市景觀'}
+  ]);
   assert.equal(result.item.time,'Prado 後');
   assert.equal('startTime' in result.item,false);
   assert.equal(result.item.notionArea,row.Area);
@@ -165,4 +168,11 @@ test('mapped Name sync can strip an internal prefix but blocks multiple Maps anc
     {syncPublicFields:['Name']}
   );
   assert.match(blocked.error,/multiple Maps place anchors/);
+
+  const missingAnchor=syncMappedPublicItem(
+    {id:'route',segments:[{text:'Retiro',placeId:'mad-parque-del-retiro'}]},
+    {Name:'Retiro＋Puerta de Alcalá'},
+    {syncPublicFields:['Name']}
+  );
+  assert.match(missingAnchor.error,/requires a matching nameAnchor/);
 });

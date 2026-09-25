@@ -143,6 +143,7 @@
       "targetId": "item-2026-10-23-01",
       "syncPrimaryClock": true,
       "syncPublicFields": ["Name", "Start Time", "End Time", "Status", "Fixed", "Flexibility", "Area", "Type", "City"],
+      "nameAnchor": "Museo del Prado",
       "note": "Museo del Prado｜Madrid A/B"
     },
     "3b891e9f-a395-81f3-ba97-cd14079b6b22": {
@@ -150,6 +151,7 @@
       "targetType": "item",
       "targetId": "item-2026-10-23-02",
       "syncPublicFields": ["Name", "Start Time", "End Time", "Status", "Fixed", "Flexibility", "Area", "Type", "City"],
+      "nameAnchor": "Retiro",
       "note": "Retiro＋Puerta de Alcalá＋Cibeles｜Madrid A/B"
     },
     "3c191e9f-a395-8107-bdee-d7c4afd44549": {

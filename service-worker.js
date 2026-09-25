@@ -1,4 +1,4 @@
-const CACHE_VERSION='spain2026-20260925-v60';
+const CACHE_VERSION='spain2026-20260925-v61';
 const APP_CACHE=`${CACHE_VERSION}-app`;
 const RUNTIME_CACHE=`${CACHE_VERSION}-runtime`;
 const TILE_CACHE=`${CACHE_VERSION}-tiles`;
