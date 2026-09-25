@@ -266,7 +266,7 @@ test('Today and tomorrow switch keeps the correct route, station and lodging cop
   await expect(page.locator('.today-date-switch [aria-current="page"]')).toHaveText('今日');
   await expect(page.locator('#hotels .hotel-room')).toHaveCount(0);
   await page.locator('.today-date-switch a').filter({hasText:'明日'}).click();
-  await expect(page.locator('#todayHeading')).toHaveText('Segovia 一日遊');
+  await expect(page.locator('#todayHeading')).toHaveText('塞哥維亞 一日遊');
   await expect(page.locator('.today-date-switch [aria-current="page"]')).toHaveText('明日');
   await expect(page.locator('.next-panel > span')).toHaveText('明日首個時間');
   const firstStop=page.locator('.today-copy');
