@@ -241,15 +241,10 @@ body.city-dock-visible .tools{top:calc(env(safe-area-inset-top) + 72px)}
 }
 .hotel b{display:block;font-size:1rem}
 .hotel p{margin:5px 0 0;color:var(--muted);font-size:.76rem;line-height:1.45}
-.hotel-room{
-  display:inline-flex;
-  margin-top:10px;
-  border-radius:999px;
-  background:var(--paper-2);
-  padding:5px 9px;
-  color:var(--muted);
-  font-size:.7rem;
-}
+.hotel-actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.hotel-actions a,.hotel-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:34px}
+.hotel-copy{background:var(--card);cursor:pointer;color:var(--sage);font-size:.74rem;font-weight:800;border:1px solid var(--line);border-radius:999px;padding:7px 10px;white-space:nowrap}
+.hotel-copy:focus-visible{outline:2px solid var(--sage);outline-offset:2px}
 .hotel a{
   text-decoration:none;
   color:var(--sage);
@@ -280,7 +275,7 @@ footer{margin-top:26px;padding:18px 0 8px;border-top:1px solid var(--line);font-
 }
 @media (max-width:480px){
   .hotel{grid-template-columns:1fr;gap:10px;padding:14px}
-  .hotel a{justify-self:start}
+  .hotel-actions{justify-self:start}
   .city-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .city-card{padding:0;border-radius:18px}
   .city-card .city-copy{padding:10px 11px 12px}

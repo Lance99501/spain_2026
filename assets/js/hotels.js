@@ -1,3 +1,4 @@
+import {copyFromButton} from './copy-text.js';
 const CITY_ORDER=['Barcelona','Sevilla','Granada','Madrid'];
 
 const googleSearch=query=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
@@ -38,7 +39,7 @@ export function initHotels({hotels,places,itineraryController}){
       return `<div class="hotel-page-empty">目前沒有 ${escapeHtml(city)} 的住宿資料。</div>`;
     }
 
-    const {hotel,place}=entry;
+    const {place}=entry;
     return `<article class="hotel hotel-featured">
       <div class="hotel-main">
         <div class="hotel-city-line">
@@ -47,9 +48,8 @@ export function initHotels({hotels,places,itineraryController}){
         </div>
         <b>${escapeHtml(place.name)}</b>
         <p>${escapeHtml(place.address||'')}</p>
-        <div class="hotel-room">${escapeHtml(hotel.room)}</div>
       </div>
-      <a target="_blank" rel="noopener" href="${googleSearch(place.name+' '+place.city)}">⌖ Maps ↗</a>
+      <div class="hotel-actions"><a target="_blank" rel="noopener" href="${googleSearch(place.name+' '+place.city)}">⌖ Maps ↗</a>${place.address?`<button type="button" class="hotel-copy" data-copy-text="${escapeHtml(place.address)}" aria-label="複製 ${escapeHtml(place.name)} 地址">複製地址</button>`:''}</div>
     </article>`;
   }
 
@@ -133,6 +133,11 @@ export function initHotels({hotels,places,itineraryController}){
     setCity(city,{behavior:'auto'});
     return city;
   }
+
+  root.addEventListener('click',event=>{
+    const button=event.target.closest('.hotel-copy[data-copy-text]');
+    if(button) copyFromButton(button);
+  });
 
   root.addEventListener('pointerdown',()=>{
     if(root.classList.contains('all-mode')) return;

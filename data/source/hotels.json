@@ -1,7 +1,6 @@
 [
   {
     "placeId": "bcn-hotel-royal-passeig-de-gracia",
-    "room": "Superior Double or Twin Room",
     "checkIn": "2026-10-09",
     "checkOut": "2026-10-14",
     "sourceCheckInItineraryId": "ITN-2",
@@ -9,7 +8,6 @@
   },
   {
     "placeId": "sev-abba-sevilla",
-    "room": "Two-Bedroom Apartment",
     "checkIn": "2026-10-14",
     "checkOut": "2026-10-18",
     "sourceCheckInItineraryId": "ITN-5",
@@ -17,7 +15,6 @@
   },
   {
     "placeId": "grx-hotel-navas",
-    "room": "Standard Triple Room",
     "checkIn": "2026-10-18",
     "checkOut": "2026-10-20",
     "sourceCheckInItineraryId": "ITN-7",
@@ -25,7 +22,6 @@
   },
   {
     "placeId": "mad-hotel-acta-madfor",
-    "room": "Standard Triple Room",
     "checkIn": "2026-10-20",
     "checkOut": "2026-10-25",
     "sourceCheckInItineraryId": "ITN-59",

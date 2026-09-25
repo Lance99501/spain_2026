@@ -1,3 +1,4 @@
+import {copyFromButton} from './copy-text.js';
 import {escapeHtml,renderSegments} from './itinerary.js';
 import {initTodayWeather} from './weather.js';
 import {renderPlaceName,renderLocalizedText} from './place-language.js';
@@ -93,7 +94,7 @@ function buildMoments(day,placeById){
   return moments.sort((a,b)=>a.minutes-b.minutes);
 }
 
-function renderTransport(day,placeById,ticketById){
+function renderTransport(day,placeById,ticketById,{tomorrow=false}={}){
   const transportItems=day.items.filter(item=>item.transport);
   if(!transportItems.length) return '';
 
@@ -101,7 +102,7 @@ function renderTransport(day,placeById,ticketById){
     transportItems.map(item=>item.ticketId).filter(Boolean)
   )];
 
-  return `<section class="today-transport" aria-label="今日交通">
+  return `<section class="today-transport" aria-label="${tomorrow?'明日':'今日'}交通">
     <div class="today-transport-head">
       <span>${transportDayLabel(transportItems)}</span>
       <small>${transportKindLabel(transportItems[0].transport.kind)}</small>
@@ -147,22 +148,23 @@ function renderTransport(day,placeById,ticketById){
   </section>`;
 }
 
-function renderQuickActions(day,hotelEntry,uniqueTickets){
+function renderQuickActions(day,hotelEntry,uniqueTickets,{tomorrow=false}={}){
   const hotel=hotelEntry?.place;
   const singleTicket=uniqueTickets.length===1?uniqueTickets[0]:null;
+  const dayLabel=tomorrow?'明日':'今日';
   const ticketLabel=singleTicket
     ?ticketActionText(singleTicket)
-    :`🎫 今日票券 ${uniqueTickets.length}`;
+    :`🎫 ${dayLabel}票券 ${uniqueTickets.length}`;
 
   return `<div class="today-actions" aria-label="今日快速操作">
-    <a class="today-action primary" href="${day.mapUrl}" target="_blank" rel="noopener">⌖ 今日 Maps</a>
+    <a class="today-action primary" href="${day.mapUrl}" target="_blank" rel="noopener">⌖ ${dayLabel} Maps</a>
 
     ${uniqueTickets.length
       ?`<button type="button" class="today-action" data-action="tickets">${escapeHtml(ticketLabel)}</button>`
       :''}
 
     ${hotel
-      ?`<a class="today-action" href="${placeMapsUrl(hotel)}" target="_blank" rel="noopener" aria-label="開啟 ${escapeHtml(hotel.name)} 地圖">⌂ 住宿</a>`
+      ?`<a class="today-action" href="${placeMapsUrl(hotel)}" target="_blank" rel="noopener" aria-label="開啟 ${escapeHtml(hotel.name)} 地圖">⌂ 住宿</a>${hotel.address?`<button type="button" class="today-action" data-copy-text="${escapeHtml(hotel.address)}" aria-label="複製 ${escapeHtml(hotel.name)} 地址">複製住宿地址</button>`:''}`
       :''}
 
     <button type="button" class="today-action" data-action="all">☰ 全部行程</button>
@@ -186,12 +188,13 @@ export function initTodayMode({
 
   const params=new URLSearchParams(window.location.search);
   const previewDate=demoContext?.previewDate||params.get('previewDate');
-  const validPreview=previewDate&&/^\d{4}-\d{2}-\d{2}$/.test(previewDate)
-    &&itinerary.some(day=>day.date===previewDate);
-
-  const todayDate=validPreview
-    ?previewDate
-    :dateInTripTimeZone(new Date(),config);
+  const validPreview=Boolean(previewDate&&/^\d{4}-\d{2}-\d{2}$/.test(previewDate)
+    &&itinerary.some(day=>day.date===previewDate));
+  const baseDate=validPreview?previewDate:dateInTripTimeZone(new Date(),config);
+  const tomorrowDate=new Date(Date.parse(`${baseDate}T00:00:00Z`)+86400000).toISOString().slice(0,10);
+  const hasTomorrow=itinerary.some(entry=>entry.date===tomorrowDate);
+  const showTomorrow=params.get('view')==='tomorrow'&&hasTomorrow;
+  const todayDate=showTomorrow?tomorrowDate:baseDate;
 
   const day=itinerary.find(entry=>entry.date===todayDate);
   if(!day){
@@ -203,18 +206,23 @@ export function initTodayMode({
   const placeById=new Map(places.map(place=>[place.id,place]));
   const ticketById=new Map(tickets.map(ticket=>[ticket.id,ticket]));
   const previewTime=demoContext?.previewTime||params.get('previewTime');
-  const effectivePreviewTime=validPreview&&/^\d{2}:\d{2}$/.test(previewTime||'')
-    ?previewTime
+  const effectivePreviewTime=showTomorrow?'00:00'
+    :validPreview&&/^\d{2}:\d{2}$/.test(previewTime||'')?previewTime
     :validPreview?'12:00':null;
 
   const uniqueTickets=[...new Set(day.items.map(item=>item.ticketId).filter(Boolean))]
     .map(id=>ticketById.get(id))
     .filter(Boolean);
   const hotelEntry=resolveHotel(day,hotels,placeById);
-  const badge=demoContext?.isDemo?'DEMO':validPreview?'PREVIEW':'TODAY';
+  const badge=showTomorrow?'TOMORROW':demoContext?.isDemo?'DEMO':validPreview?'PREVIEW':'TODAY';
+  const viewUrl=view=>{const url=new URL(window.location.href);if(view) url.searchParams.set('view',view);else url.searchParams.delete('view');return escapeHtml(url.pathname+url.search+url.hash);};
   const focusCity=day.focusCity||day.city;
 
   root.innerHTML=`<article class="today-card" data-day-id="${escapeHtml(day.id)}">
+    <nav class="today-date-switch" aria-label="查看今日或明日行程">
+      <a href="${viewUrl(null)}" ${!showTomorrow?'aria-current="page"':''}>今日</a>
+      ${hasTomorrow?`<a href="${viewUrl('tomorrow')}" ${showTomorrow?'aria-current="page"':''}>明日</a>`:''}
+    </nav>
     <div class="today-head">
       <div>
         <div class="today-kicker">${badge} · ${escapeHtml(day.dateLabel)} · ${renderLocalizedText(focusCity,day)}</div>
@@ -226,26 +234,26 @@ export function initTodayMode({
 
     <div class="today-now-next" aria-live="polite">
       <div class="now-panel">
-        <span>NOW</span>
+        <span>${showTomorrow?'明日時間線':'NOW'}</span>
         <b id="todayNowTime">—</b>
-        <small>${effectivePreviewTime?'預覽時間':escapeHtml(tripTimeZoneLabel(new Date(),config))}</small>
+        <small>${showTomorrow?'從當天 00:00 起':effectivePreviewTime?'預覽時間':escapeHtml(tripTimeZoneLabel(new Date(),config))}</small>
       </div>
       <div class="next-panel">
-        <span>下一個固定時間</span>
+        <span>${showTomorrow?'明日首個時間':'下一個固定時間'}</span>
         <div id="todayNextContent"><b>—</b></div>
       </div>
     </div>
 
     <div class="today-weather" id="todayWeather" aria-live="polite">
       <div class="weather-compact weather-loading">
-        <div class="weather-kicker">WEATHER · 今日</div>
+        <div class="weather-kicker">WEATHER · ${showTomorrow?'明日':'今日'}</div>
         <div class="weather-message">正在取得天氣…</div>
       </div>
     </div>
 
-    ${renderTransport(day,placeById,ticketById)}
+    ${renderTransport(day,placeById,ticketById,{tomorrow:showTomorrow})}
 
-    ${renderQuickActions(day,hotelEntry,uniqueTickets)}
+    ${renderQuickActions(day,hotelEntry,uniqueTickets,{tomorrow:showTomorrow})}
 
     ${uniqueTickets.length>1?`<div class="today-ticket-tray" id="todayTicketTray" hidden>
       ${uniqueTickets.map(ticket=>`<button type="button" class="today-ticket-choice" data-ticket-id="${escapeHtml(ticket.id)}">${escapeHtml(OFFICIAL_APP_TICKETS.has(ticket.id)?'📱 ':'🎫 ')}${escapeHtml(ticket.label)}</button>`).join('')}
@@ -258,9 +266,9 @@ export function initTodayMode({
     root:document.getElementById('todayWeather'),
     day,
     mapConfig,
-    previewDate:validPreview?previewDate:null,
+    previewDate:showTomorrow?todayDate:validPreview?previewDate:null,
     previewTime:effectivePreviewTime,
-    isPreview:validPreview,
+    isPreview:showTomorrow||validPreview,
     weatherMode:demoContext?.weatherMode||'trip',
     isDemo:demoContext?.isDemo===true
   });
@@ -280,7 +288,7 @@ export function initTodayMode({
     if(!nextNode) return;
 
     if(!next){
-      nextNode.innerHTML='<b>今天沒有下一個固定時間</b><small>其餘行程依現場節奏進行</small>';
+      nextNode.innerHTML=`<b>${showTomorrow?'明日':'今天'}沒有下一個固定時間</b><small>其餘行程依現場節奏進行</small>`;
       return;
     }
 
@@ -291,9 +299,15 @@ export function initTodayMode({
         ?`抵達 ${renderPlaceName(next.place)}`
         :escapeHtml(next.label);
 
+    const nextPlace=next.type==='arrival'?next.place:next.item.transport
+      ?placeById.get(next.item.transport.originPlaceId)
+      :next.item.segments.map(segment=>placeById.get(segment.placeId)).find(Boolean);
+    const nextAddress=nextPlace?.address&&nextPlace.address!==nextPlace.city
+      ?nextPlace.address:(nextPlace?.name||plainItemText(next.item));
     nextNode.innerHTML=`<b>${escapeHtml(String(Math.floor(next.minutes/60)).padStart(2,'0'))}:${escapeHtml(String(next.minutes%60).padStart(2,'0'))}</b>
       <p>${title}</p>
-      <small>${escapeHtml(countdownLabel(diff))}</small>`;
+      ${nextAddress?`<button type="button" class="today-copy" data-copy-text="${escapeHtml(nextAddress)}" aria-label="複製下一站地址或名稱">複製下一站</button>`:''}
+      <small>${showTomorrow?'明日首站':escapeHtml(countdownLabel(diff))}</small>`;
   }
 
   updateNowNext();
@@ -303,6 +317,8 @@ export function initTodayMode({
   }
 
   root.addEventListener('click',event=>{
+    const copyButton=event.target.closest('[data-copy-text]');
+    if(copyButton){copyFromButton(copyButton);return;}
     const ticketButton=event.target.closest('[data-ticket-id]');
     if(ticketButton){
       event.preventDefault();
@@ -339,6 +355,6 @@ export function initTodayMode({
     visible:true,
     date:todayDate,
     dayId:day.id,
-    isPreview:validPreview
+    isPreview:validPreview||showTomorrow
   };
 }

@@ -12,7 +12,7 @@ export function initAppShell({itineraryController,hotelsController,mapController
   };
 
   const todayButton=buttons.find(button=>button.dataset.navTarget==='today');
-  if(todayButton) todayButton.querySelector('b').textContent=todaySection&&!todaySection.hidden?'今日':'首頁';
+  if(todayButton) todayButton.querySelector('b').textContent=todaySection&&!todaySection.hidden?(new URLSearchParams(window.location.search).get('view')==='tomorrow'?'明日':'今日'):'首頁';
 
   function setActive(name){
     buttons.forEach(button=>{
