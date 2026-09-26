@@ -11,8 +11,29 @@ async function fixture(){
   return {days,rows,hotels,links:{itinerary:{}}};
 }
 
+function unlockFixture(data){
+  for(const {day} of data.days){
+    day.categories=day.categories.filter(category=>category!=='confirmed');
+    for(const item of day.items){
+      delete item.ticketId;
+      item.notionStatus='Planned';
+      item.notionFixed=false;
+      item.transport&&delete item.transport.status;
+    }
+  }
+}
+
+test('purchased Madrid Palace blocks a full-day swap',async()=>{
+  const data=await fixture();
+  for(const row of data.rows) if(['ITN-50','ITN-51'].includes(row['Itinerary ID'])) row.Date='2026-10-23';
+  const plan=planDaySwaps(data);
+  assert.equal(plan.swaps.length,0);
+  assert.match(plan.blockers.join(' '),/confirmed|fixed or ticketed/);
+});
+
 test('a complete Madrid pair swaps both payloads, retaining calendar identities and Toledo backup on 24',async()=>{
   const data=await fixture();
+  unlockFixture(data);
   for(const row of data.rows) row.Date=['ITN-50','ITN-51'].includes(row['Itinerary ID'])?'2026-10-24':row['Itinerary ID']==='ITN-65'?'2026-10-21':row.Date;
   const original=data.days.map(({day})=>structuredClone(day));
   const plan=planDaySwaps(data);
@@ -31,6 +52,7 @@ test('a complete Madrid pair swaps both payloads, retaining calendar identities 
 
 test('a partial swap blocks both files',async()=>{
   const data=await fixture();
+  unlockFixture(data);
   data.rows.find(row=>row['Itinerary ID']==='ITN-50').Date='2026-10-23';
   const plan=planDaySwaps(data);
   assert.equal(plan.swaps.length,0);
@@ -39,6 +61,7 @@ test('a partial swap blocks both files',async()=>{
 
 test('a ticketed item blocks an otherwise complete exchange',async()=>{
   const data=await fixture();
+  unlockFixture(data);
   for(const row of data.rows) if(['ITN-50','ITN-51'].includes(row['Itinerary ID'])) row.Date='2026-10-23';
   else if(['ITN-52','ITN-53'].includes(row['Itinerary ID'])) row.Date='2026-10-21';
   data.days[0].day.items[0].ticketId='test-ticket';
