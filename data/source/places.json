@@ -382,7 +382,7 @@
     "status": "transport",
     "lat": 37.19953,
     "lng": -3.61359,
-    "address": "Estación de Autobuses de Granada, Granada",
+    "address": "Estación de Autobuses Plaza de Armas, Granada",
     "dates": "10/18 14:45",
     "unesco": false
   },
@@ -443,11 +443,11 @@
     "name": "Palacio Real de Madrid",
     "displayName": "馬德里王宮",
     "type": "attraction",
-    "status": "pending",
+    "status": "confirmed",
     "lat": 40.4179,
     "lng": -3.7143,
     "address": "Calle de Bailén, Madrid",
-    "dates": "10/21 10:00",
+    "dates": "10/21 11:30",
     "unesco": false
   },
   {

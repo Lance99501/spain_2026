@@ -138,6 +138,16 @@
     "status": "confirmed"
   },
   {
+    "id": "tkt-madrid-palacio-real",
+    "label": "馬德里王宮｜Palacio Real de Madrid",
+    "kind": "attraction",
+    "placeIds": [
+      "mad-palacio-real-de-madrid"
+    ],
+    "type": "drive",
+    "status": "confirmed"
+  },
+  {
     "id": "tkt-emirates-return",
     "label": "Emirates｜Madrid → Dubai → Taipei",
     "kind": "flight",
