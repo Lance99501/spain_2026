@@ -209,12 +209,12 @@
   border:1px solid var(--line);
   border-radius:999px;
   background:var(--paper-2);
-  color:var(--ink);
+  color:var(--muted);
   text-decoration:none;
   font-size:.76rem;
   font-weight:800;
 }
-.today-action.primary{border-color:var(--sage);background:var(--sage-soft)}
+.today-action.primary{border-color:var(--ink);background:var(--ink);color:var(--card);box-shadow:0 3px 10px rgba(53,67,59,.16)}
 .today-ticket-tray{
   display:flex;
   flex-wrap:wrap;
@@ -258,6 +258,7 @@
   .transport-service span{font-size:.62rem}
   .today-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   .today-action{width:100%;padding-left:8px;padding-right:8px}
+  .today-action.primary{grid-column:1/-1}
 }
 @media (max-width:380px){
   .today-now-next{grid-template-columns:1fr}

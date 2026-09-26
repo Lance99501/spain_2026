@@ -157,7 +157,7 @@ function renderQuickActions(day,hotelEntry,uniqueTickets,{tomorrow=false}={}){
 
   return `<div class="today-actions" aria-label="${dayLabel}快速操作">
     <button type="button" class="today-action primary" data-action="day">≡ ${dayLabel}行程</button>
-    <a class="today-action primary" href="${day.mapUrl}" target="_blank" rel="noopener">⌖ ${dayLabel} Maps</a>
+    <a class="today-action" href="${day.mapUrl}" target="_blank" rel="noopener">⌖ ${dayLabel} Maps</a>
 
     ${uniqueTickets.length
       ?`<button type="button" class="today-action" data-action="tickets">${escapeHtml(ticketLabel)}</button>`

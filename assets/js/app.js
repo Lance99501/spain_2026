@@ -2,7 +2,7 @@ import {api} from './api.js';
 import {initTripMap} from './map.js?v=57';
 import {createTicketController} from './ticket.js';
 import {initItinerary} from './itinerary.js?v=59';
-import {initTodayMode} from './today.js?v=61';
+import {initTodayMode} from './today.js?v=62';
 import {initPwa} from './pwa.js';
 import {initAppShell} from './app-shell.js?v=59';
 import {initHotels} from './hotels.js?v=59';
