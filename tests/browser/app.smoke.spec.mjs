@@ -237,7 +237,7 @@ test('day-trip Today cards use the focus city and avoid bilingual duplicates',as
 });
 
 
-test('Madrid weather flex pair keeps each day primary and shows a swap hint',async({page})=>{
+test('Madrid Palace ticket stays on 10/21 without a swap hint',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   await page.goto('/');
   await page.locator('#cityGrid [data-city="Madrid"]').click();
@@ -249,7 +249,8 @@ test('Madrid weather flex pair keeps each day primary and shows a swap hint',asy
   await expect(day21.locator('.day-title')).toContainText('馬德里王宮日');
   await expect(day21).toContainText('馬德里王宮');
   await expect(day21).not.toContainText('普拉多博物館');
-  await expect(day21.locator('.flex-pair-hint')).toContainText('可與 10/23 整日互換');
+  await expect(day21.locator('.flex-pair-hint')).toHaveCount(0);
+  await expect(day21).toContainText('11:30');
   await expect(day21.locator('.flex-plan-column')).toHaveCount(0);
   await expect(day21.locator('[data-flex-plan]')).toHaveCount(0);
   await expect(day21.locator('.day-map')).toHaveAttribute('href',/Palacio%20Real/);
@@ -258,7 +259,7 @@ test('Madrid weather flex pair keeps each day primary and shows a swap hint',asy
   await expect(day23.locator('.day-title')).toContainText('普拉多博物館＋麗池公園');
   await expect(day23).toContainText('普拉多博物館');
   await expect(day23).not.toContainText('馬德里王宮');
-  await expect(day23.locator('.flex-pair-hint')).toContainText('可與 10/21 整日互換');
+  await expect(day23.locator('.flex-pair-hint')).toHaveCount(0);
   await expect(day23.locator('.day-map')).toHaveAttribute('href',/Museo%20del%20Prado/);
   expect(await page.evaluate(()=>localStorage.getItem('spain2026:flex:madrid-weather-21-23'))).toBeNull();
 });
