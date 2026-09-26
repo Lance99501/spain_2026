@@ -362,12 +362,12 @@ footer{margin-top:26px;padding:18px 0 8px;border-top:1px solid var(--line);font-
   .travel-backup{max-width:100%}
 }
 
-/* A restrained city ribbon and date stamp give each day a travel-journal cue. */
-.day{--city-accent:var(--sage);--city-wash:var(--sage-soft);border-left:3px solid var(--city-accent)}
+/* A small city-tinted date stamp keeps the journal cue away from note borders. */
+.day{--city-accent:var(--sage);--city-wash:var(--sage-soft)}
 .day[data-city="Barcelona"]{--city-accent:#ac796b;--city-wash:#f5eae5}
 .day[data-city="Sevilla"]{--city-accent:#a58a54;--city-wash:#f4efe3}
 .day[data-city="Granada"]{--city-accent:#897b9b;--city-wash:#f0ecf4}
-.day[data-city="Madrid"]{--city-accent:#789281;--city-wash:#eaf0e9}
+.day[data-city="Madrid"]{--city-accent:#6b8291;--city-wash:#edf1f3}
 .day .date{display:flex;flex-direction:column;align-items:center;justify-content:center;width:50px;height:50px;padding:0;border:1px solid var(--city-accent);border-radius:50%;background:var(--city-wash);transform:rotate(-4deg)}
 .day .date b{font-size:.98rem}
 .day .date span{line-height:1.2}
