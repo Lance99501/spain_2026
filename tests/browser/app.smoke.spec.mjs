@@ -202,15 +202,15 @@ test('mobile Demo control stays in the header and opens usable settings',async({
   expect(top).toBeGreaterThanOrEqual(toolsBottom);
 });
 
-test('trip runner follows the demo day and respects reduced motion',async({page})=>{
+test('trip progress follows the demo day in the compact hero',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   await page.goto('/?demo=1&previewDate=2026-10-19');
   await expect(page.locator('#countdown')).toHaveText('DAY 11');
   await expect(page.locator('.trip-progress')).toHaveAttribute('aria-valuenow','65');
   await expect(page.locator('.trip-progress')).toHaveAttribute('aria-valuetext','旅程第 11 / 17 天');
-  await expect(page.locator('.trip-runner')).toBeVisible();
-  await page.emulateMedia({reducedMotion:'reduce'});
-  await expect(page.locator('.trip-runner svg')).toHaveCSS('animation-name','none');
+  await expect(page.locator('.hero')).toHaveClass(/\btrip-active\b/);
+  await expect(page.locator('.trip-runner')).toBeHidden();
+  await expect(page.locator('.trip-track')).toBeVisible();
 });
 
 test('website labels translate raw synced text without changing source data',async({page})=>{
@@ -302,7 +302,8 @@ test('Today and tomorrow switch keeps the correct route without extra actions',a
   await expect(page.locator('.today-date-switch [aria-current="page"]')).toHaveText('明日');
   await expect(page.locator('.next-panel > span')).toHaveText('明日首個時間');
   await expect(page.locator('#todayRoot .today-copy, #todayRoot [data-copy-text], #todayRoot [data-action="all"]')).toHaveCount(0);
-  await expect(page.locator('#todayRoot .today-action')).toHaveCount(3);
+  await expect(page.locator('#todayRoot .today-action')).toHaveCount(4);
+  await expect(page.locator('#todayRoot [data-action="day"]')).toHaveText(/明日行程/);
   await page.locator('.today-date-switch a').filter({hasText:'今日'}).click();
   await expect(page.locator('#todayHeading')).toHaveText('馬德里王宮日');
 });
