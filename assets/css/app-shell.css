@@ -38,7 +38,7 @@
 
 
 body{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
-#mapSection,#citySwitchSection,#itinerary,#hotelsSection,.hero{
+#mapSection,#citySwitchSection,#itinerary,#hotelsSection,#todaySection,.hero{
   scroll-margin-top:calc(env(safe-area-inset-top) + 12px);
 }
 

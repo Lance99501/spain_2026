@@ -1,4 +1,4 @@
-const CACHE_VERSION='spain2026-20260926-v65';
+const CACHE_VERSION='spain2026-20260926-v66';
 const APP_CACHE=`${CACHE_VERSION}-app`;
 const RUNTIME_CACHE=`${CACHE_VERSION}-runtime`;
 const TILE_CACHE=`${CACHE_VERSION}-tiles`;
@@ -19,7 +19,7 @@ const APP_SHELL=[
   './assets/css/itinerary.css?v=58',
   './assets/css/ticket.css',
   './assets/css/pwa.css',
-  './assets/js/app.js?v=61',
+  './assets/js/app.js?v=62',
   './assets/js/api.js',
   './assets/js/data/source.js',
   './assets/js/data/validate.js',
@@ -29,7 +29,7 @@ const APP_SHELL=[
   './assets/js/place-labels.js',
   './assets/js/ticket.js',
   './assets/js/itinerary.js?v=59',
-  './assets/js/today.js?v=60',
+  './assets/js/today.js?v=61',
   './assets/js/pwa.js',
   './assets/js/app-shell.js?v=59',
   './assets/js/hotels.js?v=59',

@@ -30,7 +30,7 @@ test('the itinerary renders and its primary controls work',async({page})=>{
   expect(pageErrors).toEqual([]);
 });
 
-test('preview Today Mode can reach the full itinerary from bottom navigation',async({page})=>{
+test('Today card opens the matching day in the full itinerary',async({page})=>{
   await page.goto('/?previewDate=2026-10-19');
 
   const todaySection=page.locator('#todaySection');
@@ -38,17 +38,23 @@ test('preview Today Mode can reach the full itinerary from bottom navigation',as
   await expect(todaySection.locator('.today-kicker')).toContainText('PREVIEW');
   await expect(todaySection.locator('.next-panel > span')).toHaveText('下一個固定時間');
 
-  await expect(page.locator('#todayRoot [data-action="all"]')).toHaveCount(0);
-  await page.locator('#cityGrid [data-city="Granada"]').click();
-  await page.locator('[data-nav-target="trip"]').click();
-  await expect(page.locator('#itinerary')).toBeInViewport();
   const dayId=await page.locator('#todayRoot .today-card').getAttribute('data-day-id');
+  await todaySection.locator('[data-action="day"]').click();
   const day=page.locator(`#days .day[data-day-id="${dayId}"]`);
-  await day.locator('.day-main').click();
   await expect(day).toHaveClass(/\bopen\b/);
   await expect(day.locator('.day-main')).toHaveAttribute('aria-expanded','true');
   await expect(day.locator('.day-main')).toBeInViewport();
   await expect(page.locator('.today-timeline')).toHaveCount(0);
+});
+
+test('during the trip the compact hero and Today card are the initial focus',async({page})=>{
+  await page.clock.install({time:new Date('2026-10-19T10:00:00Z')});
+  await page.goto('/');
+  await expect(page.locator('.hero')).toHaveClass(/\btrip-active\b/);
+  await expect(page.locator('.hero .trip-progress')).toBeVisible();
+  await expect(page.locator('#countdown')).toBeHidden();
+  await expect.poll(()=>page.evaluate(()=>window.scrollY)).toBeGreaterThan(80);
+  await expect(page.locator('#todaySection')).toBeInViewport();
 });
 
 test('a mapped ticket opens its real Google Drive files without the demo QR flow',async({page})=>{

@@ -93,3 +93,12 @@ h1{font:600 clamp(2rem,5vw,4.2rem)/1.08 Georgia,"Times New Roman",serif;margin:.
 @keyframes runner-bob{to{transform:translateY(-2px)}}
 @keyframes runner-swing{from{transform:rotate(-24deg)}to{transform:rotate(24deg)}}
 @media(prefers-reduced-motion:reduce){.trip-runner svg,.runner-arm,.runner-leg{animation:none}.trip-fill,.trip-runner{transition:none}}
+
+/* During the trip, keep only a slim progress track below the title. */
+.hero.trip-active{grid-template-areas:"title title" "countdown countdown";grid-template-columns:1fr;gap:7px;padding:6px 0 10px}
+.hero.trip-active .eyebrow,.hero.trip-active .route-strip{display:none}
+.hero.trip-active .hero-card{width:100%;min-width:0;max-width:none;padding:0;border:0;background:transparent}
+.hero.trip-active .hero-card b,.hero.trip-active .hero-card>span{display:none}
+.hero.trip-active .trip-progress{padding:0;margin:0}
+.hero.trip-active .trip-track{height:6px}
+.hero.trip-active .trip-runner,.hero.trip-active .trip-finish{display:none}

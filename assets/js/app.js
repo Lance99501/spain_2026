@@ -2,7 +2,7 @@ import {api} from './api.js';
 import {initTripMap} from './map.js?v=57';
 import {createTicketController} from './ticket.js';
 import {initItinerary} from './itinerary.js?v=59';
-import {initTodayMode} from './today.js?v=60';
+import {initTodayMode} from './today.js?v=61';
 import {initPwa} from './pwa.js';
 import {initAppShell} from './app-shell.js?v=59';
 import {initHotels} from './hotels.js?v=59';
@@ -40,6 +40,9 @@ function initCountdown(config,demoContext){
   const progressText=beforeDeparture?'出發前 30 天倒數':today===depart?'今天出發':today>end?'旅程完成':`旅程第 ${Math.floor((today-spainStart)/oneDay)+1} / ${totalDays} 天`;
   const card=c.closest('.hero-card');
   card.classList.toggle('trip-complete',today>end);
+  const tripActive=today>=depart&&today<=end;
+  card.classList.toggle('trip-active',tripActive);
+  card.closest('.hero')?.classList.toggle('trip-active',tripActive);
   card.style.setProperty('--trip-progress',`${progress*100}%`);
   card.insertAdjacentHTML('beforeend',`<div class="trip-progress" role="progressbar" aria-label="${progressText}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(progress*100)}" aria-valuetext="${progressText}"><div class="trip-track"><div class="trip-fill"></div><div class="trip-runner" aria-hidden="true"><svg viewBox="0 0 32 36"><circle cx="19" cy="6" r="3"/><path class="runner-body" d="M17 12l-3 10"/><path class="runner-arm runner-arm-back" d="M17 13l-7 4-5-3"/><path class="runner-leg runner-leg-back" d="M14 22l-6 5-5-1"/><path class="runner-arm runner-arm-front" d="M17 13l5 6 5-2"/><path class="runner-leg runner-leg-front" d="M14 22l6 5 2 6"/></svg></div><div class="trip-finish" aria-hidden="true">⚑</div></div></div>`);
 
@@ -93,6 +96,16 @@ function initCityReturn(){
   update();
 }
 
+function focusTodayOnTripStart(config,demoContext,todayMode){
+  if(demoContext?.isDemo||todayMode?.isPreview||!todayMode?.visible||window.location.hash) return;
+  const today=dateInTripTimeZone(new Date(),config);
+  if(today<config.departDate||today>config.endDate) return;
+  const target=document.getElementById('todaySection');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    if(window.scrollY<80&&target&&!target.hidden) target.scrollIntoView({behavior:'auto',block:'start'});
+  }));
+}
+
 async function bootstrap(){
   try{
     const data=await api.getBootstrapData();
@@ -129,7 +142,7 @@ async function bootstrap(){
       itineraryController
     });
 
-    initTodayMode({
+    const todayMode=initTodayMode({
       itinerary:data.itinerary,
       places:data.places,
       hotels:data.hotels,
@@ -137,13 +150,15 @@ async function bootstrap(){
       mapConfig:data.mapConfig,
       config:data.config,
       demoContext,
-      ticketController
+      ticketController,
+      onShowDay:dayId=>itineraryController.showDay(dayId)
     });
 
     initCountdown(data.config,demoContext);
     watchTripDateRollover(data.config,demoContext);
     initCityReturn();
     initAppShell({itineraryController,hotelsController,mapController});
+    focusTodayOnTripStart(data.config,demoContext,todayMode);
   }catch(error){
     console.error('Spain 2026 bootstrap failed',error);
 

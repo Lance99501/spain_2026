@@ -156,6 +156,7 @@ function renderQuickActions(day,hotelEntry,uniqueTickets,{tomorrow=false}={}){
     :`🎫 ${dayLabel}票券 ${uniqueTickets.length}`;
 
   return `<div class="today-actions" aria-label="${dayLabel}快速操作">
+    <button type="button" class="today-action primary" data-action="day">≡ ${dayLabel}行程</button>
     <a class="today-action primary" href="${day.mapUrl}" target="_blank" rel="noopener">⌖ ${dayLabel} Maps</a>
 
     ${uniqueTickets.length
@@ -177,7 +178,8 @@ export function initTodayMode({
   mapConfig,
   config={},
   demoContext,
-  ticketController
+  ticketController,
+  onShowDay
 }){
   const section=document.getElementById('todaySection');
   const root=document.getElementById('todayRoot');
@@ -308,6 +310,10 @@ export function initTodayMode({
   }
 
   root.addEventListener('click',event=>{
+    if(event.target.closest('[data-action="day"]')){
+      onShowDay?.(day.id);
+      return;
+    }
     const ticketButton=event.target.closest('[data-ticket-id]');
     if(ticketButton){
       event.preventDefault();
