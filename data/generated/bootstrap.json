@@ -392,7 +392,7 @@
       "status": "transport",
       "lat": 37.19953,
       "lng": -3.61359,
-      "address": "Estación de Autobuses de Granada, Granada",
+      "address": "Estación de Autobuses Plaza de Armas, Granada",
       "dates": "10/18 14:45",
       "unesco": false
     },
@@ -453,11 +453,11 @@
       "name": "Palacio Real de Madrid",
       "displayName": "馬德里王宮",
       "type": "attraction",
-      "status": "pending",
+      "status": "confirmed",
       "lat": 40.4179,
       "lng": -3.7143,
       "address": "Calle de Bailén, Madrid",
-      "dates": "10/21 10:00",
+      "dates": "10/21 11:30",
       "unesco": false
     },
     {
@@ -827,6 +827,16 @@
       "placeIds": [
         "grx-granada-railway-station",
         "mad-madrid-puerta-de-atocha"
+      ],
+      "type": "drive",
+      "status": "confirmed"
+    },
+    {
+      "id": "tkt-madrid-palacio-real",
+      "label": "馬德里王宮｜Palacio Real de Madrid",
+      "kind": "attraction",
+      "placeIds": [
+        "mad-palacio-real-de-madrid"
       ],
       "type": "drive",
       "status": "confirmed"
@@ -2228,33 +2238,36 @@
       "dow": "Wed",
       "city": "Madrid",
       "title": "馬德里王宮日",
-      "sub": "王宮為當日主行程，尚未購票",
+      "sub": "11:30 王宮已確認，午後接 Almudena／Austrias-La Latina",
       "categories": [
-        "pending",
+        "confirmed",
         "flex"
       ],
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Palacio%20Real%20de%20Madrid",
       "items": [
         {
           "id": "item-2026-10-21-01",
-          "time": "10:00",
+          "time": "11:30",
           "segments": [
             {
-              "text": "Palacio Real＋Almudena"
+              "text": "Palacio Real＋Almudena",
+              "placeId": "mad-palacio-real-de-madrid"
             }
           ],
+          "ticketId": "tkt-madrid-palacio-real",
+          "ticketAnchorPlaceId": "mad-palacio-real-de-madrid",
           "noteSegments": [
             {
-              "text": "10:00–12:30 基準時段，目前待購票"
+              "text": "11:30 王宮已確認／固定；Almudena 依現場節奏銜接"
             }
           ],
-          "startTime": "10:00",
+          "startTime": "11:30",
           "sourceItineraryId": "ITN-50",
           "notionName": "Royal Madrid｜Palacio Real＋Almudena",
-          "endTime": "12:30",
-          "notionStatus": "Planned",
-          "notionFixed": false,
-          "notionFlexibility": "Flexible",
+          "endTime": "14:00",
+          "notionStatus": "Confirmed",
+          "notionFixed": true,
+          "notionFlexibility": "Fixed",
           "notionArea": "Palacio Real / Ópera",
           "notionType": "Attraction",
           "notionCity": "Madrid"
@@ -2279,20 +2292,15 @@
       ],
       "tags": [
         {
-          "text": "王宮待購",
-          "tone": "pending"
+          "text": "王宮已確認",
+          "tone": "confirmed"
         },
         {
           "text": "午後自由",
           "tone": "flex"
         }
       ],
-      "note": "王宮＋Almudena，午後接老城與 La Latina；目前尚未購票。",
-      "flexPair": {
-        "id": "madrid-weather-21-23",
-        "pairedDate": "2026-10-23",
-        "note": "尚未購票前可依天氣與票況整組對調；購票後依票面日期鎖定。"
-      }
+      "note": "11:30 王宮票券已確認；Almudena 與午後老城散步依現場節奏安排。"
     },
     {
       "id": "day-2026-10-22",
@@ -2569,12 +2577,7 @@
           "tone": "flex"
         }
       ],
-      "note": "上午普拉多、下午麗池公園與周邊散步；目前尚未購票。",
-      "flexPair": {
-        "id": "madrid-weather-21-23",
-        "pairedDate": "2026-10-21",
-        "note": "尚未購票前可依天氣與票況整組對調；購票後依票面日期鎖定。"
-      }
+      "note": "上午普拉多、下午麗池公園與周邊散步；目前尚未購票。"
     },
     {
       "id": "day-2026-10-24",
@@ -2797,6 +2800,9 @@
     ],
     "tkt-alvia-madrid": [
       "1-dT8a91z0mkKugfOb6sRRhfF2sF5tP7v"
+    ],
+    "tkt-madrid-palacio-real": [
+      "1z6dTDLZx6zIl63XM_aKdfzlXdenzcSP2"
     ],
     "tkt-emirates-return": [
       "1gykqXZ5BFQHzEn0pr9s6ZRu9krhsC4-D",
