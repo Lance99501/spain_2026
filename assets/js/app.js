@@ -97,8 +97,8 @@ function initCityReturn(){
 }
 
 function focusTodayOnTripStart(config,demoContext,todayMode){
-  if(demoContext?.isDemo||todayMode?.isPreview||!todayMode?.visible||window.location.hash) return;
-  const today=dateInTripTimeZone(new Date(),config);
+  if((todayMode?.isPreview&&!demoContext?.isDemo)||!todayMode?.visible||window.location.hash) return;
+  const today=demoContext?.isDemo?demoContext.previewDate:dateInTripTimeZone(new Date(),config);
   if(today<config.departDate||today>config.endDate) return;
   const target=document.getElementById('todaySection');
   requestAnimationFrame(()=>requestAnimationFrame(()=>{

@@ -211,6 +211,9 @@ test('trip progress follows the demo day in the compact hero',async({page})=>{
   await expect(page.locator('.hero')).toHaveClass(/\btrip-active\b/);
   await expect(page.locator('.trip-runner')).toBeHidden();
   await expect(page.locator('.trip-track')).toBeVisible();
+  await expect.poll(()=>page.evaluate(()=>window.scrollY)).toBeGreaterThan(80);
+  await expect(page.locator('#todaySection')).toBeInViewport();
+  await expect(page.locator('#todayRoot [data-action="day"]')).toBeVisible();
 });
 
 test('website labels translate raw synced text without changing source data',async({page})=>{
