@@ -140,6 +140,21 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
     </div>`;
   }
 
+  function renderAlternatePlan(day){
+    const plan=day.alternatePlan;
+    if(!plan) return '';
+    return `<section class="day-alternatives" aria-label="${escapeHtml(day.dateLabel)} A/B 行程方案">
+      <div class="day-alternatives-head"><span aria-hidden="true">⇄</span><div><b>10/24 A/B 行程</b><small>同一天二選一；預設為馬德里緩衝日，托雷多尚未購票。</small></div></div>
+      <div class="day-plan-grid">
+        <div class="day-plan-card is-default"><span class="day-plan-label">PLAN A · 預設</span><b>${renderLocalizedText(day.title,day)}</b><p>Malasaña、Chueca、Gran Vía；購物、咖啡與休息依現場節奏。</p></div>
+        <div class="day-plan-card"><span class="day-plan-label">PLAN B · ${escapeHtml(plan.status)}</span><b>${escapeHtml(plan.title)}</b><p>${escapeHtml(plan.summary)}</p>
+          <ul class="day-plan-stops">${(plan.stops||[]).map(stop=>`<li><strong>${escapeHtml(stop.time)}</strong><span>${escapeHtml(stop.text)}</span></li>`).join('')}</ul>
+          <a href="${escapeHtml(plan.mapUrl)}" target="_blank" rel="noopener noreferrer">托雷多路線 Maps ↗</a></div>
+      </div>
+      <div class="day-plan-foot"><span>托雷多方案需另買往返交通；景點按入內選擇。</span><button type="button" class="day-plan-info" data-toledo-info aria-label="查看托雷多交通、票券與市內移動提示" aria-haspopup="dialog">ⓘ <span>交通與票券</span></button></div>
+    </section>`;
+  }
+
   function renderDay(day){
     const bodyId=`day-body-${day.id}`;
     const flexAttrs=day.flexPair?` data-flex-pair="${escapeHtml(day.flexPair.id)}"`:'';
@@ -147,6 +162,7 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
       <div class="tags">${day.tags.map(tag=>`<span class="tag ${escapeHtml(tag.tone)}">${renderLocalizedText(tag.text,day)}</span>`).join('')}</div>
       ${day.note?`<div class="day-note">${renderLocalizedText(day.note,day)}</div>`:''}
       ${day.dateNote?`<div class="day-note">${renderLocalizedText(day.dateNote,day)}</div>`:''}
+      ${renderAlternatePlan(day)}
       ${renderFlexHint(day)}`;
 
     return `<article class="day${day.flexPair?' flex-day':''}${expandState?' open':''}" data-city="${escapeHtml(day.city)}" data-day-id="${escapeHtml(day.id)}"${flexAttrs}>
@@ -399,6 +415,12 @@ export function initItinerary({itinerary,places,tickets,ticketController,config=
   },{passive:true});
 
   daysRoot.addEventListener('click',event=>{
+    const toledoInfo=event.target.closest('[data-toledo-info]');
+    if(toledoInfo){
+      event.preventDefault();
+      document.getElementById('toledoInfoDialog')?.showModal();
+      return;
+    }
     const ticket=event.target.closest('.ticket-icon[data-ticket-id]');
     if(ticket){
       event.preventDefault();

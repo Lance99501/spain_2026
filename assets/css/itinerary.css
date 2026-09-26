@@ -162,6 +162,38 @@ body.city-dock-visible .tools{top:calc(env(safe-area-inset-top) + 72px)}
 .flex-pair-hint b,.flex-pair-hint small{display:block}
 .flex-pair-hint b{font-size:.74rem;line-height:1.35}
 .flex-pair-hint small{margin-top:2px;color:var(--muted);font-size:.67rem;line-height:1.4}
+.day-alternatives{margin-top:12px;padding:11px;border:1px solid rgba(120,146,129,.38);border-radius:13px;background:rgba(230,238,231,.32)}
+.day-alternatives-head{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:start}
+.day-alternatives-head>span{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--card);color:var(--sage);font-weight:900}
+.day-alternatives-head b,.day-alternatives-head small{display:block}
+.day-alternatives-head b{font-size:.78rem}.day-alternatives-head small{color:var(--muted);font-size:.68rem;line-height:1.4}
+.day-plan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.day-plan-card{min-width:0;padding:10px;border:1px solid var(--line);border-radius:11px;background:var(--card)}
+.day-plan-card.is-default{border-color:var(--sage)}
+.day-plan-label{display:block;color:var(--sage);font-size:.62rem;font-weight:850;letter-spacing:.04em}
+.day-plan-card b{display:block;margin-top:5px;font-size:.76rem;line-height:1.35}
+.day-plan-card p{margin:5px 0 0;color:var(--muted);font-size:.68rem;line-height:1.45}
+.day-plan-stops{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:5px}
+.day-plan-stops li{display:grid;grid-template-columns:42px minmax(0,1fr);gap:5px;font-size:.66rem;line-height:1.4}
+.day-plan-stops strong{color:var(--sage);font-weight:750}
+.day-plan-card a{display:inline-block;margin-top:8px;color:var(--sage);font-size:.69rem;font-weight:800}
+.day-plan-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px;margin-top:9px;color:var(--muted);font-size:.68rem}
+.day-plan-info{border:1px solid var(--sage);border-radius:999px;background:var(--card);color:var(--sage);padding:6px 9px;font:inherit;font-weight:800;cursor:pointer}
+.day-plan-info:focus-visible,.day-plan-card a:focus-visible{outline:2px solid var(--sage);outline-offset:2px}
+.toledo-dialog{width:min(520px,calc(100% - 20px));max-height:min(780px,calc(100dvh - 28px));padding:0;border:1px solid var(--line);border-radius:20px;background:var(--card);color:var(--ink);box-shadow:0 24px 70px rgba(27,36,30,.28)}
+.toledo-dialog::backdrop{background:rgba(35,43,38,.5);backdrop-filter:blur(5px)}
+.toledo-dialog-head{position:sticky;top:0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:17px 18px 12px;border-bottom:1px solid var(--line);background:var(--card);z-index:1}
+.toledo-dialog-head span{font-size:.64rem;font-weight:800;letter-spacing:.1em;color:var(--sage)}
+.toledo-dialog-head h3{margin:3px 0 0;font-size:1.05rem}
+.toledo-dialog-head button{width:36px;height:36px;border:1px solid var(--line);border-radius:50%;background:var(--paper-2);font-size:1.1rem;color:var(--muted)}
+.toledo-dialog-body{padding:4px 18px 20px;font-size:.78rem;line-height:1.6}
+.toledo-dialog-body section{padding:11px 0;border-bottom:1px solid var(--line)}
+.toledo-dialog-body h4{margin:0 0 6px;font-size:.84rem}
+.toledo-dialog-body p{margin:5px 0}
+.toledo-dialog-body a{display:inline-block;margin:4px 0;color:var(--sage);font-weight:800}
+.toledo-dialog-intro,.toledo-dialog-warning{padding:10px 11px;border-radius:10px;background:var(--sage-soft)}
+.toledo-dialog-aside{color:var(--muted)}
+.toledo-dialog-warning{margin-top:14px!important;background:var(--sand)}
 .poi-annotated{white-space:nowrap}
 .unesco-crown{display:inline-block;margin-left:4px;vertical-align:.06em;line-height:1;color:#a88745;font-size:.8em;cursor:help;filter:saturate(.85)}
 .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
@@ -322,6 +354,8 @@ footer{margin-top:26px;padding:18px 0 8px;border-top:1px solid var(--line);font-
 .day{scroll-margin-top:calc(env(safe-area-inset-top) + 150px)}
 
 @media(max-width:480px){
+  .day-plan-grid{grid-template-columns:1fr}
+  .toledo-dialog{margin:auto auto max(8px,env(safe-area-inset-bottom));max-height:88dvh;border-radius:20px 20px 14px 14px}
   .flex-pair-hint{padding:8px}
   .travel-hint{gap:3px 5px;font-size:.66rem}
   .travel-detail{flex-basis:100%}

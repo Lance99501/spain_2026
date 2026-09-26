@@ -60,5 +60,18 @@
       "tone": "flex"
     }
   ],
-  "dateNote": "托雷多｜Toledo 僅為可選備案，不預先購票；抵達馬德里後，體力、天氣與交通票況都合適才考慮。預設仍在市區休息、購物與咖啡，未去不算漏行程。"
+  "dateNote": "預設留在馬德里；托雷多｜Toledo 是同一天的可選替代，未決定前不預先購票。19:00 Flamenco 仍只是 Madrid 保底構想，若選托雷多，須重新確認回程與演出時間。",
+  "alternatePlan": {
+    "id": "toledo-2026-10-24",
+    "title": "托雷多｜Toledo 一日遊",
+    "status": "可選 · 尚未購票",
+    "summary": "Avant 往返、舊城與主教座堂；是否成行看體力、天氣與車票。",
+    "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Toledo%20Railway%20Station&destination=Toledo%20Railway%20Station&travelmode=walking&waypoints=Plaza%20de%20Zocodover%2C%20Toledo%7CCatedral%20Primada%20de%20Toledo%7CMonasterio%20de%20San%20Juan%20de%20los%20Reyes",
+    "stops": [
+      {"time": "上午", "text": "Madrid Atocha → Toledo｜Avant 約 25–30 分；班次依購票頁確認"},
+      {"time": "到站後", "text": "車站 → Zocodover：步行＋手扶梯，或公車／計程車"},
+      {"time": "白天", "text": "Zocodover → 托雷多主教座堂 → 猶太區；有餘力再選聖胡安皇家修道院"},
+      {"time": "傍晚", "text": "Toledo → Madrid Atocha｜依已買回程車次預留進站緩衝"}
+    ]
+  }
 }

@@ -264,6 +264,27 @@ test('Madrid Palace ticket stays on 10/21 without a swap hint',async({page})=>{
   expect(await page.evaluate(()=>localStorage.getItem('spain2026:flex:madrid-weather-21-23'))).toBeNull();
 });
 
+test('10/24 keeps Madrid as default and shows Toledo tickets and movement in a dialog',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/');
+  await page.locator('#cityGrid [data-city="Madrid"]').click();
+  const day=page.locator('#days [data-day-id="day-2026-10-24"]');
+  await day.locator('.day-main').click();
+  await expect(day).toContainText('PLAN A · 預設');
+  await expect(day).toContainText('PLAN B · 可選 · 尚未購票');
+  await expect(day).toContainText('Madrid Atocha → Toledo');
+  await expect(day.locator('.day-map')).toHaveAttribute('href',/Malasa/);
+  await expect(day.locator('.day-plan-card a')).toHaveAttribute('href',/Toledo%20Railway%20Station/);
+  await day.locator('[data-toledo-info]').click();
+  const dialog=page.locator('#toledoInfoDialog');
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText('Avant 去程與回程');
+  await expect(dialog).toContainText('Basic Ticket €12');
+  await expect(dialog).toContainText('車上只收現金');
+  await dialog.locator('button[aria-label="關閉托雷多提示"]').click();
+  await expect(dialog).not.toBeVisible();
+});
+
 test('Today and tomorrow switch keeps the correct route without extra actions',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   await page.goto('/?previewDate=2026-10-21');
