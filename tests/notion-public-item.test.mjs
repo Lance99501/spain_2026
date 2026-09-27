@@ -176,3 +176,16 @@ test('mapped Name sync can strip an internal prefix but blocks multiple Maps anc
   );
   assert.match(missingAnchor.error,/requires a matching nameAnchor/);
 });
+
+test('mapped protected Name with identical visible text retains its existing Maps anchor',()=>{
+  const existing={
+    id:'item-2026-10-21-01',
+    segments:[{text:'Palacio Real＋Almudena',placeId:'mad-palacio-real-de-madrid'}],
+    notionName:'Royal Madrid｜Palacio Real＋Almudena'
+  };
+  const result=syncMappedPublicItem(existing,{Name:existing.notionName},{
+    syncPublicFields:['Name'],stripNamePrefix:'Royal Madrid｜',nameAnchor:'Palacio Real'
+  });
+  assert.deepEqual(result.changed,[]);
+  assert.deepEqual(result.item.segments,existing.segments);
+});
