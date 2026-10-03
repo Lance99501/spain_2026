@@ -1,56 +1,20 @@
 {
-  "tkt-emirates-outbound": [
-    "1gykqXZ5BFQHzEn0pr9s6ZRu9krhsC4-D",
-    "1XQsHdIYT2dqZOO5KrTNhIfXKpHYFlT3C"
-  ],
-  "tkt-sagrada": [
-    "1Q9GHOQrsRsH4PT8PbpbXnTLnu54gMlpE"
-  ],
-  "tkt-park-guell": [
-    "14Gnj9fU-XlooKNrY8hs3MUvMfh4QB3y1"
-  ],
-  "tkt-ave-bcn-sevilla": [
-    "1lJYQqZKDLVbdC34-zPquDzDBCgej9KG7"
-  ],
-  "tkt-sevilla-alcazar": [
-    "1eQsULkV0pYcmUu-YUDotHAkVSVj9mgyj"
-  ],
-  "tkt-sevilla-catedral": [
-    "1Mqn8SumEd0R7DJ4jiRK7tBG2-mlbyrfZ"
-  ],
-  "tkt-iryo-cordoba": [
-    "1q3602yB4fiTZyQWg5Q10Fi53M8Njuebb"
-  ],
-  "tkt-alsa-granada": [
-    "1qlDqSFryakHAELtK6UuIZ1Rilr1NDczj"
-  ],
-  "tkt-alhambra": [
-    "1zg83eAQ5iEN9z7AbAS_dsBYMv9yTF819",
-    "1mttMclav8ki3Ye--GRz6dO-j_50JFs_2"
-  ],
-  "tkt-alvia-madrid": [
-    "1-dT8a91z0mkKugfOb6sRRhfF2sF5tP7v"
-  ],
-  "tkt-madrid-palacio-real": [
-    "1z6dTDLZx6zIl63XM_aKdfzlXdenzcSP2"
-  ],
-  "tkt-emirates-return": [
-    "1gykqXZ5BFQHzEn0pr9s6ZRu9krhsC4-D",
-    "1XQsHdIYT2dqZOO5KrTNhIfXKpHYFlT3C"
-  ],
-  "tkt-mezquita-cordoba": [
-    "1mOHwpU3P8W7FccMTQXOogSLSKTUChX0z"
-  ],
-  "tkt-renfe-cordoba-sevilla": [
-    "1HUq1veLCwQpFawY0QKKJPP4FKAInlLSt"
-  ],
-  "tkt-segovia-alcazar": [
-    "17kxxSKW4mWAS8yth65NV3UYZ9wF9fJhF"
-  ],
-  "tkt-renfe-madrid-segovia": [
-    "1DN15zck39euvRSkW_yiLVO_Ulv5JXhg3"
-  ],
-  "tkt-renfe-segovia-madrid": [
-    "1fGsAzzuC6jKgIDtJMpHWgB9_LRRihrN6"
-  ]
+  "tkt-emirates-outbound": ["1gykqXZ5BFQHzEn0pr9s6ZRu9krhsC4-D","1XQsHdIYT2dqZOO5KrTNhIfXKpHYFlT3C"],
+  "tkt-sagrada": ["1Q9GHOQrsRsH4PT8PbpbXnTLnu54gMlpE"],
+  "tkt-park-guell": ["14Gnj9fU-XlooKNrY8hs3MUvMfh4QB3y1"],
+  "tkt-ave-bcn-sevilla": ["1lJYQqZKDLVbdC34-zPquDzDBCgej9KG7"],
+  "tkt-sevilla-alcazar": ["1eQsULkV0pYcmUu-YUDotHAkVSVj9mgyj"],
+  "tkt-sevilla-catedral": ["1Mqn8SumEd0R7DJ4jiRK7tBG2-mlbyrfZ"],
+  "tkt-iryo-cordoba": ["1q3602yB4fiTZyQWg5Q10Fi53M8Njuebb"],
+  "tkt-alsa-granada": ["1qlDqSFryakHAELtK6UuIZ1Rilr1NDczj"],
+  "tkt-alhambra": ["1zg83eAQ5iEN9z7AbAS_dsBYMv9yTF819","1mttMclav8ki3Ye--GRz6dO-j_50JFs_2"],
+  "tkt-alvia-madrid": ["1-dT8a91z0mkKugfOb6sRRhfF2sF5tP7v"],
+  "tkt-madrid-palacio-real": ["1z6dTDLZx6zIl63XM_aKdfzlXdenzcSP2"],
+  "tkt-museo-prado": ["1QfE6woawrgJLyo6_MPC4QqWqyOee5DiV"],
+  "tkt-emirates-return": ["1gykqXZ5BFQHzEn0pr9s6ZRu9krhsC4-D","1XQsHdIYT2dqZOO5KrTNhIfXKpHYFlT3C"],
+  "tkt-mezquita-cordoba": ["1mOHwpU3P8W7FccMTQXOogSLSKTUChX0z"],
+  "tkt-renfe-cordoba-sevilla": ["1HUq1veLCwQpFawY0QKKJPP4FKAInlLSt"],
+  "tkt-segovia-alcazar": ["17kxxSKW4mWAS8yth65NV3UYZ9wF9fJhF"],
+  "tkt-renfe-madrid-segovia": ["1DN15zck39euvRSkW_yiLVO_Ulv5JXhg3"],
+  "tkt-renfe-segovia-madrid": ["1fGsAzzuC6jKgIDtJMpHWgB9_LRRihrN6"]
 }
