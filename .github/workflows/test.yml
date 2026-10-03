@@ -30,8 +30,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build public data for tests
-        run: npm run build:data
+      - name: Verify committed public data is current
+        run: npm run check:data
 
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
