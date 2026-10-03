@@ -21,7 +21,7 @@
     "lat": 41.40363,
     "lng": 2.17436,
     "address": "Carrer de Mallorca 401, Barcelona",
-    "dates": "10/10 09:15",
+    "dates": "10/10 教堂 09:15／誕生立面塔樓 10:00",
     "unesco": true
   },
   {
@@ -456,11 +456,11 @@
     "name": "Museo del Prado",
     "displayName": "普拉多博物館",
     "type": "attraction",
-    "status": "pending",
+    "status": "confirmed",
     "lat": 40.4138,
     "lng": -3.6921,
     "address": "Calle de Ruiz de Alarcón 23, Madrid",
-    "dates": "10/23 10:00（待購票）",
+    "dates": "10/23 10:45（已確認）",
     "unesco": true
   },
   {

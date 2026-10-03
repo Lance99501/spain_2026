@@ -10,17 +10,22 @@
     "confirmed",
     "rest"
   ],
-  "mapUrl": "https://www.google.com/maps/search/?api=1&query=Alhambra%20Granada",
+  "mapUrl": "https://www.google.com/maps/search/?api=1&query=My%20Top%20Tour%20Tickets%20Office%2C%20Paseo%20de%20la%20Sabica%2032%2C%20Granada",
   "items": [
     {
       "id": "item-2026-10-19-01",
       "time": "09:00",
       "segments": [
         {
-          "text": "抵達 Alhambra 周邊"
+          "text": "My Top Tour Tickets Office 集合"
         }
       ],
-      "startTime": "09:00"
+      "startTime": "09:00",
+      "noteSegments": [
+        {
+          "text": "Paseo de la Sabica 32, Granada；先到票務辦公室，09:30 行程開始；11:30 納斯里德宮入場固定"
+        }
+      ]
     },
     {
       "id": "item-2026-10-19-02",

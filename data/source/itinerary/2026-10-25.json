@@ -14,6 +14,20 @@
   "mapUrl": "https://www.google.com/maps/search/?api=1&query=El%20Rastro%20Madrid",
   "items": [
     {
+      "id": "item-2026-10-25-02",
+      "time": "出門前",
+      "segments": [
+        {
+          "text": "Hotel Acta Madfor Check-out"
+        }
+      ],
+      "noteSegments": [
+        {
+          "text": "先退房、寄放行李，再前往 El Rastro；飯店最晚 12:00 退房，寄放依現場可用性"
+        }
+      ]
+    },
+    {
       "id": "item-2026-10-25-01",
       "time": "09:30–11:45（可選）",
       "segments": [
@@ -23,25 +37,11 @@
       ],
       "noteSegments": [
         {
-          "text": "正常情況會去；若下雨、太累或需要更多收尾時間可直接跳過"
+          "text": "先退房與寄放行李後再出門；若下雨、太累或需要更多收尾時間可直接跳過"
         }
       ],
       "startTime": "09:30",
       "sourceItineraryId": "ITN-55"
-    },
-    {
-      "id": "item-2026-10-25-02",
-      "time": "12:00前",
-      "segments": [
-        {
-          "text": "Hotel Acta Madfor Check-out"
-        }
-      ],
-      "noteSegments": [
-        {
-          "text": "退房後可寄放行李，依現場可用性"
-        }
-      ]
     },
     {
       "id": "item-2026-10-25-03",

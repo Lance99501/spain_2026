@@ -8,8 +8,7 @@
   "sub": "Barcelona 最完整的一條單向散步線",
   "categories": [
     "flex",
-    "rest",
-    "pending"
+    "rest"
   ],
   "mapUrl": "https://www.google.com/maps/dir/?api=1&origin=Mercat%20de%20la%20Boqueria%2C%20Barcelona&destination=Barceloneta%20Beach%2C%20Barcelona&travelmode=walking&waypoints=Barcelona%20Cathedral%7CArc%20de%20Triomf%2C%20Barcelona%7CParc%20de%20la%20Ciutadella%2C%20Barcelona",
   "items": [
@@ -90,18 +89,17 @@
     },
     {
       "id": "item-2026-10-13-07",
-      "time": "19:30",
+      "time": "晚餐（彈性）",
       "segments": [
         {
-          "text": "Cruix 晚餐"
+          "text": "Eixample／飯店周邊彈性晚餐"
         }
       ],
       "noteSegments": [
         {
-          "text": "待訂位"
+          "text": "Cruix 僅為候選，不預約、不固定時間；當天依體力與餐廳狀況決定"
         }
-      ],
-      "startTime": "19:30"
+      ]
     }
   ],
   "tags": [
@@ -114,8 +112,8 @@
       "tone": "rest"
     },
     {
-      "text": "Cruix 待訂",
-      "tone": "pending"
+      "text": "晚餐彈性",
+      "tone": "flex"
     }
   ],
   "note": "導遊提醒點是走到附近記得抬頭看，不是額外增加景點。"
