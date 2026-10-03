@@ -55,12 +55,13 @@ test('locked itinerary and reservation lifecycle mappings stay explicit',async()
   assert.equal(links.itinerary['3b891e9f-a395-813a-9f28-f164dcaa046e'].targetId,'day-2026-10-22');
   assert.equal(links.reservations['3df91e9f-a395-812f-9527-eba16ddb35d9'].ticketId,'tkt-renfe-madrid-segovia');
   assert.equal(links.reservations['3df91e9f-a395-810a-9d06-f8b962f1a9c9'].ticketId,'tkt-renfe-segovia-madrid');
-  assert.equal(Object.keys(links.reservations).length,23);
+  assert.equal(links.reservations['3ee91e9f-a395-81d8-aed6-dc86efe1ae5f'].ticketId,'tkt-museo-prado');
+  assert.equal(Object.keys(links.reservations).length,24);
   assert.equal(links.reservations['3b891e9f-a395-8142-9f58-c50ddc4cb872'].ignore,true);
   assert.equal(links.reservations['3db91e9f-a395-81a2-83b2-cacdb93119a2'].hotelPlaceId,'sev-abba-sevilla');
 });
 
-test('Madrid rows keep same-date mappings and purchased Palace is fixed',async()=>{
+test('Madrid rows keep same-date mappings and purchased Palace and Prado are fixed',async()=>{
   const links=await readJson(new URL('../config/notion-links.json',import.meta.url));
   const day21=await readJson(new URL('../data/source/itinerary/2026-10-21.json',import.meta.url));
   const day23=await readJson(new URL('../data/source/itinerary/2026-10-23.json',import.meta.url));
@@ -86,7 +87,12 @@ test('Madrid rows keep same-date mappings and purchased Palace is fixed',async()
   assert.equal(day21.items[0].ticketId,'tkt-madrid-palacio-real');
   assert.equal(day21.items[0].notionStatus,'Confirmed');
   assert.equal(day21.items[0].notionFixed,true);
+  assert.equal(day23.items[0].ticketId,'tkt-museo-prado');
+  assert.equal(day23.items[0].startTime,'10:45');
+  assert.equal(day23.items[0].notionStatus,'Confirmed');
+  assert.equal(day23.items[0].notionFixed,true);
   assert.equal(links.reservations['3e791e9f-a395-8144-bf16-cb3dc63b683a'].ticketId,'tkt-madrid-palacio-real');
+  assert.equal(links.reservations['3ee91e9f-a395-81d8-aed6-dc86efe1ae5f'].ticketId,'tkt-museo-prado');
 });
 
 test('multi-ticket, shared-ticket, hotel, and ignore policies are encoded explicitly',async()=>{
