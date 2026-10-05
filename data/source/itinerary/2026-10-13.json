@@ -89,10 +89,10 @@
     },
     {
       "id": "item-2026-10-13-07",
-      "time": "晚餐（彈性）",
+      "time": "晚餐",
       "segments": [
         {
-          "text": "Eixample／飯店周邊彈性晚餐"
+          "text": "Eixample／飯店周邊晚餐"
         }
       ],
       "noteSegments": [
@@ -115,6 +115,5 @@
       "text": "晚餐彈性",
       "tone": "flex"
     }
-  ],
-  "note": "導遊提醒點是走到附近記得抬頭看，不是額外增加景點。"
+  ]
 }

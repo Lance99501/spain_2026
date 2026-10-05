@@ -1420,7 +1420,7 @@
         },
         {
           "id": "item-2026-10-13-07",
-          "time": "晚餐（彈性）",
+          "time": "晚餐",
           "segments": [
             {
               "text": "Eixample／飯店周邊彈性晚餐"
@@ -1446,8 +1446,7 @@
           "text": "晚餐彈性",
           "tone": "flex"
         }
-      ],
-      "note": "導遊提醒點是走到附近記得抬頭看，不是額外增加景點。"
+      ]
     },
     {
       "id": "day-2026-10-14",
@@ -1863,7 +1862,7 @@
       "dow": "Sun",
       "city": "Granada",
       "title": "Sevilla → Granada",
-      "sub": "ALSA 直達已確認 · 抵達山城後放慢",
+      "sub": "ALSA 直達 · 抵達山城後放慢",
       "categories": [
         "confirmed",
         "flex",
@@ -2116,7 +2115,7 @@
       "dow": "Tue",
       "city": "Madrid",
       "title": "Granada → Madrid",
-      "sub": "ALVIA 2087 Confort · 最新已購票狀態",
+      "sub": "ALVIA 2087 Confort",
       "categories": [
         "confirmed",
         "flex"
@@ -2513,7 +2512,7 @@
           "tone": "confirmed"
         }
       ],
-      "note": "10/22 日期已鎖定：09:25 去程火車、15:00 宮殿與博物館、16:00 胡安二世塔、18:35 回程火車均已確認；不與王宮／普拉多日對調。",
+      "note": "10/22 日期已鎖定：09:25 去程火車、15:00 宮殿與博物館、16:00 胡安二世塔、18:35 回程火車均已確認。",
       "sourceItineraryId": "ITN-16"
     },
     {
